@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{title}}</title>
+<meta name="description" content="{{description}}">
+<meta property="og:title" content="{{title}}">
+<meta property="og:description" content="{{description}}">
+<meta property="og:image" content="https://www.launchpad23.org/img/og-image.jpg">
+{{robots}}
+<link rel="icon" href="{{root}}img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{root}}css/site.css">
+</head>
+<body class="page-{{slug}}">
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="{{root}}" aria-label="Launchpad23 home">
+      <img src="{{root}}img/logo.svg" alt="" width="52" height="52">
+      <span>Launchpad<b>23</b></span>
+    </a>
+    <button class="nav-toggle" aria-expanded="false" aria-controls="site-nav">
+      <span class="bars" aria-hidden="true"></span><span class="sr">Menu</span>
+    </button>
+    <nav id="site-nav" class="site-nav" aria-label="Main">
+      <a href="{{root}}about">About Us</a>
+      <a href="{{root}}4fun">Examples</a>
+      <div class="more">
+        <button class="more-btn" aria-expanded="false">Families &amp; More <span aria-hidden="true">▾</span></button>
+        <div class="more-menu">
+          <a href="{{root}}gifted">Gifted</a>
+          <a href="{{root}}homeschoolers">Homeschoolers</a>
+          <a href="{{root}}expat">Expats / Military</a>
+          <a href="{{root}}neurodiversity">Neurodiversity</a>
+          <a href="{{root}}bullying">Bullying</a>
+          <a href="{{root}}medical">Medical Challenges</a>
+          <a href="{{root}}bright">Project BRIGHT</a>
+          <a href="{{root}}volunteer">Volunteer</a>
+        </div>
+      </div>
+      <a href="{{root}}contact">Contact Us</a>
+      <a class="btn btn-small" href="{{root}}register">Register</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+{{content}}
+</main>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="footer-brand">
+      <img src="{{root}}img/logo.svg" alt="" width="40" height="40">
+      <p>© 2023 – 2026 by Launchpad23, Inc., a non-profit organization. All rights reserved.</p>
+    </div>
+    <p class="footer-links"><a href="{{root}}contact">Contact Us</a> <span aria-hidden="true">|</span> <a href="{{root}}privacy">Privacy Policy and Disclaimers</a></p>
+    <ul class="social" aria-label="Launchpad23 on social media">
+      <li><a href="https://bsky.app/profile/launchpad23.bsky.social" aria-label="Bluesky"><img src="{{root}}img/social/bluesky.png" alt=""></a></li>
+      <li><a href="https://www.linkedin.com/company/launchpad23" aria-label="LinkedIn"><img src="{{root}}img/social/linkedin.png" alt=""></a></li>
+      <li><a href="https://www.instagram.com/launchpad23org/" aria-label="Instagram"><img src="{{root}}img/social/instagram.png" alt=""></a></li>
+      <li><a href="https://www.facebook.com/launchpad23org" aria-label="Facebook"><img src="{{root}}img/social/facebook.png" alt=""></a></li>
+      <li><a href="https://twitter.com/Launchpad23org" aria-label="X (Twitter)"><img src="{{root}}img/social/x.png" alt=""></a></li>
+      <li><a href="https://launchpad23.substack.com/" aria-label="Substack"><img src="{{root}}img/social/substack.png" alt=""></a></li>
+    </ul>
+  </div>
+</footer>
+<script src="{{root}}js/site.js"></script>
+{{scripts}}
+</body>
+</html>

@@ -1,0 +1,261 @@
+[
+ {
+  "title": "The Great Debate",
+  "subtitle": "Debate Topic List",
+  "link": "challenges/great-debate",
+  "image": "",
+  "status": "Show"
+ },
+ {
+  "title": "Port Meridian",
+  "subtitle": "Negotiation Challenge",
+  "link": "challenges/port-meridian",
+  "image": "",
+  "status": "Show"
+ },
+ {
+  "title": "Secret23",
+  "subtitle": "A Puzzle Hunt",
+  "link": "",
+  "image": "",
+  "status": "Coming soon"
+ },
+ {
+  "title": "Astrobiology",
+  "subtitle": "The science and artistry of life",
+  "link": "files/examples/astrobiology.pdf",
+  "image": "img/examples/astrobiology.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Game Design",
+  "subtitle": "From concept to reality",
+  "link": "files/examples/game-design.pdf",
+  "image": "img/examples/game-design.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Mission to Mars",
+  "subtitle": "Are you prepared?",
+  "link": "files/examples/mission-to-mars.pdf",
+  "image": "img/examples/mission-to-mars.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Futuristic Vehicles",
+  "subtitle": "Building tomorrow, today",
+  "link": "files/examples/futuristic-vehicles.pdf",
+  "image": "img/examples/futuristic-vehicles.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Fun with Zoology",
+  "subtitle": "Sanctuary Build",
+  "link": "files/examples/fun-with-zoology.pdf",
+  "image": "img/examples/fun-with-zoology.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Artificial Intelligence",
+  "subtitle": "Visions of the Future",
+  "link": "files/examples/artificial-intelligence.pdf",
+  "image": "img/examples/artificial-intelligence.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Forecasting",
+  "subtitle": "The Art of Prediction",
+  "link": "files/examples/forecasting.pdf",
+  "image": "img/examples/forecasting.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Cryptography",
+  "subtitle": "Codes and Ciphers",
+  "link": "files/examples/cryptography.pdf",
+  "image": "img/examples/cryptography.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Fun with Fermi",
+  "subtitle": "The World of Approximation",
+  "link": "files/examples/fun-with-fermi.pdf",
+  "image": "img/examples/fun-with-fermi.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Build Your Path",
+  "subtitle": "Explore Your Options",
+  "link": "files/examples/build-your-path.pdf",
+  "image": "img/examples/build-your-path.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Speak!",
+  "subtitle": "Use Your Voice",
+  "link": "files/examples/speak.pdf",
+  "image": "img/examples/speak.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Driven to Abstraction",
+  "subtitle": "Exploring Abstract Art",
+  "link": "files/examples/driven-to-abstraction.pdf",
+  "image": "img/examples/driven-to-abstraction.webp",
+  "status": "Show"
+ },
+ {
+  "title": "The Art of Negotiation",
+  "subtitle": "Exploring Efficacy",
+  "link": "files/examples/the-art-of-negotiation.pdf",
+  "image": "img/examples/the-art-of-negotiation.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Urban Planning",
+  "subtitle": "Design Challenge",
+  "link": "files/examples/urban-planning.pdf",
+  "image": "img/examples/urban-planning.webp",
+  "status": "Show"
+ },
+ {
+  "title": "The A to Z Race",
+  "subtitle": "A Globetrotting Challenge",
+  "link": "files/examples/the-a-to-z-race.pdf",
+  "image": "img/examples/the-a-to-z-race.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Galactic Explorer",
+  "subtitle": "Mission Design Challenge",
+  "link": "files/examples/galactic-explorer.pdf",
+  "image": "img/examples/galactic-explorer.webp",
+  "status": "Show"
+ },
+ {
+  "title": "First Contact",
+  "subtitle": "Communication Challenge",
+  "link": "files/examples/first-contact.pdf",
+  "image": "img/examples/first-contact.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Me23",
+  "subtitle": "Exploratory Exercise",
+  "link": "files/examples/me23.pdf",
+  "image": "img/examples/me23.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Artificial Intelligence",
+  "subtitle": "Policy Practicum",
+  "link": "files/examples/artificial-intelligence-policy-practicum.pdf",
+  "image": "img/examples/artificial-intelligence-policy-practicum.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Octigami",
+  "subtitle": "Origami Challenge",
+  "link": "files/examples/octigami.pdf",
+  "image": "img/examples/octigami.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Brick Fall",
+  "subtitle": "Building Brick Challenge",
+  "link": "files/examples/brick-fall.pdf",
+  "image": "img/examples/brick-fall.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Extreme Engineering",
+  "subtitle": "Challenge",
+  "link": "files/examples/extreme-engineering.pdf",
+  "image": "img/examples/extreme-engineering.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Novelber",
+  "subtitle": "Creative Writing Challenge",
+  "link": "files/examples/novelber.pdf",
+  "image": "img/examples/novelber.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Commotion2Motion",
+  "subtitle": "Stop-motion Film Challenge",
+  "link": "files/examples/commotion2motion.pdf",
+  "image": "img/examples/commotion2motion.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Words Have Power",
+  "subtitle": "Word of the Year Challenge",
+  "link": "files/examples/words-have-power.pdf",
+  "image": "img/examples/words-have-power.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Escape Room",
+  "subtitle": "A DIY Challenge",
+  "link": "files/examples/escape-room.pdf",
+  "image": "img/examples/escape-room.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Cityscape",
+  "subtitle": "Building Brick Challenge",
+  "link": "files/examples/cityscape.pdf",
+  "image": "img/examples/cityscape.webp",
+  "status": "Show"
+ },
+ {
+  "title": "The Bibliophile",
+  "subtitle": "For Lovers of Books",
+  "link": "files/examples/the-bibliophile.pdf",
+  "image": "img/examples/the-bibliophile.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Your Design Here",
+  "subtitle": "2024 Brand Design Challenge",
+  "link": "files/examples/your-design-here.pdf",
+  "image": "img/examples/your-design-here.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Hack This",
+  "subtitle": "Hackathon Experience Design",
+  "link": "files/examples/hack-this.pdf",
+  "image": "img/examples/hack-this.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Urban Design Showdown",
+  "subtitle": "Team City Design Challenge",
+  "link": "files/examples/urban-design-showdown.pdf",
+  "image": "img/examples/urban-design-showdown.webp",
+  "status": "Show"
+ },
+ {
+  "title": "AI + Me 20-in60 Challenge",
+  "subtitle": "An AI Partnership Experience",
+  "link": "files/examples/ai-me-20-in60-challenge.pdf",
+  "image": "img/examples/ai-me-20-in60-challenge.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Artistically Speaking",
+  "subtitle": "A Communication Challenge",
+  "link": "files/examples/artistically-speaking.pdf",
+  "image": "img/examples/artistically-speaking.webp",
+  "status": "Show"
+ },
+ {
+  "title": "Photo Scavenger Hunt",
+  "subtitle": "Earth Day 2024",
+  "link": "files/examples/photo-scavenger-hunt.pdf",
+  "image": "img/examples/photo-scavenger-hunt.webp",
+  "status": "Show"
+ }
+]
