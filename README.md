@@ -13,4 +13,4 @@ The Launchpad23 website, hosted free on GitHub Pages.
 `4fun.html` reads the Google Sheet **"Launchpad23 Website — Examples & Topics"** (in the Launchpad23 › Website folder in Drive) on every visit. Edit the sheet to add or change free resources and weekly topics; the sheet's first tab explains how.
 
 ## Unlisted pages
-`archive/` and `connect.html`, `proof.html` are kept for reference but are not linked from the menu and ask search engines not to index them.
+`archive/` pages are kept for reference but are not linked from the menu and ask search engines not to index them.
