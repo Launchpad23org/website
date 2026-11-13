@@ -11,3 +11,10 @@
     document.addEventListener('click',function(){more.classList.remove('open');btn.setAttribute('aria-expanded','false');});
   }
 })();
+
+// Home video: autoplay silently, unless the visitor has asked their device to reduce motion
+(function(){
+  var v=document.querySelector('video.promo'); if(!v) return;
+  var reduce=window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce){ v.autoplay=true; var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
+})();

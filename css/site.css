@@ -5,7 +5,7 @@
   --ink:#2b2f36; --text:#414141; --muted:#6b7080; --line:#e3e7ef;
   --bg:#ffffff; --soft:#f4f6fa; --warm:#fff7e8; --accent:#f2a33a;
   --radius:14px; --shadow:0 6px 24px rgba(18,48,95,.10);
-  --wrap:1120px;
+  --wrap:1004px;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -265,3 +265,8 @@ main>section.lost{background:transparent;padding:28px 0 40px;border-radius:0}
 main>section.lost>.wrap{background:var(--navy);padding:60px 48px 70px}
 body{min-height:100vh;display:flex;flex-direction:column}
 main{flex:1}
+
+/* Home: headline above the video, one navy panel */
+.hero-video{background:var(--navy);border-radius:var(--radius);overflow:hidden;box-shadow:0 8px 28px rgba(18,48,95,.18)}
+.hero-video h1{color:#fff;text-align:center;margin:0;padding:30px 24px 26px;font-size:clamp(1.7rem,3.4vw,2.6rem)}
+.hero-video .promo{border-radius:0;box-shadow:none}
