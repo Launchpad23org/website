@@ -230,3 +230,11 @@ main{flex:1}
 .vol-cards .card img{object-position:center top}
 .helpful{margin:22px 0 0;padding-left:1.2em}
 .helpful li{margin:.35em 0}
+
+/* Volunteer cards: headings close to photos, consistent text, even spacing */
+.card .prose>h2:first-child{margin-top:0}
+.vol-cards .body p,.vol-cards .body li{font-size:1rem;color:var(--text);line-height:1.6}
+.vol-cards .body p{margin:0 0 .9em}
+.vol-cards .body ul{margin:0 0 .9em}
+.vol-cards .body p:last-child{margin-bottom:0}
+.prose>h2:first-child,.prose>h3:first-child,.prose>h1:first-child{margin-top:0}
