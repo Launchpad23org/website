@@ -227,4 +227,13 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(18,48,95,.16
 
 /* Home promo video */
 .video-section{padding:56px 0}
-.promo{display:block;width:100%;max-width:960px;margin:0 auto;border-radius:var(--radius);box-shadow:var(--shadow);background:#000}
+.promo{display:block;width:100%;margin:0 auto;border-radius:var(--radius);box-shadow:var(--shadow);background:#000}
+
+/* Hero contained to page width */
+.hero-wrap{padding:32px 0 0}
+.hero-wrap .hero-split{border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);grid-template-columns:minmax(0,.9fr) minmax(0,1.6fr)}
+.hero-wrap .hero-text{padding:40px 36px}
+.hero-wrap .hero-text h1{font-size:clamp(1.9rem,3.2vw,2.8rem);margin:0}
+.hero-wrap .hero-photo::before,.hero-wrap .hero-photo::after{display:none}
+.video-section{padding:32px 0 56px}
+@media (max-width:900px){.hero-wrap{padding:16px 0 0}.hero-wrap .hero-split{grid-template-columns:1fr}.hero-wrap .hero-text{padding:26px 22px}}
