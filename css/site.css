@@ -224,3 +224,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(18,48,95,.16
 .footer-name{display:block;color:#fff;font-size:1.25rem;margin-bottom:10px}
 .footer-stack .footer-links{margin:0 0 8px}
 .footer-copy{margin:0;font-size:.88rem;opacity:.85}
+
+/* Home promo video */
+.video-section{padding:56px 0}
+.promo{display:block;width:100%;max-width:960px;margin:0 auto;border-radius:var(--radius);box-shadow:var(--shadow);background:#000}
