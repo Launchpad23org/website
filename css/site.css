@@ -194,3 +194,33 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(18,48,95,.16
 .cards-3 .card img{object-position:center top}
 @media (max-width:860px){.cards-3{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:540px){.cards-3{grid-template-columns:1fr}}
+
+/* Home hero: text panel + uncropped photo */
+.hero-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);background:var(--navy);color:#fff;padding:0}
+.hero-text{padding:56px 48px 56px max(22px,calc((100vw - var(--wrap))/2 + 22px));display:flex;flex-direction:column;justify-content:center}
+.hero-text h1{color:#fff;margin-bottom:.4em}
+.hero-intro{font-size:1.15rem;font-weight:600;margin:0 0 .5em;color:#fff}
+.hero-list{margin:0 0 6px;padding-left:1.3em;color:#e3eaf7;font-size:1.05rem}
+.hero-list li{margin:.35em 0}
+.hero-list li::marker{color:var(--accent)}
+.hero-photo{display:flex;align-items:center;position:relative;overflow:hidden;background:var(--navy-dark)}
+.hero-photo::before{content:"";position:absolute;inset:-60px;background:url('../img/home-hero.jpg') center/cover;filter:blur(34px)}
+.hero-photo::after{content:"";position:absolute;inset:0;background:rgba(28,69,135,.72)}
+.hero-photo img{z-index:1}
+.hero-photo img{position:relative;width:100%;height:auto;box-shadow:0 0 40px rgba(0,0,0,.35)}
+.hero-text .actions .btn{padding:12px 22px;font-size:.95rem}
+.hero-text h1{font-size:clamp(2rem,3.6vw,3rem)}
+.btn-light{background:#fff;color:var(--navy)}
+.btn-light:hover{background:var(--soft);color:var(--navy)}
+.btn-outline-light{background:transparent;color:#fff;border:2px solid #fff}
+.btn-outline-light:hover{background:#fff;color:var(--navy)}
+@media (max-width:900px){
+  .hero-split{grid-template-columns:1fr}
+  .hero-photo{order:-1}
+  .hero-text{padding:34px 22px 40px}
+}
+/* Footer: centered, stacked */
+.footer-stack{text-align:center}
+.footer-name{display:block;color:#fff;font-size:1.25rem;margin-bottom:10px}
+.footer-stack .footer-links{margin:0 0 8px}
+.footer-copy{margin:0;font-size:.88rem;opacity:.85}
