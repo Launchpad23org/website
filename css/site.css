@@ -237,3 +237,31 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(18,48,95,.16
 .hero-wrap .hero-photo::before,.hero-wrap .hero-photo::after{display:none}
 .video-section{padding:32px 0 56px}
 @media (max-width:900px){.hero-wrap{padding:16px 0 0}.hero-wrap .hero-split{grid-template-columns:1fr}.hero-wrap .hero-text{padding:26px 22px}}
+
+/* ===== Universal width: every section is a white panel on the Wix slate (#647DA5) ===== */
+:root{--band:#647da5;--panel:calc(var(--wrap) - 44px)}
+body{background:var(--band)}
+main>section{padding:14px 0;background:transparent}
+main>section:first-child{padding-top:28px}
+main>section:last-child{padding-bottom:40px}
+main>section>.wrap{max-width:var(--panel);background:#fff;border-radius:var(--radius);box-shadow:0 8px 28px rgba(18,48,95,.18);padding:44px 48px}
+main>section.hero-wrap>.wrap,main>section.video-section>.wrap{background:transparent;box-shadow:none;padding:0;border-radius:0}
+.hero-wrap .hero-split{box-shadow:0 8px 28px rgba(18,48,95,.18)}
+.page-hero .wrap{padding-top:40px;padding-bottom:40px}
+.page-hero img{box-shadow:none}
+/* reading text keeps a comfortable line length, centered in the panel */
+.narrow>*{max-width:820px;margin-left:auto;margin-right:auto}
+.faq,.facts-box{max-width:none}
+section.soft .facts-box,section .facts-box{box-shadow:none;border:1px solid var(--line);border-top:5px solid var(--blue)}
+.lost{border-radius:var(--radius)}
+@media (max-width:800px){
+  main>section>.wrap{margin:0 12px;padding:28px 20px}
+  main>section.hero-wrap>.wrap,main>section.video-section>.wrap{margin:0 12px}
+}
+main>section.page-hero,main>section.soft,main>section.band{background:transparent}
+main>section.video-section{padding:14px 0}
+@media (max-width:520px){.facts-box{padding:4px 16px}.faq .answer{padding:0 16px 16px}.faq summary{padding:16px 46px 16px 16px}}
+main>section.lost{background:transparent;padding:28px 0 40px;border-radius:0}
+main>section.lost>.wrap{background:var(--navy);padding:60px 48px 70px}
+body{min-height:100vh;display:flex;flex-direction:column}
+main{flex:1}
