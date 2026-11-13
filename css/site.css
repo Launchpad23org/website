@@ -73,7 +73,7 @@ section{padding:64px 0}
 }
 
 /* Hero */
-.hero{position:relative;color:#fff;background:var(--navy) center/cover no-repeat;min-height:440px;display:flex;align-items:flex-end;padding:0}
+.hero{position:relative;color:#fff;background:var(--navy) center top/cover no-repeat;min-height:440px;display:flex;align-items:flex-end;padding:0}
 .hero::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(18,48,95,.15) 0%,rgba(18,48,95,.82) 100%)}
 .hero .wrap{position:relative;padding-top:120px;padding-bottom:56px;width:100%}
 .hero h1{color:#fff;max-width:14ch;margin-bottom:.3em}
@@ -91,7 +91,7 @@ section{padding:64px 0}
 @media (max-width:520px){.values{grid-template-columns:1fr}}
 
 /* FAQ */
-.faq{max-width:860px;margin:30px auto 0}
+.faq{max-width:980px;margin:30px auto 0}
 .faq details{background:#fff;border:1px solid var(--line);border-radius:12px;margin-bottom:12px;overflow:hidden}
 .faq summary{cursor:pointer;list-style:none;padding:18px 54px 18px 20px;font-weight:700;color:var(--navy);font-size:1.08rem;position:relative}
 .faq summary::-webkit-details-marker{display:none}
@@ -149,7 +149,8 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(18,48,95,.16
 /* Footer */
 .site-footer{background:var(--navy-dark);color:#cfd8ea;padding:40px 0;margin-top:0}
 .footer-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:20px}
-.footer-brand{display:flex;align-items:center;gap:12px;max-width:520px}
+.footer-brand{max-width:640px}
+.footer-brand strong{display:block;color:#fff;font-size:1.15rem;margin-bottom:2px}
 .footer-brand img{background:#fff;border-radius:8px;padding:4px;flex:none}
 .footer-brand p,.footer-links{margin:0;font-size:.9rem}
 .site-footer a{color:#fff}
@@ -167,7 +168,7 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(18,48,95,.16
 .note{font-size:.92rem;color:var(--muted)}
 
 /* Just the Facts box (home) */
-.facts-box{max-width:860px;margin:30px auto 0;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border-top:5px solid var(--blue);padding:8px 26px}
+.facts-box{max-width:980px;margin:30px auto 0;background:#fff;border-radius:var(--radius);box-shadow:var(--shadow);border-top:5px solid var(--blue);padding:8px 26px}
 .facts-box dl{margin:0}
 .facts-box dl>div{display:grid;grid-template-columns:130px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
 .facts-box dl>div:last-child{border-bottom:0}
@@ -183,3 +184,13 @@ a.card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(18,48,95,.16
 .lost h1{color:#fff;font-size:clamp(1.6rem,3.5vw,2.4rem)}
 .lost .btn{background:#fff;color:var(--navy)}
 .lost .btn:hover{background:var(--soft);color:var(--navy)}
+
+/* Home: value bullets */
+.value-list{margin:18px 0 0;padding-left:1.4em;font-size:1.15rem;color:var(--ink);font-weight:500}
+.value-list li{margin:.45em 0;padding-left:.2em}
+.value-list li::marker{color:var(--blue)}
+/* Home: family cards, three across on desktop, top-anchored photos */
+.cards-3{grid-template-columns:repeat(3,1fr)}
+.cards-3 .card img{object-position:center top}
+@media (max-width:860px){.cards-3{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:540px){.cards-3{grid-template-columns:1fr}}
