@@ -30,6 +30,7 @@ REDIRECTS = {
     "secret23": "archive/secret23",
     "mystery": "archive/midsummer-mystery",
     "disclaimer": "privacy#disclaimers",
+    "bright": "./#the-facts",
 }
 
 

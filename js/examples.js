@@ -121,5 +121,5 @@
   }
 
   load(TABS.resources,'data/free-resources.json').then(renderResources);
-  load(TABS.topics,'data/weekly-topics.json').then(renderTopics);
+  if (document.getElementById('topic-list')) load(TABS.topics,'data/weekly-topics.json').then(renderTopics);
 })();

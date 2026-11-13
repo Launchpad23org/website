@@ -226,3 +226,7 @@ main{flex:1}
 .page-hero h1{font-size:clamp(1.8rem,3.2vw,2.5rem)}
 .hero-wrap{padding:28px 0 14px}
 .promo{display:block;width:100%}
+
+.vol-cards .card img{object-position:center top}
+.helpful{margin:22px 0 0;padding-left:1.2em}
+.helpful li{margin:.35em 0}
