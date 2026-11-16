@@ -39,8 +39,9 @@ footer{color:var(--muted);font-size:.9rem;padding:36px 0;text-align:center}
 .panel{background:#fff;border-radius:16px;padding:28px;margin:0 0 28px;box-shadow:0 6px 24px rgba(18,48,95,.08)}
 .date{font-weight:600;color:var(--slate);margin:0 0 4px}
 .panel > h2{margin-bottom:.6em}
-.sched{list-style:none;padding:0;margin:16px 0;border-top:1px solid var(--line)}
-.sched li{padding:8px 0;border-bottom:1px solid var(--line)}
+.sched{background:var(--sky);border-left:5px solid var(--navy);border-radius:0 10px 10px 0;margin:16px 0;padding:12px 18px 12px 38px}
+.sched li{padding:3px 0}
+.sched li::marker{color:var(--navy)}
 .notes{background:var(--warm);border-radius:10px;padding:12px 16px;margin:16px 0}
 .notes p{margin:0}
 .btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--font);font-weight:700;font-size:1rem;border:0;border-radius:999px;padding:13px 24px;cursor:pointer;text-decoration:none}
@@ -129,7 +130,6 @@ details .inside a{word-break:break-all}
 <body>
 <header class="top"><div class="wrap">
   <a class="brand" href="#/"><img src="../img/logo.svg" alt="" width="44" height="44"><span>Launchpad<b>23</b></span></a>
-  <nav><a href="#/">This week</a><a href="#/quotes">All quotes</a></nav>
 </div></header>
 <main id="app" tabindex="-1"><div class="wrap page"><p>Loading…</p></div></main>
 <footer><div class="wrap">© <span id="yr">2026</span> Launchpad23, Inc. All rights reserved.</div></footer>
@@ -213,8 +213,8 @@ function clubCard(d,c){
   let more="";
   if(key==="art-club") more=`<a class="go" href="#/art">See this week's challenge</a>`;
   if(key==="big-think") more=`<a class="go" href="#/debate">See this week's debate topic</a>`;
-  if(key==="game-room") more=`<a class="go" href="#/games">Starter games</a>`;
-  if(key==="minecraft"&&extra) more=`<p class="this">${linkify(extra)}</p>`;
+  if(key==="game-room") more=`<a class="go" href="#/games">Starter games</a>`+(extra?`<details><summary>Minecraft instructions</summary><div class="inside">${linkify(extra)}</div></details>`:"");
+  if(key==="enchanted-quill") more=`<a class="go" href="#/writing">Need an idea? Get a writing prompt</a>`;
   if(key==="geoguessr"&&w["Link"]) more=`<a class="go" href="${esc(w["Link"])}" target="_blank" rel="noopener">${esc(w["Link text"]||"Play this week's GeoGuessr")}</a>`;
   if(key==="chess"){
     more=(w["Link"]?`<a class="go" href="${esc(w["Link"])}" target="_blank" rel="noopener">${esc(w["Link text"]||"This week's tournament")}</a>`:"")
@@ -226,7 +226,7 @@ function sessionPanel(d,s){
   const type=s["Session type (don't change)"];
   const sched=lines(s["Schedule (one item per line)"]), notes=lines(s["Notes (one per line)"]);
   let body=`<p class="date">${esc(s["Date"])}</p><h2>${esc(s["Session"])}</h2>${s["Text"]?`<p>${esc(s["Text"])}</p>`:""}`;
-  if(sched.length) body+=`<ul class="sched">${sched.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
+  if(sched.length) body+=`<p style="margin:16px 0 0;font-weight:700;color:var(--navy)">Schedule</p><ul class="sched" style="margin-top:6px">${sched.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
   if(notes.length) body+=`<div class="notes"><p><b>Note${notes.length>1?"s":""}:</b></p><ul style="margin:6px 0 0;padding-left:20px">${notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
   if(type==="public-speaking"){
     const mine=stored(); const mq=mine&&d.quotes.find(q=>q["Number"]===mine);
@@ -234,7 +234,7 @@ function sessionPanel(d,s){
         +(mq?`<p class="small" style="margin-top:14px">Your last quote: <a href="#/quote/${esc(mq["Number"])}">number ${esc(mq["Number"])}, ${esc(mq["Title"])}</a></p>`:"");
   }
   if(type==="connect"){
-    const clubs=d.clubs.filter(c=>c["Club key (don't change)"]!=="public-speaking");
+    const clubs=d.clubs.filter(c=>!["public-speaking","minecraft"].includes(c["Club key (don't change)"]));
     body+=`<div class="clubs">${clubs.map(c=>clubCard(d,c)).join("")}</div>`;
   }
   return `<section class="panel">${body}</section>`;
@@ -266,7 +266,7 @@ async function spin(){
   if(!d.quotes.length){ view(`<div class="wrap page"><div class="msg">No quotes yet.</div></div>`); return; }
   view(`<div class="wrap page"><div class="panel spin-hero"><h1>Spin for your quote</h1><p>Your number is your quote. Don't like it? Spin again.</p>
   <div class="dial" aria-live="polite"><div class="tick"></div><span id="dialnum">?</span></div>
-  <button class="btn btn-main" id="go">Spin</button></div><div id="result"></div></div>`);
+  <button class="btn btn-main" id="go">Spin</button><p style="margin:14px 0 0"><a href="#/quotes">See all quotes</a></p></div><div id="result"></div></div>`);
   const btn=document.getElementById("go"), num=document.getElementById("dialnum");
   btn.onclick=async()=>{
     btn.disabled=true; document.getElementById("result").innerHTML="";
