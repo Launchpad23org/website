@@ -91,6 +91,9 @@ details .inside a{word-break:break-all}
 .readaloud{background:var(--warm);border-left:6px solid var(--accent);border-radius:0 14px 14px 0;padding:18px 24px 20px;margin:0 0 8px}
 .readlabel{font-size:.85rem;font-weight:700;color:var(--navy);margin:0 0 6px}
 .passage{font-size:1.3rem;line-height:1.75;white-space:pre-line;color:#1b1c2e;font-weight:500;margin:0}
+.passage.poem{white-space:normal}
+.passage .ln{display:block;padding-left:1.6em;text-indent:-1.6em}
+.passage .gap{display:block;height:.9em}
 .passage .qm{color:var(--accent);font-weight:800;font-size:1.6em;line-height:0;vertical-align:-.25em}
 .about{margin-top:26px;padding-top:2px;border-top:1px solid var(--line)}
 .about p{margin:0 0 10px}
@@ -193,6 +196,14 @@ const linkify=s=>esc(s).replace(/(https?:\/\/[^\s)]+)/g,'<a href="$1" target="_b
 const lines=s=>(s||"").split("\n").map(x=>x.trim()).filter(Boolean);
 /* Wrap a passage in big quotation marks; quotes already inside become single quotes. */
 function quoted(t){ let open=true; const inner=String(t||"").replace(/"/g,()=>{const c=open?"\u2018":"\u2019";open=!open;return c;}); return `<span class="qm" aria-hidden="true">\u201C</span>${esc(inner)}<span class="qm" aria-hidden="true">\u201D</span>`; }
+/* Poems: several short lines. Each line is shown on its own, and a line too long for the screen wraps with an indent so it is clear it continues. */
+function isPoem(t){ const ls=String(t||"").split("\n").filter(l=>l.trim()); return ls.length>=4 && ls.every(l=>l.length<160); }
+function passageHTML(t){
+  if(!isPoem(t)) return `<p class="passage">${quoted(t)}</p>`;
+  let open=true; const fix=s=>s.replace(/"/g,()=>{const c=open?"\u2018":"\u2019";open=!open;return c;});
+  const ls=String(t).trim().split("\n"); const last=ls.length-1;
+  return `<p class="passage poem">${ls.map((l,i)=>l.trim()?`<span class="ln">${i===0?'<span class="qm" aria-hidden="true">\u201C</span>':""}${esc(fix(l))}${i===last?'<span class="qm" aria-hidden="true">\u201D</span>':""}</span>`:`<span class="gap"></span>`).join("")}</p>`;
+}
 function imgSrc(v){ return /^https?:\/\//.test(v)?v:IMAGE_FOLDER+v; }
 function initials(name){ return (name||"?").replace(/\(.*?\)/g,"").split(/[\s,]+/).filter(w=>/^[A-ZÁÉÍÓÚ]/.test(w)).slice(0,2).map(w=>w[0]).join("")||"★"; }
 function randomInt(n){ const a=new Uint32Array(1); crypto.getRandomValues(a); return a[0]%n; }
@@ -265,7 +276,7 @@ function cardHTML(q){
   const lang=(q["Original language"]||"").toLowerCase();
   const orig=!!q["Original text"];
   return `<article class="card"><div class="card-head"><div class="num"><small>Quote</small>${esc(q["Number"])}</div><div class="ttl"><h2>${esc(q["Title"])}</h2><div class="by">${esc(q["Speaker"])}${q["Year"]?`, ${esc(q["Year"])}`:""}</div>${q["Where / from"]?`<div class="by small">${esc(q["Where / from"])}</div>`:""}</div>${img}</div>
-  <div class="card-body">${orig?`<p class="langlabel">In the original ${esc(q["Original language"]||"language")}</p><p class="orig" lang="${lang.startsWith("span")?"es":""}">${quoted(q["Original text"])}</p>`:""}<div class="readaloud"><p class="readlabel">Read this aloud${orig?" (in English)":""}</p><p class="passage">${quoted(q["Passage"])}</p></div>
+  <div class="card-body">${orig?`<p class="langlabel">In the original ${esc(q["Original language"]||"language")}</p><p class="orig" lang="${lang.startsWith("span")?"es":""}">${quoted(q["Original text"])}</p>`:""}<div class="readaloud"><p class="readlabel">Read this aloud${orig?" (in English)":""}</p>${passageHTML(q["Passage"])}</div>
   ${defs?`<h3>Helpful definitions</h3><ul class="defs">${defs}</ul>`:""}
   <div class="about">${q["Background"]?`<h3>The story behind it</h3><p>${esc(q["Background"])}</p>`:""}
   ${q["Image credit"]?`<p class="note">Picture: ${esc(q["Image credit"])}</p>`:""}${q["Source"]?`<p class="note">Source: <a href="${esc(q["Source"])}" target="_blank" rel="noopener">original text</a></p>`:""}</div></div></article>`;
