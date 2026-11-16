@@ -75,14 +75,9 @@ details .inside a{word-break:break-all}
 
 /* quote card */
 .card{background:#fff;border-radius:18px;overflow:hidden;max-width:820px;margin:24px auto;text-align:left;box-shadow:0 6px 24px rgba(18,48,95,.10)}
-.card-head{display:grid;grid-template-columns:130px 1fr auto;gap:20px;align-items:center;padding:22px 28px;background:var(--sky)}
-.head-img{width:120px;height:120px;border-radius:12px;overflow:hidden;background:#fff;grid-area:img}
-.card-head .num{grid-area:num}
-.card-head .ttl{grid-area:ttl}
-.card-head{grid-template-areas:"num ttl img"}
+.card-head{display:flex;gap:20px;align-items:center;padding:22px 28px;background:var(--sky)}
+.head-img{flex:0 0 120px;width:120px;height:120px;border-radius:12px;overflow:hidden;background:#fff}
 .head-img img{width:100%;height:100%;object-fit:cover}
-.num{font-weight:800;font-size:4rem;line-height:1;color:var(--navy)}
-.num small{display:block;font-size:.9rem;font-weight:600}
 .card-head h2{margin:0}
 .by{margin-top:4px;color:var(--ink)}
 .portrait figcaption{font-size:.75rem;color:var(--muted);padding:6px 4px}
@@ -95,6 +90,8 @@ details .inside a{word-break:break-all}
 .passage .ln{display:block;padding-left:1.6em;text-indent:-1.6em}
 .passage .gap{display:block;height:.9em}
 .passage .qm{color:var(--accent);font-weight:800;font-size:1.6em;line-height:0;vertical-align:-.25em}
+.passage .qo{margin-right:.22em}
+.passage .qc{margin-left:.18em}
 .about{margin-top:26px;padding-top:2px;border-top:1px solid var(--line)}
 .about p{margin:0 0 10px}
 .about .note{font-size:.9rem}
@@ -131,15 +128,21 @@ details .inside a{word-break:break-all}
 .msg{background:#fff;border:2px dashed var(--line);border-radius:12px;padding:18px;margin:20px 0}
 @media (max-width:700px){
   .panel{padding:20px}
-  .card-head{grid-template-columns:1fr;gap:6px;padding:20px}
+  .card-head{padding:18px 20px;gap:14px}
+  .head-img{flex-basis:84px;width:84px;height:84px}
   .card-body{padding:20px}
-  .head-img{width:96px;height:96px;justify-self:end}
-  .card-head{grid-template-columns:1fr auto;grid-template-areas:"num img" "ttl ttl"}
   .mono{width:64px;height:64px;font-size:1.4rem;margin:0 0 10px 14px}
   .passage{font-size:1.12rem}
   .top nav a{margin:0 16px 0 0}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+/* Two text sizes only: titles and text */
+:root{--title:1.45rem;--text:18px}
+html{font-size:var(--text)}
+h1,h2,h3,.topic,.qlist .n,.card-head h2,.panel > h2,.club h3{font-size:var(--title)!important}
+.passage,.small,.note,.by,.date,.langlabel,.readlabel,.defs li,.about,.about .note,.games .tab,.reel .lab,.reel .val,.prompt,.orig,.side,footer,details .inside,.btn,.sched,.notes,.qlist .who,.qlist .t,.games li{font-size:1rem!important}
+@media (max-width:700px){:root{--title:1.3rem;--text:17px}}
 </style>
 </head>
 <body>
@@ -195,14 +198,14 @@ const esc=s=>String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&g
 const linkify=s=>esc(s).replace(/(https?:\/\/[^\s)]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
 const lines=s=>(s||"").split("\n").map(x=>x.trim()).filter(Boolean);
 /* Wrap a passage in big quotation marks; quotes already inside become single quotes. */
-function quoted(t){ let open=true; const inner=String(t||"").replace(/"/g,()=>{const c=open?"\u2018":"\u2019";open=!open;return c;}); return `<span class="qm" aria-hidden="true">\u201C</span>${esc(inner)}<span class="qm" aria-hidden="true">\u201D</span>`; }
+function quoted(t){ let open=true; const inner=String(t||"").replace(/"/g,()=>{const c=open?"\u2018":"\u2019";open=!open;return c;}); return `<span class="qm qo" aria-hidden="true">\u201C</span>${esc(inner)}<span class="qm qc" aria-hidden="true">\u201D</span>`; }
 /* Poems: several short lines. Each line is shown on its own, and a line too long for the screen wraps with an indent so it is clear it continues. */
 function isPoem(t){ const ls=String(t||"").split("\n").filter(l=>l.trim()); return ls.length>=4 && ls.every(l=>l.length<160); }
 function passageHTML(t){
   if(!isPoem(t)) return `<p class="passage">${quoted(t)}</p>`;
   let open=true; const fix=s=>s.replace(/"/g,()=>{const c=open?"\u2018":"\u2019";open=!open;return c;});
   const ls=String(t).trim().split("\n"); const last=ls.length-1;
-  return `<p class="passage poem">${ls.map((l,i)=>l.trim()?`<span class="ln">${i===0?'<span class="qm" aria-hidden="true">\u201C</span>':""}${esc(fix(l))}${i===last?'<span class="qm" aria-hidden="true">\u201D</span>':""}</span>`:`<span class="gap"></span>`).join("")}</p>`;
+  return `<p class="passage poem">${ls.map((l,i)=>l.trim()?`<span class="ln">${i===0?'<span class="qm qo" aria-hidden="true">\u201C</span>':""}${esc(fix(l))}${i===last?'<span class="qm qc" aria-hidden="true">\u201D</span>':""}</span>`:`<span class="gap"></span>`).join("")}</p>`;
 }
 function imgSrc(v){ return /^https?:\/\//.test(v)?v:IMAGE_FOLDER+v; }
 function initials(name){ return (name||"?").replace(/\(.*?\)/g,"").split(/[\s,]+/).filter(w=>/^[A-ZÁÉÍÓÚ]/.test(w)).slice(0,2).map(w=>w[0]).join("")||"★"; }
@@ -275,7 +278,7 @@ function cardHTML(q){
   const img=q["Image"]?`<div class="head-img"><img src="${esc(imgSrc(q["Image"]))}" alt="" title="${esc(q["Image credit"]||"")}"></div>`:"";
   const lang=(q["Original language"]||"").toLowerCase();
   const orig=!!q["Original text"];
-  return `<article class="card"><div class="card-head"><div class="num"><small>Quote</small>${esc(q["Number"])}</div><div class="ttl"><h2>${esc(q["Title"])}</h2><div class="by">${esc(q["Speaker"])}${q["Year"]?`, ${esc(q["Year"])}`:""}</div>${q["Where / from"]?`<div class="by small">${esc(q["Where / from"])}</div>`:""}</div>${img}</div>
+  return `<article class="card"><div class="card-head">${img}<div class="ttl"><h2>${esc(q["Number"])}. ${esc(q["Title"])}</h2><div class="by">${esc(q["Speaker"])}${q["Year"]?`, ${esc(q["Year"])}`:""}</div>${q["Where / from"]?`<div class="by small">${esc(q["Where / from"])}</div>`:""}</div></div>
   <div class="card-body">${orig?`<p class="langlabel">In the original ${esc(q["Original language"]||"language")}</p><p class="orig" lang="${lang.startsWith("span")?"es":""}">${quoted(q["Original text"])}</p>`:""}<div class="readaloud"><p class="readlabel">Read this aloud${orig?" (in English)":""}</p>${passageHTML(q["Passage"])}</div>
   ${defs?`<h3>Helpful definitions</h3><ul class="defs">${defs}</ul>`:""}
   <div class="about">${q["Background"]?`<h3>The story behind it</h3><p>${esc(q["Background"])}</p>`:""}
