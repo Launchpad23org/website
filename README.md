@@ -15,5 +15,5 @@ The Launchpad23 website, hosted free on GitHub Pages.
 ## Unlisted pages
 `archive/` pages are kept for reference but are not linked from the menu and ask search engines not to index them.
 
-## Ghana program page
-`ghana/index.html` is a stand-alone page for the Ghana program (not in the menu, not indexed). It reads the Google Sheet **"Ghana Program Page – Website Content"** (Launchpad23 › Ghana Program Page in Drive) on every visit: quotes for the spinner, this week's club details, games and archives. Pictures go in `ghana/images/`. It does not use `_src/` or the build script.
+## Ghana program page and Connect page
+`ghana/index.html` (Tuesday public speaking) and `connect/index.html` (Wednesday Connect) are the same file: the page shows the right sessions based on its folder name, so after changing one, copy it over the other. `ghana/index.html` is a stand-alone page for the Ghana program (not in the menu, not indexed). It reads the Google Sheet **"Ghana Program Page – Website Content"** (Launchpad23 › Ghana Program Page in Drive) on every visit: quotes for the spinner, this week's club details, games and archives. Pictures go in `ghana/images/`. It does not use `_src/` or the build script.
