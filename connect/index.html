@@ -396,7 +396,7 @@ function convenePanel(w){
   const on=!/^n/i.test(w.set["Show the 10x10 warm-up"]||"Yes");
   const m=parseInt(w.set["10x10 minutes"])||10; const mins=["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"][m]||String(m);
   const news=w.news.filter(r=>r["Announcement"]||r["Subject (shown in bold)"]);
-  const tenx=on?`<article class="cv-card"><div class="sq">${sqPic(w.set["10x10 image"]||"10x10.jpg","10x10")}</div><div><h3>10x10 Flex</h3><p>Ten topics. Ten facts each. ${mins} minute${mins==="One"?"":"s"}.</p><div class="btn-row"><a class="btn btn-main" href="#/10x10">Open the board</a></div></div></article>`:"";
+  const tenx=on?`<article class="cv-card"><div class="sq">${sqPic(w.set["10x10 image"]||"10x10.jpg","10x10")}</div><div><h3>10x10 Flex</h3><p>Ten topics. Ten facts. ${mins} minute${mins==="One"?"":"s"}.</p><div class="btn-row"><a class="btn btn-main" href="#/10x10">Open the board</a></div></div></article>`:"";
   const ann=`<article class="cv-card"><div class="sq">${sqPic(w.set["Announcements image"]||"announcements.jpg","news")}</div><div><h3>Announcements</h3>${news.length?`<ul class="ann">${news.map(n=>{const t=(n["Subject (shown in bold)"]||"").trim().replace(/[.:]$/,"");return `<li>${t?`<b>${esc(t)}.</b> `:""}${linkify(n["Announcement"])}</li>`;}).join("")}</ul>`:`<p>No announcements this week.</p>`}</div></article>`;
   return `<section class="panel"><h2 class="sec">Convene</h2><div class="cv">${ann}${tenx}</div></section>`;
 }
@@ -408,8 +408,7 @@ function debriefPanel(w){
   const exit=w.set["Exit ticket form"]; if(!exit) return "";
   const topics=w.topics.length?w.topics:[{"Topic":"Launchpad23"}];
   return `<section class="panel debrief"><h2 class="sec">Launch Debrief</h2><img class="db-img" src="${esc(imgSrc("debrief.jpg"))}" alt="The L23 Debrief">
-  <p>Before you go, tell us how today went. Click the topic you joined:</p><div class="btn-row" style="justify-content:center">${topics.map(t=>`<a class="btn btn-main" href="${esc(formLink(exit,{TOPIC:t["Topic"]}))}" target="_blank" rel="noopener">${esc(t["Topic"])}</a>`).join("")}</div>
-  <figure class="final"><p class="final-label">A final thought</p><blockquote>${quoted(EMERSON.text)}</blockquote><figcaption>${esc(EMERSON.by)}</figcaption></figure></section>`;
+  <p>Before you go, tell us how today went. Click the topic you joined:</p><div class="btn-row" style="justify-content:center">${topics.map(t=>`<a class="btn btn-main" href="${esc(formLink(exit,{TOPIC:t["Topic"]}))}" target="_blank" rel="noopener">${esc(t["Topic"])}</a>`).join("")}</div></section>`;
 }
 async function home(){
   const d=await load();
