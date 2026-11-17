@@ -250,8 +250,8 @@ function clubCard(d,c){
   const pic=c["Image (square, 1:1)"]?`<img src="${esc(imgSrc(c["Image (square, 1:1)"]))}" alt="">`:(ART[key]||"");
   const extra=c["Extra text"]||"";
   let more="";
-  if(key==="art-club") more=`<a class="go" href="#/art">See this week's challenge</a>`;
-  if(key==="big-think") more=`<a class="go" href="#/debate">See this week's debate topic</a>`;
+  if(key==="art-club") more=`<a class="go" href="#/art">Need an idea?</a>`;
+  if(key==="big-think") more=`<a class="go" href="#/debate">Need an idea?</a>`;
   if(key==="game-room") more=`<a class="go" href="#/games">Starter games</a>`+(extra?`<details><summary>Minecraft instructions</summary><div class="inside">${linkify(extra)}</div></details>`:"");
   if(key==="enchanted-quill") more=`<a class="go" href="#/writing">Need an idea?</a>`;
   if(key==="geoguessr"&&w["Link"]) more=`<a class="go" href="${esc(w["Link"])}" target="_blank" rel="noopener">${esc(w["Link text"]||"Play this week's GeoGuessr")}</a>`;
