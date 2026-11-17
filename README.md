@@ -17,3 +17,7 @@ The Launchpad23 website, hosted free on GitHub Pages.
 
 ## Ghana program page and Connect page
 `ghana/index.html` (Tuesday public speaking) and `connect/index.html` (Wednesday Connect) are the same file: the page shows the right sessions based on its folder name, so after changing one, copy it over the other. `ghana/index.html` is a stand-alone page for the Ghana program (not in the menu, not indexed). It reads the Google Sheet **"Ghana Program Page – Website Content"** (Launchpad23 › Ghana Program Page in Drive) on every visit: quotes for the spinner, this week's club details, games and archives. Pictures go in `ghana/images/`. It does not use `_src/` or the build script.
+
+## Wednesday: topics, exit tickets and the 10x10 challenge
+The Connect page (`connect/`) also shows this week's topics (or the 10x10 challenge), each with an **Exit ticket** button, and the 10x10 board at `connect/#/10x10`. Everything comes from these tabs of the Ghana sheet: **Wednesday Settings**, **Wednesday Topics**, **10x10 This Week**, **10x10 Topic Bank**, **10x10 Log**, and **10x10 Facts** (the fact form's responses). The sheet's time zone is Eastern; the round start time is read as Eastern.
+The two forms (10x10 fact form, exit ticket) were built once by an Apps Script in Drive › Launchpad23 › Wednesday Page: 10x10 and Exit Ticket. The page fills in the topic and team with pre-filled links, so the forms never need weekly edits. Exit ticket answers go to a separate private sheet in that folder.

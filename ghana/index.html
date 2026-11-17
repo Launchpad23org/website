@@ -136,6 +136,43 @@ details .inside a{word-break:break-all}
 .side.for{background:#e3f4ea;color:#1d6b3f} .side.against{background:#fde8e6;color:#9b2c22}
 .timer{font-weight:800;font-size:2.4rem;color:var(--navy);font-variant-numeric:tabular-nums}
 .msg{background:#fff;border:2px dashed var(--line);border-radius:12px;padding:18px;margin:20px 0}
+/* Wednesday: topics, exit tickets, 10x10 */
+.launches{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-top:8px}
+.launch{border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.launch .pic{aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:var(--soft)}
+.launch .pic img{width:100%;height:100%;object-fit:cover}
+.launch h3{margin:4px 0 0}.launch p{margin:0}
+.launch .btn-row{margin-top:auto;padding-top:8px}
+.x-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.x-clock{font-weight:800;font-size:3rem!important;color:var(--navy);font-variant-numeric:tabular-nums;line-height:1}
+.x-clock.low{color:#c0392b}
+.x-status{font-weight:700;color:var(--slate)}
+.x-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:16px;margin-top:16px}
+.x-card{border:2px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:8px;background:#fff}
+.x-card.done{border-color:#2e9d5b}
+.x-card.full{border-color:var(--accent)}
+.x-slot{font-size:.85rem!important;font-weight:700;color:var(--slate);margin:0}
+.x-card h3{margin:0}
+.x-count{font-weight:800;color:var(--navy)}
+.x-bar{height:10px;background:var(--soft);border-radius:99px;overflow:hidden}
+.x-bar span{display:block;height:100%;background:var(--navy);border-radius:99px}
+.x-card.done .x-bar span{background:#2e9d5b}
+.x-facts{margin:0;padding-left:1.5em;font-size:.95rem!important}
+.x-facts li{padding:2px 0}
+.x-facts .who{color:var(--muted);font-size:.85rem}
+.x-facts li.extra{color:var(--muted)}
+.x-card .btn{align-self:flex-start;padding:9px 18px}
+.x-teams{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
+.x-teams button{font-family:var(--font);font-weight:700;border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:999px;padding:7px 16px;cursor:pointer}
+.x-teams button[aria-pressed="true"]{background:var(--navy);color:#fff}
+.x-rules li{padding:2px 0}
+.v{display:inline-block;font-weight:700;font-size:.8rem;border-radius:999px;padding:1px 9px;margin-right:6px;white-space:nowrap}
+.v-ok{background:#e3f4ea;color:#1d6b3f}.v-bad{background:#fde8e6;color:#9b2c22}.v-zero{background:var(--soft);color:var(--muted)}.v-wait{background:var(--warm);color:#8a5a00}
+.x-fix{display:block;font-size:.88rem;color:#9b2c22;margin:2px 0 4px}
+.x-score{font-weight:800;font-size:1.6rem!important;color:var(--navy)}
+.x-total{display:flex;flex-wrap:wrap;gap:24px;margin-top:12px}
+.x-total div{background:var(--soft);border-radius:12px;padding:12px 18px}
+.x-total b{display:block;font-size:2rem!important;color:var(--navy);line-height:1.1}
 @media (max-width:700px){
   .panel{padding:20px}
   .card-head{padding:18px 20px;gap:14px}
@@ -202,6 +239,33 @@ async function load(){
         week:res[2],clubs:res[3].filter(c=>c["Name"]),games:res[4].filter(g=>g["Game"]&&g["Link"]),
         topics:res[5].filter(t=>t["Topic"]&&shown(t)),reels,archive:res[7],art:res[8]};
   return DATA;
+}
+/* Wednesday data: always read fresh (the 10x10 board polls it). */
+async function freshTab(name){
+  const url=`https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&headers=1&sheet=${encodeURIComponent(name)}&_=${Date.now()}`;
+  const r=await fetch(url,{cache:"no-store"}); if(!r.ok) throw new Error(name);
+  return parseCSV(await r.text());
+}
+async function loadWed(){
+  const [s,topics,x,facts]=await Promise.all(["Wednesday Settings","Wednesday Topics","10x10 This Week","10x10 Facts"].map(n=>freshTab(n).catch(()=>[])));
+  const set={}; s.forEach(r=>{ const k=r["Setting (don't change)"]; if(k) set[k]=(r["Value"]||"").trim(); });
+  return {set,topics:topics.filter(t=>t["Topic"]&&shown(t)),x:x.filter(t=>t["Topic"]),facts};
+}
+function formLink(base,vals){ let u=base||""; Object.entries(vals).forEach(([k,v])=>{ u=u.replace("="+k,"="+encodeURIComponent(v)); }); return u; }
+
+/* Times: the sheet is set to Eastern Time. */
+const TZ="America/New_York";
+function tzOffset(ms){ const p=Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:TZ,hourCycle:"h23",year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit"}).formatToParts(new Date(ms)).map(x=>[x.type,x.value])); return Date.UTC(+p.year,p.month-1,+p.day,+p.hour,+p.minute,+p.second)-ms; }
+function fromET(y,mo,d,h,mi,s){ const g=Date.UTC(y,mo-1,d,h,mi,s||0); let t=g-tzOffset(g); return g-tzOffset(t); }
+function todayET(){ const p=Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:TZ,year:"numeric",month:"numeric",day:"numeric"}).formatToParts(new Date()).map(x=>[x.type,x.value])); return [+p.year,+p.month,+p.day]; }
+/* Reads "11/18/2026 10:25:00", "2026-11-18 10:25", "10:25 AM", "10:25:13"... A time with no date means today. */
+function parseET(str){
+  str=String(str||"").trim(); if(!str) return null;
+  let y,mo,d; let m=str.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+  if(m){y=+m[1];mo=+m[2];d=+m[3];} else if((m=str.match(/(\d{1,2})\/(\d{1,2})\/(\d{4})/))){mo=+m[1];d=+m[2];y=+m[3];} else [y,mo,d]=todayET();
+  const t=str.match(/(\d{1,2}):(\d{2})(?::(\d{2}))?\s*([ap]\.?m\.?)?/i); if(!t) return null;
+  let h=+t[1]; const ap=(t[4]||"").toLowerCase(); if(ap.startsWith("p")&&h<12) h+=12; if(ap.startsWith("a")&&h===12) h=0;
+  return fromET(y,mo,d,h,+t[2],+(t[3]||0));
 }
 function store(n){try{localStorage.setItem(STORE_KEY,String(n))}catch(e){}}
 function stored(){try{return localStorage.getItem(STORE_KEY)}catch(e){return null}}
@@ -292,12 +356,117 @@ function fitTitle(){
 }
 addEventListener("resize",fitTitle);
 if(document.fonts) document.fonts.ready.then(fitTitle);
+/* Wednesday panel: this week's topics (or the 10x10), each with its exit ticket. */
+function wedPanel(w,top){
+  const mode=(w.set["This week is"]||"").toLowerCase().replace(/\s/g,"");
+  if(!mode||mode==="off") return "";
+  const exit=w.set["Exit ticket form"];
+  const cards=w.topics.map(t=>{
+    const is10=/10\s*x\s*10/i.test(t["Topic"]);
+    const pic=t["Image (square, 1:1)"]?`<div class="pic"><img src="${esc(imgSrc(t["Image (square, 1:1)"]))}" alt=""></div>`:"";
+    return `<article class="launch">${pic}<h3>${esc(t["Topic"])}</h3>${t["Description"]?`<p>${esc(t["Description"])}</p>`:""}${t["Leader"]?`<p class="small">With ${esc(t["Leader"])}</p>`:""}
+    <div class="btn-row">${is10&&mode==="10x10"?`<a class="btn btn-main" href="#/10x10">Open the board</a>`:""}${exit?`<a class="btn btn-line" href="${esc(formLink(exit,{TOPIC:t["Topic"]}))}" target="_blank" rel="noopener">Exit ticket</a>`:""}</div></article>`;
+  }).join("");
+  return `<section class="panel">${top}<h2>${mode==="10x10"?"Today's challenge":"Today's topics"}</h2><p class="small">At the end of your session, click <b>Exit ticket</b> on the one you joined.</p><div class="launches">${cards||`<p>Topics coming soon.</p>`}</div></section>`;
+}
 async function home(){
   const d=await load();
+  const w=MODE==="connect"?await loadWed().catch(()=>null):null;
   const mine=d.schedule.filter(s=>(s["Session type (don't change)"]==="connect")===(MODE==="connect"));
   const T=`<h1 class="week-title">This week at Launchpad23</h1>`;
-  view(`<div class="wrap page">${mine.map((s,i)=>sessionPanel(d,s,i===0?T:"")).join("")||`<section class="panel">${T}<div class="msg">Nothing scheduled yet.</div></section>`}</div>`);
+  const wp=w?wedPanel(w,T):"";
+  view(`<div class="wrap page">${wp}${mine.map((s,i)=>sessionPanel(d,s,i===0&&!wp?T:"")).join("")||(wp?"":`<section class="panel">${T}<div class="msg">Nothing scheduled yet.</div></section>`)}</div>`);
   fitTitle();
+}
+
+/* ===== 10x10 board ===== */
+const TEAM_KEY="lp23-10x10-team";
+const norm=s=>String(s||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();
+let xTimer=null, xPoll=null, xLast="", xOpen=new Set();
+function stopBoard(){ clearInterval(xTimer); clearInterval(xPoll); xTimer=xPoll=null; xLast=""; }
+function verdictOf(f){ const v=norm(f["Cousin Claude"]).split(" ")[0]; return v; }
+function mmss(ms){ const s=Math.max(0,Math.ceil(ms/1000)); return `${Math.floor(s/60)}:${String(s%60).padStart(2,"0")}`; }
+function roundInfo(w){
+  const start=parseET(w.set["10x10 round start"]); const mins=parseFloat(w.set["10x10 minutes"])||10;
+  const max=parseInt(w.set["10x10 max facts per topic"])||12;
+  const teams=(w.set["10x10 teams"]||"Launchpad23").split(",").map(s=>s.trim()).filter(Boolean);
+  return {start,end:start?start+mins*60000:null,mins,max,teams,results:/^y/i.test(w.set["10x10 show results"]||"")};
+}
+/* Facts for this round, per topic, in the order they came in. */
+function roundFacts(w,ri,team){
+  const [y,mo,d]=todayET(); const dayStart=fromET(y,mo,d,0,0,0);
+  const from=ri.start?ri.start-60000:dayStart;
+  const rows=w.facts.map(f=>({f,t:parseET(f["Timestamp"])})).filter(o=>o.t&&o.t>=from&&norm(o.f["Team"])===norm(team)).sort((a,b)=>a.t-b.t);
+  return w.x.map(x=>{
+    const list=rows.filter(o=>norm(o.f["Topic"])===norm(x["Topic"])).map((o,i)=>({...o.f,_t:o.t,_late:ri.end&&o.t>ri.end+30000,_over:i>=ri.max}));
+    return {slot:x["Slot"],topic:x["Topic"],list};
+  });
+}
+function scoreTopic(list){
+  let pts=0,ok=0,bad=0,zero=0,wait=0;
+  list.forEach(f=>{ if(f._late||f._over){zero++;return;} const v=verdictOf(f);
+    if(v==="confirmed"||v==="correct"){pts++;ok++;} else if(v==="wrong"){pts--;bad++;} else if(v){zero++;} else wait++; });
+  return {score:Math.min(10,pts),ok,bad,zero,wait};
+}
+function chip(f){
+  if(f._late) return `<span class="v v-zero">Too late · 0</span>`;
+  if(f._over) return `<span class="v v-zero">Over the limit · 0</span>`;
+  const v=verdictOf(f);
+  if(v==="confirmed"||v==="correct") return `<span class="v v-ok">✓ +1</span>`;
+  if(v==="wrong") return `<span class="v v-bad">✗ −1</span>`;
+  if(v==="duplicate") return `<span class="v v-zero">Duplicate · 0</span>`;
+  if(v==="negative") return `<span class="v v-zero">Negative · 0</span>`;
+  if(v) return `<span class="v v-zero">${esc(f["Cousin Claude"])} · 0</span>`;
+  return `<span class="v v-wait">Not checked yet</span>`;
+}
+function pickTeam(ri){ let t=null; try{t=localStorage.getItem(TEAM_KEY)}catch(e){} return ri.teams.includes(t)?t:ri.teams[0]; }
+const RULES=`<details style="margin-top:12px"><summary>The rules</summary><div class="inside"><ul class="x-rules">
+<li>Ten topics. Get ten facts for each, as one team, before time runs out.</li>
+<li>Click <b>Add a fact</b> on a topic. One fact per submission, in your own words. Once it's in, it's in: it can't be changed or taken back.</li>
+<li>Research is allowed. Say what something <b>is</b> or <b>does</b>. Facts about what something is not score 0.</li>
+<li>A fact already on the board for that topic is a duplicate and scores 0. Read the board before you add!</li>
+<li>Correct: +1. Wrong: −1. Each topic takes ${"MAX"} facts at most (10 plus 2 extras to cover mistakes) and scores 10 at most.</li>
+<li>When time is up, Cousin Claude (an AI) checks every fact, and we reveal the results together.</li></ul></div></details>`;
+async function board(){
+  stopBoard();
+  view(`<div class="wrap page"><section class="panel"><h1>10x10 Challenge</h1><p>Loading the board…</p></section></div>`);
+  const draw=async()=>{
+    let w; try{ w=await loadWed(); }catch(e){ return; }
+    if(!document.getElementById("x-root")&&xLast) return; // left the page
+    const ri=roundInfo(w); const team=pickTeam(ri); const topics=roundFacts(w,ri,team);
+    const key=JSON.stringify([w.set,w.x,topics,team]); if(key===xLast) return; xLast=key;
+    const now=Date.now(); const running=ri.start&&now<ri.end; const over=ri.start&&now>=ri.end;
+    const teamBtns=ri.teams.length>1?`<div class="x-teams" role="group" aria-label="Your team">${ri.teams.map(t=>`<button data-team="${esc(t)}" aria-pressed="${t===team}">${esc(t)}</button>`).join("")}</div>`:"";
+    const rules=RULES.replace("MAX",ri.max);
+    let body;
+    if(ri.results){
+      const sc=topics.map(t=>scoreTopic(t.list)); const tot=sc.reduce((a,s)=>a+s.score,0), ok=sc.reduce((a,s)=>a+s.ok,0), bad=sc.reduce((a,s)=>a+s.bad,0), sub=topics.reduce((a,t)=>a+t.list.length,0);
+      body=`<div class="x-head"><div><h1 style="margin:0">10x10 Results</h1>${ri.teams.length>1?`<p class="x-status">Team ${esc(team)}</p>`:""}</div><button class="btn btn-line" id="x-all">Reveal all</button></div>${teamBtns}
+      <div class="x-total" id="x-total" ${xOpen.size>=topics.length?"":"hidden"}><div><b>${tot}</b>points out of 100</div><div><b>${ok+bad?Math.round(100*ok/(ok+bad)):0}%</b>accuracy</div><div><b>${sub}</b>facts submitted</div></div>
+      <div class="x-grid">${topics.map((t,i)=>{ const s=sc[i]; const open=xOpen.has(team+"|"+i);
+        return `<article class="x-card ${open&&s.score>=10?"done":""}"><p class="x-slot">${esc(t.slot)}</p><h3>${esc(t.topic)}</h3>${open?`<div class="x-score">${s.score} / 10</div><ol class="x-facts">${t.list.map(f=>`<li>${chip(f)}${esc(f["Your fact"])}${f["Correction"]?`<span class="x-fix">${esc(f["Correction"])}</span>`:""}</li>`).join("")||"<li>No facts.</li>"}</ol>`:`<p>${t.list.length} fact${t.list.length===1?"":"s"} submitted</p><button class="btn btn-main" data-open="${i}">Reveal</button>`}</article>`; }).join("")}</div>`;
+    } else {
+      const status=!ri.start?`Waiting for the round to start…`:running?`Time left`:`Time's up! Cousin Claude is checking your facts.`;
+      const total=topics.reduce((a,t)=>a+Math.min(10,t.list.filter(f=>!f._late).length),0);
+      body=`<div class="x-head"><div><h1 style="margin:0">10x10 Challenge</h1><p class="x-status" style="margin:4px 0 0">${status}</p></div>${ri.start?`<div class="x-clock" id="x-clock">${mmss(ri.end-now)}</div>`:`<div class="x-clock">${ri.mins}:00</div>`}</div>
+      ${teamBtns}<p style="margin:12px 0 0"><b>${total}</b> of 100 facts${ri.teams.length>1?` for team ${esc(team)}`:""}.</p>${rules}
+      <div class="x-grid">${topics.map(t=>{ const n=t.list.length, c=Math.min(10,n), full=n>=ri.max;
+        const add=running&&!full?`<a class="btn btn-main" target="_blank" rel="noopener" href="${esc(formLink(w.set["10x10 fact form"],{TOPIC:t.topic,TEAM:team}))}">Add a fact</a>`:"";
+        return `<article class="x-card ${n>=10?"done":""} ${full?"full":""}"><p class="x-slot">${esc(t.slot)}</p><h3>${esc(t.topic)}</h3>
+        <div><span class="x-count">${c} / 10</span>${n>10?` <span class="small">+ ${n-10} extra${n-10>1?"s":""}</span>`:""}${full?` <span class="small">· full</span>`:""}</div><div class="x-bar"><span style="width:${c*10}%"></span></div>
+        ${n?`<ol class="x-facts">${t.list.map((f,i)=>`<li class="${i>=10?"extra":""}">${esc(f["Your fact"])}${f["First name (optional)"]?` <span class="who">(${esc(f["First name (optional)"])})</span>`:""}</li>`).join("")}</ol>`:""}${add}</article>`; }).join("")}</div>`;
+    }
+    const open=[...document.querySelectorAll("details[open]")].length>0;
+    app.innerHTML=`<div class="wrap page" id="x-root"><section class="panel">${body}</section><a href="#/">Back to this week</a></div>`;
+    if(open){ const dd=document.querySelector("#x-root details"); if(dd) dd.open=true; }
+    document.querySelectorAll("[data-team]").forEach(b=>b.onclick=()=>{ try{localStorage.setItem(TEAM_KEY,b.dataset.team)}catch(e){} xLast=""; draw(); });
+    document.querySelectorAll("[data-open]").forEach(b=>b.onclick=()=>{ xOpen.add(team+"|"+b.dataset.open); xLast=""; draw(); });
+    const all=document.getElementById("x-all"); if(all) all.onclick=()=>{ topics.forEach((t,i)=>xOpen.add(team+"|"+i)); xLast=""; draw(); };
+    clearInterval(xTimer);
+    if(running) xTimer=setInterval(()=>{ const c=document.getElementById("x-clock"); if(!c){clearInterval(xTimer);return;} const left=ri.end-Date.now(); c.textContent=mmss(left); c.classList.toggle("low",left<60000); if(left<=0){ xLast=""; draw(); } },500);
+  };
+  await draw();
+  xPoll=setInterval(()=>{ if(!document.getElementById("x-root")){ stopBoard(); return; } draw(); },10000);
 }
 
 /* ===== Quotes ===== */
@@ -447,8 +616,10 @@ async function archive(kind){
 /* ===== Routes ===== */
 async function route(){
   const h=location.hash.replace(/^#\/?/,""); const p=h.split("/");
+  stopBoard();
   try{
-    if(p[0]==="quote") await quote(p[1],p[2]);
+    if(p[0]==="10x10") await board();
+    else if(p[0]==="quote") await quote(p[1],p[2]);
     else if(p[0]==="spin") await spin();
     else if(p[0]==="quotes") await list();
     else if(p[0]==="games") await games();
