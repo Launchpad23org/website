@@ -137,8 +137,8 @@ details .inside a{word-break:break-all}
 .timer{font-weight:800;font-size:2.4rem;color:var(--navy);font-variant-numeric:tabular-nums}
 .msg{background:#fff;border:2px dashed var(--line);border-radius:12px;padding:18px;margin:20px 0}
 /* Wednesday page sections */
-.title-card{background:var(--navy);color:#fff;border-radius:16px;padding:26px 28px 20px;margin:0 0 28px;text-align:center;container-type:inline-size;box-shadow:0 6px 24px rgba(18,48,95,.12)}
-.title-card .week-title{color:#fff;margin:0 0 4px}
+.title-card{background:var(--navy);color:#fff;border-radius:16px;padding:24px 28px;margin:0 0 28px;text-align:center;container-type:inline-size;box-shadow:0 6px 24px rgba(18,48,95,.12)}
+.title-card .week-title{color:#fff;margin:0}
 .title-card p{margin:0;color:#dfe9f8;font-weight:600}
 .sec{margin:0 0 16px}
 .cv{display:grid;gap:18px}
@@ -392,10 +392,10 @@ function paras(t){ return String(t||"").split(/\n\s*\n/).map(p=>p.trim()).filter
 function sqPic(file,fallback){ return file?`<img src="${esc(imgSrc(file))}" alt="">`:SQ[fallback]; }
 function convenePanel(w){
   const on=!/^n/i.test(w.set["Show the 10x10 warm-up"]||"Yes");
-  const news=w.news.map(r=>r["Announcement (one per row)"]).filter(Boolean);
+  const news=w.news.filter(r=>r["Announcement"]||r["Subject (shown in bold)"]);
   const tenx=on?`<article class="cv-card"><div class="sq">${sqPic(w.set["10x10 image"]||"10x10.jpg","10x10")}</div><div><h3>10x10 Warm-up</h3><p>Ten topics, ten facts each, as one team, before the clock runs out. Once a fact is in, it's in!</p><div class="btn-row"><a class="btn btn-main" href="#/10x10">Open the board</a></div></div></article>`:"";
-  const ann=`<article class="cv-card"><div class="sq">${sqPic(w.set["Announcements image"]||"announcements.jpg","news")}</div><div><h3>Announcements</h3>${news.length?`<ul class="ann">${news.map(n=>`<li>${linkify(n)}</li>`).join("")}</ul>`:`<p>No announcements this week.</p>`}</div></article>`;
-  return `<section class="panel"><h2 class="sec">Convene</h2><div class="cv">${tenx}${ann}</div></section>`;
+  const ann=`<article class="cv-card"><div class="sq">${sqPic(w.set["Announcements image"]||"announcements.jpg","news")}</div><div><h3>Announcements</h3>${news.length?`<ul class="ann">${news.map(n=>{const t=(n["Subject (shown in bold)"]||"").trim().replace(/[.:]$/,"");return `<li>${t?`<b>${esc(t)}.</b> `:""}${linkify(n["Announcement"])}</li>`;}).join("")}</ul>`:`<p>No announcements this week.</p>`}</div></article>`;
+  return `<section class="panel"><h2 class="sec">Convene</h2><div class="cv">${ann}${tenx}</div></section>`;
 }
 function considerPanel(w){
   if(!w.topics.length) return "";
@@ -412,8 +412,7 @@ async function home(){
   const d=await load();
   const w=MODE==="connect"?await loadWed().catch(()=>null):null;
   const mine=d.schedule.filter(s=>(s["Session type (don't change)"]==="connect")===(MODE==="connect"));
-  const date=mine[0]&&mine[0]["Date"];
-  const T=`<section class="title-card"><h1 class="week-title">This Week at Launchpad23</h1>${date?`<p>${esc(date)}</p>`:""}</section>`;
+  const T=`<section class="title-card"><h1 class="week-title">This Week at Launchpad23</h1></section>`;
   let html=T;
   if(MODE==="connect"&&w){
     html+=convenePanel(w)+considerPanel(w);
