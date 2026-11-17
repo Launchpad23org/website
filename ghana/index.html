@@ -136,6 +136,31 @@ details .inside a{word-break:break-all}
 .side.for{background:#e3f4ea;color:#1d6b3f} .side.against{background:#fde8e6;color:#9b2c22}
 .timer{font-weight:800;font-size:2.4rem;color:var(--navy);font-variant-numeric:tabular-nums}
 .msg{background:#fff;border:2px dashed var(--line);border-radius:12px;padding:18px;margin:20px 0}
+/* Wednesday page sections */
+.title-card{background:var(--navy);color:#fff;border-radius:16px;padding:26px 28px 20px;margin:0 0 28px;text-align:center;container-type:inline-size;box-shadow:0 6px 24px rgba(18,48,95,.12)}
+.title-card .week-title{color:#fff;margin:0 0 4px}
+.title-card p{margin:0;color:#dfe9f8;font-weight:600}
+.sec{margin:0 0 16px}
+.cv{display:grid;gap:18px}
+.cv-card{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;border:1px solid var(--line);border-radius:14px;padding:16px}
+.cv-card .sq{aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--soft)}
+.cv-card .sq img,.cv-card .sq svg{width:100%;height:100%;object-fit:cover;display:block}
+.cv-card h3{margin:2px 0 8px}.cv-card p{margin:0}
+.cv-card .btn-row{margin-top:12px}
+.ann{margin:0;padding-left:20px}.ann li{padding:3px 0}
+.cs{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.cs-card{border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.cs-card .wide{aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--soft)}
+.cs-card .wide img{width:100%;height:100%;object-fit:cover}
+.cs-card h3{margin:6px 0 0}.cs-card p{margin:0}
+.cs-card .host{font-weight:700;color:var(--slate)}
+.debrief{text-align:center}
+.db-img{max-width:420px;width:100%;margin:0 auto 8px}
+.final{max-width:720px;margin:28px auto 0;background:var(--warm);border-left:6px solid var(--accent);border-radius:0 14px 14px 0;padding:18px 24px;text-align:left}
+.final-label{font-weight:700;color:var(--navy);margin:0 0 6px}
+.final blockquote{margin:0;font-size:1.1rem;line-height:1.7;color:#1b1c2e}
+.final figcaption{margin-top:10px;color:var(--muted)}
+@media (max-width:700px){.cv-card{grid-template-columns:1fr;gap:12px}}
 /* Wednesday: topics, exit tickets, 10x10 */
 .launches{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-top:8px}
 .launch{border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:8px}
@@ -206,7 +231,7 @@ const SHEET_ID = "1k-s0e-_88iBPJo0j93sIPkA0DlT-gK7n6X1gj1JmMzA";
 const IMAGE_FOLDER = "../ghana/images/";
 /* This file is used for two pages: /ghana/ (Tuesday public speaking) and /connect/ (Wednesday Connect). */
 const MODE = /\/connect\/?/.test(location.pathname) ? "connect" : "speaking";
-if(MODE==="connect") document.title="Connect | Launchpad23";
+if(MODE==="connect") document.title="This Week at Launchpad23";
 const STORE_KEY = "lp23-ghana-myquote";
 document.getElementById("yr").textContent = new Date().getFullYear();
 
@@ -248,9 +273,9 @@ async function freshTab(name){
   return parseCSV(await r.text());
 }
 async function loadWed(){
-  const [s,topics,x,facts]=await Promise.all(["Wednesday Settings","Wednesday Topics","10x10 This Week","10x10 Facts"].map(n=>freshTab(n).catch(()=>[])));
+  const [s,topics,x,facts,news]=await Promise.all(["Wednesday Settings","Wednesday Topics","10x10 This Week","10x10 Facts","Announcements"].map(n=>freshTab(n).catch(()=>[])));
   const set={}; s.forEach(r=>{ const k=r["Setting (don't change)"]; if(k) set[k]=(r["Value"]||"").trim(); });
-  return {set,topics:topics.filter(t=>t["Topic"]&&shown(t)),x:x.filter(t=>t["Topic"]),facts};
+  return {set,topics:topics.filter(t=>t["Topic"]&&shown(t)),x:x.filter(t=>t["Topic"]),facts,news:news.filter(shown)};
 }
 function formLink(base,vals){ let u=base||""; Object.entries(vals).forEach(([k,v])=>{ u=u.replace("="+k,"="+encodeURIComponent(v)); }); return u; }
 
@@ -357,26 +382,47 @@ function fitTitle(){
 }
 addEventListener("resize",fitTitle);
 if(document.fonts) document.fonts.ready.then(fitTitle);
-/* Wednesday panel: this week's topics (or the 10x10), each with its exit ticket. */
-function wedPanel(w,top){
-  const mode=(w.set["This week is"]||"").toLowerCase().replace(/\s/g,"");
-  if(!mode||mode==="off") return "";
-  const exit=w.set["Exit ticket form"];
-  const cards=w.topics.map(t=>{
-    const is10=/10\s*x\s*10/i.test(t["Topic"]);
-    const pic=t["Image (square, 1:1)"]?`<div class="pic"><img src="${esc(imgSrc(t["Image (square, 1:1)"]))}" alt=""></div>`:"";
-    return `<article class="launch">${pic}<h3>${esc(t["Topic"])}</h3>${t["Description"]?`<p>${esc(t["Description"])}</p>`:""}${t["Leader"]?`<p class="small">With ${esc(t["Leader"])}</p>`:""}
-    <div class="btn-row">${is10&&mode==="10x10"?`<a class="btn btn-main" href="#/10x10">Open the board</a>`:""}${exit?`<a class="btn btn-line" href="${esc(formLink(exit,{TOPIC:t["Topic"]}))}" target="_blank" rel="noopener">Exit ticket</a>`:""}</div></article>`;
-  }).join("");
-  return `<section class="panel">${top}<h2>${mode==="10x10"?"Today's challenge":"Today's topics"}</h2><p class="small">At the end of your session, click <b>Exit ticket</b> on the one you joined.</p><div class="launches">${cards||`<p>Topics coming soon.</p>`}</div></section>`;
+/* ===== Wednesday page: Convene, Consider, Connect, Launch Debrief ===== */
+const EMERSON={text:"Finish every day and be done with it. For manners and for wise living it is a vice to remember. You have done what you could; some blunders and absurdities no doubt crept in; forget them as soon as you can. Tomorrow is a new day; you shall begin it well and serenely, and with too high a spirit to be cumbered with your old nonsense.",by:"Ralph Waldo Emerson, in a letter to his daughter Ellen, April 8, 1854"};
+const SQ={
+ "10x10":`<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#1c4587"/><text x="50" y="58" text-anchor="middle" font-family="Montserrat,Arial" font-weight="800" font-size="30" fill="#fff">10x10</text><text x="50" y="76" text-anchor="middle" font-family="Montserrat,Arial" font-weight="600" font-size="9" fill="#f2a33a">WARM-UP</text></svg>`,
+ "news":`<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#f2a33a"/><path d="M24 44h12l28-16v44L36 56H24z" fill="#1c4587"/><path d="M38 57l5 17h8l-4-15" fill="#1c4587"/><path d="M71 40c4 6 4 14 0 20M77 34c7 10 7 22 0 32" stroke="#1c4587" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`
+};
+function paras(t){ return String(t||"").split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).map(p=>`<p>${esc(p)}</p>`).join(""); }
+function sqPic(file,fallback){ return file?`<img src="${esc(imgSrc(file))}" alt="">`:SQ[fallback]; }
+function convenePanel(w){
+  const on=!/^n/i.test(w.set["Show the 10x10 warm-up"]||"Yes");
+  const news=w.news.map(r=>r["Announcement (one per row)"]).filter(Boolean);
+  const tenx=on?`<article class="cv-card"><div class="sq">${sqPic(w.set["10x10 image"]||"10x10.jpg","10x10")}</div><div><h3>10x10 Warm-up</h3><p>Ten topics, ten facts each, as one team, before the clock runs out. Once a fact is in, it's in!</p><div class="btn-row"><a class="btn btn-main" href="#/10x10">Open the board</a></div></div></article>`:"";
+  const ann=`<article class="cv-card"><div class="sq">${sqPic(w.set["Announcements image"]||"announcements.jpg","news")}</div><div><h3>Announcements</h3>${news.length?`<ul class="ann">${news.map(n=>`<li>${linkify(n)}</li>`).join("")}</ul>`:`<p>No announcements this week.</p>`}</div></article>`;
+  return `<section class="panel"><h2 class="sec">Convene</h2><div class="cv">${tenx}${ann}</div></section>`;
+}
+function considerPanel(w){
+  if(!w.topics.length) return "";
+  return `<section class="panel"><h2 class="sec">Consider</h2><div class="cs">${w.topics.map(t=>`<article class="cs-card">${t["Image (16:9)"]?`<div class="wide"><img src="${esc(imgSrc(t["Image (16:9)"]))}" alt=""></div>`:""}<h3>${esc(t["Topic"])}</h3>${t["Host"]?`<p class="host">Hosted by ${esc(t["Host"])}</p>`:""}${paras(t["Description (blank line = new paragraph)"])}</article>`).join("")}</div></section>`;
+}
+function debriefPanel(w){
+  const exit=w.set["Exit ticket form"]; if(!exit) return "";
+  const topics=w.topics.length?w.topics:[{"Topic":"Launchpad23"}];
+  return `<section class="panel debrief"><h2 class="sec">Launch Debrief</h2><img class="db-img" src="${esc(imgSrc("debrief.jpg"))}" alt="The L23 Debrief">
+  <p>Before you go, tell us how today went. Click the topic you joined:</p><div class="btn-row" style="justify-content:center">${topics.map(t=>`<a class="btn btn-main" href="${esc(formLink(exit,{TOPIC:t["Topic"]}))}" target="_blank" rel="noopener">${esc(t["Topic"])}</a>`).join("")}</div>
+  <figure class="final"><p class="final-label">A final thought</p><blockquote>${quoted(EMERSON.text)}</blockquote><figcaption>${esc(EMERSON.by)}</figcaption></figure></section>`;
 }
 async function home(){
   const d=await load();
   const w=MODE==="connect"?await loadWed().catch(()=>null):null;
   const mine=d.schedule.filter(s=>(s["Session type (don't change)"]==="connect")===(MODE==="connect"));
-  const T=`<h1 class="week-title">This week at Launchpad23</h1>`;
-  const wp=w?wedPanel(w,T):"";
-  view(`<div class="wrap page">${wp}${mine.map((s,i)=>sessionPanel(d,s,i===0&&!wp?T:"")).join("")||(wp?"":`<section class="panel">${T}<div class="msg">Nothing scheduled yet.</div></section>`)}</div>`);
+  const date=mine[0]&&mine[0]["Date"];
+  const T=`<section class="title-card"><h1 class="week-title">This Week at Launchpad23</h1>${date?`<p>${esc(date)}</p>`:""}</section>`;
+  let html=T;
+  if(MODE==="connect"&&w){
+    html+=convenePanel(w)+considerPanel(w);
+    html+=mine.map(s=>sessionPanel(d,s,`<h2 class="sec">Connect</h2>`)).join("");
+    html+=debriefPanel(w);
+  } else {
+    html+=mine.map(s=>sessionPanel(d,s,"")).join("")||`<section class="panel"><div class="msg">Nothing scheduled yet.</div></section>`;
+  }
+  view(`<div class="wrap page">${html}</div>`);
   fitTitle();
 }
 
