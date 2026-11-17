@@ -24,7 +24,7 @@ img{max-width:100%;display:block}
 .wrap{max-width:1004px;margin:0 auto;padding:0 20px}
 h1,h2,h3{color:var(--navy);line-height:1.2;margin:0 0 .5em;font-weight:700}
 h1{font-size:clamp(2rem,4.5vw,3rem);font-weight:800;letter-spacing:-.01em}
-.week-title{font-size:clamp(3rem,10vw,5.5rem);text-align:center;line-height:1.05}
+.week-title{font-size:clamp(2.3rem,8vw,4rem)!important;text-align:center;line-height:1.05;margin:4px 0 24px}
 h2{font-size:clamp(1.4rem,3vw,1.9rem)} h3{font-size:1.15rem}
 
 /* header and footer */
@@ -262,10 +262,10 @@ function clubCard(d,c){
   }
   return `<article class="club"><div class="pic">${pic}</div><h3>${esc(c["Name"])}</h3><p>${esc(c["Description"])}</p>${more}</article>`;
 }
-function sessionPanel(d,s){
+function sessionPanel(d,s,top=""){
   const type=s["Session type (don't change)"];
   const sched=lines(s["Schedule (one item per line)"]), notes=lines(s["Notes (one per line)"]);
-  let body=`${type==="connect"||!s["Session"]?"":`<h2>${esc(s["Session"])}</h2>`}${s["Text"]?`<p>${esc(s["Text"])}</p>`:""}`;
+  let body=top+`${type==="connect"||!s["Session"]?"":`<h2>${esc(s["Session"])}</h2>`}${s["Text"]?`<p>${esc(s["Text"])}</p>`:""}`;
   if(sched.length) body+=`<p style="margin:16px 0 0;font-weight:700;color:var(--navy)">Schedule</p><ul class="sched" style="margin-top:6px">${sched.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`;
   if(notes.length) body+=`<div class="notes"><p><b>Note${notes.length>1?"s":""}:</b></p><ul style="margin:6px 0 0;padding-left:20px">${notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
   if(type==="public-speaking"){
@@ -282,7 +282,8 @@ function sessionPanel(d,s){
 async function home(){
   const d=await load();
   const mine=d.schedule.filter(s=>(s["Session type (don't change)"]==="connect")===(MODE==="connect"));
-  view(`<div class="wrap page"><h1 class="week-title">This week at Launchpad23</h1>${mine.map(s=>sessionPanel(d,s)).join("")||`<div class="msg">Nothing scheduled yet.</div>`}</div>`);
+  const T=`<h1 class="week-title">This week at Launchpad23</h1>`;
+  view(`<div class="wrap page">${mine.map((s,i)=>sessionPanel(d,s,i===0?T:"")).join("")||`<section class="panel">${T}<div class="msg">Nothing scheduled yet.</div></section>`}</div>`);
 }
 
 /* ===== Quotes ===== */
