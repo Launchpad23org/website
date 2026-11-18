@@ -208,13 +208,13 @@ const STAGES=[
  fields:[
   {id:"hats",type:"hats",label:"Every project needs every hat worn",help:"On a small project, one person may wear several hats, or all of them. That's fine, but any hat that isn't someone's strength (or that someone wears on top of others) needs a de-risking plan."},
   R("members","Team members","Ideally, who would the team include? How will you recruit them?",[["name","Name"],["needed","Needed by (date or stage)"],["committed","Committed? / How I'll recruit them"],["strengths","Strengths"],["watch","Things to monitor"]],{lemon:["Sam (my brother)","First Saturday","Yes","Loud and friendly; great at waving people over","Gets bored after an hour"],film:["Priya","Filming weekend 1","Asking her at lunch on Monday","Steady hands; owns a tripod","Has soccer on Sundays"]},{cols:"1fr 1fr",min:1})
- ],
- deeper:[
+,
   {id:"specgroup",type:"group",cols:2,fields:[
     A("specneed","Do you need a specialist?","Is there a skill your project needs that nobody on the team has? Would an expert make the project much better, even if you don't strictly need one?",{lemon:"Not strictly, but someone who has run a stand could help me price it.",film:"Yes: sound. Bad audio ruins films, and none of us knows how to record it well."}),
     A("speccost","What would a specialist cost?","Money, time, favors, or giving up some control. Who could it be?",{lemon:"An hour of my neighbor's time, and a free lemonade.",film:"I'd edit our sound person's video in trade. Maybe Mr. Ortiz from the theater club."})]},
   R("yes","Who needs to say yes?","Think through the logic of each person who could say no, instead of just trying to talk them into it.",[["who","Who needs to say yes?"],["worry","What will worry them?"],["address","How can I address that worry?"],["inspire","What will inspire them?"]],{lemon:["My parents","Safety; being near the street","Set up on our lawn, with Dad nearby","Seeing me plan the whole thing myself"],film:["The librarian","Noise, and blocking the aisles","Film before opening hours","A film that celebrates the library"]},{cols:"1fr 1fr",min:1,quote:{en:"Seek first to understand, then to be understood.",by:"Stephen R. Covey, The 7 Habits of Highly Effective People (1989)"}})
- ]},
+ ],
+ deeper:[]},
 {id:"route",num:3,title:"The Route",q:"What are the steps, and how long will they really take?",
  quote:{en:"Plans are worthless, but planning is everything.",by:"Dwight D. Eisenhower (1957), quoting an old Army saying"},
  fields:[
@@ -311,13 +311,13 @@ function ridge(r,base,amp,peakX,peakH,n=40){
   return `M0,200 L${pts.map(p=>p.map(v=>v.toFixed(1)).join(",")).join(" L")} L800,200 Z`;
 }
 const SKIES={
- base:{sky:["#f6c9a8","#fbe3c9","#e9eef6"],sun:{x:120,y:150,r:20,c:"#ffd9a0"},hills:["#c7b4c9","#8f7f9f","#5a5170"]},
+ base:{sky:["#f6c9a8","#fbe3c9","#e9eef6"],sun:{x:150,y:112,r:18,c:"#ffd9a0"},hills:["#c7b4c9","#8f7f9f","#5a5170"]},
  team:{sky:["#cfe0f2","#f2e6cf","#eef3f8"],sun:{x:200,y:95,r:16,c:"#fff1c9"},hills:["#b9c9dd","#7f97b8","#465d82"]},
  route:{sky:["#8fb8e3","#cfe2f5","#eef4fb"],sun:{x:300,y:55,r:15,c:"#fffbe6"},hills:["#a9bfd8","#6a88b0","#34507a"]},
  safety:{sky:["#a7b3c2","#cfd6df","#e5e9ee"],clouds:true,hills:["#9aa6b5","#6d7a8c","#3e4a5c"]},
- launch:{sky:["#3f7fd0","#8dbcef","#d9eafb"],sun:{x:400,y:28,r:16,c:"#ffffff"},flag:true,hills:["#9fb8d6","#5e7fac","#24406e"]},
+ launch:{sky:["#3f7fd0","#8dbcef","#d9eafb"],sun:{x:560,y:34,r:16,c:"#ffffff"},flag:true,hills:["#9fb8d6","#5e7fac","#24406e"]},
  flag:{sky:["#f0a85a","#f7cf8e","#fbe8c4"],sun:{x:640,y:120,r:22,c:"#ffe0a0"},flag:true,hills:["#d49a72","#9c6a55","#5b3f3a"]},
- descent:{sky:["#3d3a6b","#a2667a","#f0a36b"],sun:{x:700,y:178,r:24,c:"#ffb27a"},hills:["#7d5b78","#4f3d5c","#2a2240"]},
+ descent:{sky:["#3d3a6b","#a2667a","#f0a36b"],sun:{x:690,y:150,r:22,c:"#ffb27a"},hills:["#7d5b78","#4f3d5c","#2a2240"]},
  home:{sky:["#0d1630","#1c2a52","#2c3b66"],stars:true,moon:{x:640,y:40},lights:true,hills:["#2e3a62","#1f2848","#121830"]}
 };
 function strip(id){
@@ -357,7 +357,7 @@ function fieldHTML(f){
 }
 function hatsHTML(f){
   const H=S.hats||{};
-  return `<div class="field"><span class="lab">${esc(f.label)}</span><span class="help">${esc(f.help)}</span><div class="hats">${HATS.map(h=>{const v=H[h.id]||{};return `<div class="hat${v.who?"":" empty"}" data-hat="${h.id}"><h3>${h.name}</h3><p class="what">${h.what}</p><p class="watch">${h.watch}</p>
+  return `<div class="field"><span class="lab">${esc(f.label)}</span><span class="help">${esc(f.help)}</span><div class="hats">${HATS.map(h=>{const v=H[h.id]||{};return `<div class="hat" data-hat="${h.id}"><h3>${h.name}</h3><p class="what">${h.what}</p><p class="watch">${h.watch}</p>
   <input data-hat="${h.id}" data-hk="who" value="${esc(v.who)}" placeholder="Who's wearing this hat?" aria-label="${h.name}: who">
   <textarea data-hat="${h.id}" data-hk="means" placeholder="In this project, this hat means…" aria-label="${h.name}: what it means here">${esc(v.means)}</textarea>
   <textarea data-hat="${h.id}" data-hk="derisk" placeholder="Not their strength, or one of many hats? How will you de-risk it?" aria-label="${h.name}: de-risking plan">${esc(v.derisk)}</textarea></div>`;}).join("")}</div><div id="hatwarn"></div></div>`;
@@ -448,7 +448,7 @@ function actualsRender(){
 function hatWarn(){
   const H=S.hats||{}; const empty=HATS.filter(h=>!(H[h.id]&&H[h.id].who)).map(h=>h.name);
   const w=$("#hatwarn"); if(w) w.innerHTML=empty.length&&empty.length<HATS.length?`<span class="flag" style="margin-top:10px">Nobody is wearing: ${empty.join(", ")}.</span>`:"";
-  document.querySelectorAll(".hat[data-hat]").forEach(el=>el.classList.toggle("empty",!(H[el.dataset.hat]&&H[el.dataset.hat].who)));
+  const any=empty.length<HATS.length; document.querySelectorAll(".hat[data-hat]").forEach(el=>el.classList.toggle("empty",any&&!(H[el.dataset.hat]&&H[el.dataset.hat].who)));
 }
 function backRefs(){
   const pb=$("#pitchback"); if(pb) pb.innerHTML=S.pitch?`<b>Your elevator pitch, from Base Camp:</b> ${esc(S.pitch)}`:`<b>Tip:</b> write your elevator pitch in Base Camp. You'll use it everywhere on Summit Day.`;
@@ -527,8 +527,9 @@ function buildPrint(){
 }
 
 document.getElementById("yr").textContent=new Date().getFullYear();
+const had=Object.keys(S).length>0;
 render();
-if(Object.keys(S).length) $("#saved").textContent="✓ Your plan is saved on this device";
+if(had) $("#saved").textContent="✓ Your plan is saved on this device";
 </script>
 </body>
 </html>
