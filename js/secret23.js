@@ -24,7 +24,7 @@
     if (st.ok) foot = '<p class="s23-res ok">&#10003; '+esc(city(i))+'</p>';
     else if (st.miss && st.shown) foot = '<p class="s23-res miss">Not quite. The city: <b>'+esc(city(i))+'</b></p>';
     else if (st.miss) foot = '<p class="s23-res miss">Not quite. This clue is locked.</p><button type="button" class="btn btn-ghost btn-small s23-reveal" data-i="'+i+'">Reveal the city</button>';
-    else foot = '<form class="s23-guess" data-i="'+i+'"><label class="sr-only" for="g'+n+'">Your guess for clue '+n+'</label><input id="g'+n+'" autocomplete="off" placeholder="Which city?" required><button class="btn btn-small">Guess</button></form><p class="s23-once">One guess only.</p>';
+    else foot = '<form class="s23-guess" data-i="'+i+'"><label class="sr-only" for="g'+n+'">Your guess for clue '+n+'</label><input id="g'+n+'" autocomplete="off" placeholder="Which city?" required><button class="btn btn-small">Guess</button></form>';
     return '<figure class="s23-card'+(st.ok?' is-ok':st.miss?' is-miss':'')+'" id="clue-'+n+'"><a href="img/secret23/clue-'+('0'+n).slice(-2)+'.webp" target="_blank" rel="noopener" title="Open full size"><img src="img/secret23/clue-'+('0'+n).slice(-2)+'.webp" alt="Secret23 clue '+n+'" loading="lazy"></a><figcaption><b>Clue '+n+'</b>'+foot+'</figcaption></figure>';
   }
   function render(){

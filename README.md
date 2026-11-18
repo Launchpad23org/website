@@ -11,9 +11,9 @@ The Launchpad23 website, hosted free on GitHub Pages.
 
 ## The Examples page
 `4fun.html` reads the Google Sheet **"Launchpad23 Website — Examples & Topics"** (in the Launchpad23 › Website folder in Drive) on every visit. Edit the sheet to add or change free resources and weekly topics; the sheet's first tab explains how.
-- **Free Resources → "Section"**: Tools & Games (shown first) or Challenge Archive (default). The page order is Tools & Games, Weekly Topics, Challenge Archive. Every card picture sits in a 16:9 frame; other shapes are shown whole on a blurred copy of themselves.
+- **Free Resources → "Section"**: Tools & Games (shown first) or Challenge Archive (default). The page order is Tools & Games, Challenge Archive, Weekly Topics. Every card picture sits in a 16:9 frame; other shapes are shown whole on a blurred copy of themselves.
 - **Free Resources → "Show on"**: Website (or blank) shows the card here; Launch page shows it only in Tools & Games on the This Week at Launchpad23 page; Both shows it in both places.
-- **Weekly Topics archive**: from Launch Year 2026–27 on, the archive also reads the **Wednesday Topics** tab of the Weekly Pages sheet. Every row with a date up to today appears, grouped by week, with its picture and host; a row with a Button link becomes a clickable card. Older years still come from the Examples sheet's Weekly Topics tab (names only). Saved copies: `data/weekly-topics.json`, `data/wednesday-topics.json`.
+- **Weekly Topics archive**: from Launch Year 2026–27 on, the archive also reads the **Wednesday Topics** tab of the Weekly Pages sheet. Every row with a date up to today appears, grouped by week, with its picture (hosts stay in the sheet but aren't shown); a row with a Button link becomes a clickable card. Older years still come from the Examples sheet's Weekly Topics tab (names only). Saved copies: `data/weekly-topics.json`, `data/wednesday-topics.json`.
 
 ## Unlisted pages
 `archive/` pages are kept for reference but are not linked from the menu and ask search engines not to index them.

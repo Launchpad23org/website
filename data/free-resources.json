@@ -9,8 +9,8 @@
   "section": "Tools & Games"
  },
  {
-  "title": "Quote Spinner",
-  "subtitle": "Spin for a quote to practice speaking",
+  "title": "L23 Quote Spinner",
+  "subtitle": "Public speaking practice quotations.",
   "link": "connect/#/spin",
   "image": "",
   "status": "Show",
@@ -19,7 +19,7 @@
  },
  {
   "title": "Secret23",
-  "subtitle": "A Puzzle Hunt",
+  "subtitle": "A geography puzzle hunt and mystery.",
   "link": "secret23",
   "image": "img/secret23/card.webp",
   "status": "Show",

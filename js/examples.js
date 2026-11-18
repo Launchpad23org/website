@@ -138,7 +138,7 @@
     tabs.innerHTML = order.map(function(g,i){ return '<button role="tab" aria-selected="'+(i===0)+'" data-g="'+esc(g)+'">'+esc(g)+'</button>'; }).join('');
     function card(t){
       var inner=(t.image?'<img src="'+esc(t.image)+'" alt="" loading="lazy">':'<div class="titlecard c1">'+esc(t.title)+'</div>')
-        +'<h3>'+esc(t.title)+'</h3>'+(t.host?'<p>Hosted by '+esc(t.host)+'</p>':'');
+        +'<h3>'+esc(t.title)+'</h3>';   // hosts stay in the sheet but aren't shown
       return t.link ? '<a class="topic-card" href="'+esc(t.link)+'"'+(/^https?:/.test(t.link)?' target="_blank" rel="noopener"':'')+'>'+inner+'</a>'
                     : '<div class="topic-card">'+inner+'</div>';
     }
