@@ -57,22 +57,24 @@ select,input,textarea{font-family:var(--font);font-size:1rem;color:var(--ink)}
 .stage-body{padding:22px 28px 26px}
 .stage-num{font-weight:800;color:var(--accent);font-size:.9rem;letter-spacing:.08em;text-transform:uppercase}
 .stage h2{font-size:clamp(1.5rem,3.2vw,2rem);font-weight:800;margin:2px 0 6px}
-.stage .q{font-size:1.08rem;color:var(--ink);margin:0 0 14px}
-.quote{background:var(--warm);border-left:6px solid var(--accent);border-radius:0 12px 12px 0;padding:12px 18px;margin:0 0 18px}
-.quote .orig{color:var(--navy);font-style:italic;margin:0}
-.quote .tr{color:var(--muted);font-size:.9rem;margin:0}
-.quote .en{margin:4px 0 0;color:var(--ink)}
-.quote .by{font-size:.85rem;color:var(--muted);margin:6px 0 0}
+.stage .q{font-style:italic;color:var(--ink);margin:0 0 14px}
+.quote{text-align:center;max-width:720px;margin:6px auto 24px;padding:16px 10px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);color:var(--ink)}
+.quote p,.quote figcaption{margin:0;color:var(--ink)}
+.quote .en{font-weight:600}
+.quote .orig{font-style:italic;margin-top:8px}
+.quote .by{margin-top:8px}
 .lead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;font-size:.92rem;font-weight:600;color:var(--slate)}
 .lead input{flex:1;min-width:180px;border:1px dashed var(--line);border-radius:10px;padding:6px 10px;font-size:.92rem}
 .field{margin:0 0 18px}
 .field>label,.field .lab{display:block;font-weight:700;color:var(--ink);margin:0 0 2px}
-.help{display:block;font-size:.88rem;color:var(--muted);margin:0 0 6px}
+.help{display:block;font-style:italic;color:var(--muted);margin:0 0 6px}
+.lead-end{margin-top:24px;padding-top:18px;border-top:2px solid var(--soft)}
 .field input[type=text],.field input[type=date],.field input[type=number],.field textarea,.field select{width:100%;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
 .field textarea{min-height:76px;resize:vertical}
 .field input:focus,.field textarea:focus,.field select:focus{border-color:var(--slate);outline:none}
 ::placeholder{color:#a3a8b4;font-style:italic}
 .count{font-size:.8rem;color:var(--muted);text-align:right;margin-top:2px}
+.grid1{display:block}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 details.deeper{border-top:2px solid var(--soft);margin-top:10px;padding-top:12px}
@@ -194,7 +196,7 @@ const STAGES=[
   A("pitch","Elevator pitch","Explain your project in two or three sentences: short enough to say in a 30-second elevator ride.",{lemon:"A lemonade stand on our street on Saturday mornings in June, raising money for the animal shelter.",film:"A five-minute film about a girl who finds out her town's library is closing, shot over two weekends with friends."},{counter:true}),
   A("purpose","Purpose","Why am I doing this? What about it will keep me going through the hard work that is sure to come?",{lemon:"I want to help the shelter and learn how a real business works. Thinking about the dogs will keep me going when it's hot and slow.",film:"I want to prove I can finish a film, not just start one. Showing it on the library's last day will keep me going."}),
   A("summit","The summit","What does \"done\" look like if everything goes right?",{lemon:"Four Saturdays, $200 raised, and a sign people remember.",film:"A finished five-minute film with music and sound, shown to an audience at the library."}),
-  A("minsummit","The minimum summit","What is the smallest version that would still be worth finishing?",{lemon:"Two Saturdays and $50 for the shelter.",film:"A three-minute cut with no original music, shared with family."}),
+  A("minsummit","The Minimum","What is the smallest version that would still be worth finishing?",{lemon:"Two Saturdays and $50 for the shelter.",film:"A three-minute cut with no original music, shared with family."}),
   {id:"deadlinegroup",type:"group",cols:3,fields:[
     {id:"deadline",type:"date",label:"Deadline",help:"Your hard stop."},
     {id:"deadlinekind",type:"select",label:"How firm is it?",help:"Can it move?",options:["","Hard stop: it can't move","Firm, but it could move","Flexible"]},
@@ -203,9 +205,9 @@ const STAGES=[
  ],
  deeper:[
   A("audience","Who is it for?","Every project serves someone, even if it's only you. Who will use it, see it, or benefit?",{lemon:"Neighbors walking to the park, and the animals at the shelter.",film:"People in our town who love the library, and other kids who want to make films."}),
-  {id:"scopegroup",type:"group",cols:2,fields:[
+  {id:"scopegroup",type:"group",cols:1,fields:[
     A("scopein","In scope","What this project includes.",{lemon:"Lemonade, cups, a sign, a donation jar.",film:"Script, filming, editing, music, a screening."}),
-    A("scopeout","Not doing","What you are deliberately leaving out, so the project doesn't quietly grow.",{lemon:"No food, no deliveries, no second location.",film:"No special effects, no extra locations, no sequel (yet)."})]}
+    A("scopeout","Not doing","What you are deliberately leaving out.",{lemon:"No food, no deliveries, no second location.",film:"No special effects, no extra locations, no sequel (yet)."})]}
  ]},
 {id:"team",num:2,title:"The Team",q:"Who is climbing with you, and who needs to say yes?",
  quote:{en:"Alone we can do so little; together we can do so much.",by:"Helen Keller"},
@@ -213,7 +215,7 @@ const STAGES=[
   {id:"hats",type:"hats",label:"Every project needs every hat worn",help:"On a small project, one person may wear several hats, or all of them. That's fine, but any hat that isn't someone's strength (or that someone wears on top of others) needs a de-risking plan."},
   R("members","Team members","Ideally, who would the team include? How will you recruit them?",[["name","Name"],["needed","Needed by (date or stage)"],["committed","Committed? / How I'll recruit them"],["strengths","Strengths"],["watch","Things to monitor"]],{lemon:["Sam (my brother)","First Saturday","Yes","Loud and friendly; great at waving people over","Gets bored after an hour"],film:["Priya","Filming weekend 1","Asking her at lunch on Monday","Steady hands; owns a tripod","Has soccer on Sundays"]},{cols:"1fr 1fr",min:1})
 ,
-  {id:"specgroup",type:"group",cols:2,fields:[
+  {id:"specgroup",type:"group",cols:1,fields:[
     A("specneed","Do you need a specialist?","Is there a skill your project needs that nobody on the team has? Would an expert make the project much better, even if you don't strictly need one?",{lemon:"Not strictly, but someone who has run a stand could help me price it.",film:"Yes: sound. Bad audio ruins films, and none of us knows how to record it well."}),
     A("speccost","What would a specialist cost?","Money, time, favors, or giving up some control. Who could it be?",{lemon:"An hour of my neighbor's time, and a free lemonade.",film:"I'd edit our sound person's video in trade. Maybe Mr. Ortiz from the theater club."})]},
   R("yes","Who needs to say yes?","Think through the logic of each person who could say no, instead of just trying to talk them into it.",[["who","Who needs to say yes?"],["worry","What will worry them?"],["address","How can I address that worry?"],["inspire","What will inspire them?"]],{lemon:["My parents","Safety; being near the street","Set up on our lawn, with Dad nearby","Seeing me plan the whole thing myself"],film:["The librarian","Noise, and blocking the aisles","Film before opening hours","A film that celebrates the library"]},{cols:"1fr 1fr",min:1,quote:{en:"Seek first to understand, then to be understood.",by:"Stephen R. Covey, The 7 Habits of Highly Effective People (1989)"}})
@@ -231,7 +233,7 @@ const STAGES=[
 {id:"safety",num:4,title:"Safety Check",q:"What could go wrong, and when would you turn around?",
  quote:{en:"Getting to the top is optional. Getting down is mandatory.",by:"Ed Viesturs, the first American to climb all fourteen 8,000-meter peaks without bottled oxygen"},
  fields:[
-  {id:"qgroup",type:"group",cols:2,fields:[
+  {id:"qgroup",type:"group",cols:1,fields:[
     A("qc","Quality control","How will I check the work before it launches? Who outside the team will look at it?",{lemon:"A taste test with three neighbors before the first Saturday.",film:"Show the rough cut to my English teacher."}),
     A("qa","Quality assurance","What habits or checklists will help me get it right the first time?",{lemon:"Write the recipe on a card, and count change twice.",film:"Use a shot list, and check the sound after every take."})]},
   R("premortem","Pre-mortem","Imagine it's your deadline and the project failed. What are the most likely reasons? Then: how can you lower each risk now?",[["why","Why it failed"],["lower","How I'll lower that risk now"]],{lemon:["It rained every Saturday","Pick a backup Sunday for each week"],film:["We lost the footage","Back up every night to two places"]},{min:3,cols:"1fr 1fr"}),
@@ -272,7 +274,7 @@ const STAGES=[
 {id:"home",num:8,title:"Trip Home",q:"What did you learn, and what will you do differently?",
  quote:{orig:"Det er ganske sandt, hvad Philosophien siger, at Livet maa forstaaes baglænds. Men derover glemmer man den anden Sætning, at det maa leves forlænds.",lang:"da",en:"It is perfectly true, as the philosophers say, that life must be understood backwards. But they forget the other proposition, that it must be lived forwards.",by:"Søren Kierkegaard, journal (1843), original Danish"},
  fields:[
-  {id:"aargroup",type:"group",cols:2,fields:[
+  {id:"aargroup",type:"group",cols:1,fields:[
     A("aar1","What did I plan?","Look back at your summit and your route.",{}),
     A("aar2","What actually happened?","Just the facts, good and bad.",{}),
     A("aar3","Why the difference?","What helped, and what got in the way?",{}),
@@ -291,6 +293,11 @@ let S={};
 try{ S=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ S={}; }
 let EX="";
 const $=s=>document.querySelector(s);
+const SMALL=new Set("a an the and but or nor for so yet as at by in of on to up via vs with from into".split(" "));
+function tc(str){ const w=String(str||"").split(" "); return w.map((x,i)=>{ const afterColon=i>0&&/[:–—]$/.test(w[i-1]); const bare=x.toLowerCase().replace(/[^a-z']/g,"");
+  if(i>0&&i<w.length-1&&!afterColon&&SMALL.has(bare)) return x.toLowerCase();
+  return x.replace(/[a-zA-Z]/,c=>c.toUpperCase()).replace(/([–])([a-z])/g,(m,d,c)=>d+c.toUpperCase()); }).join(" "); }
+function titleCaseAll(root){ (root||document).querySelectorAll("label, .lab, .rl, .tt th, .note b").forEach(el=>{ if(!el.children.length&&!el.closest(".jump")) el.textContent=tc(el.textContent); }); }
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let saveT=null;
 function save(){
@@ -343,7 +350,7 @@ function strip(id){
 }
 
 /* ======================= Rendering ======================= */
-function quoteHTML(q){ if(!q) return ""; return `<figure class="quote">${q.orig?`<p class="orig" lang="${q.lang}">${esc(q.orig)}</p>${q.tr?`<p class="tr">${esc(q.tr)}</p>`:""}`:""}<p class="en">${q.orig?"":"“"}${esc(q.en)}${q.orig?"":"”"}</p><figcaption class="by">${esc(q.by)}</figcaption></figure>`; }
+function quoteHTML(q){ if(!q) return ""; return `<figure class="quote"><p class="en">“${esc(q.en)}”</p>${q.orig?`<p class="orig" lang="${q.lang}">${esc(q.orig)}</p>${q.tr?`<p class="tr">${esc(q.tr)}</p>`:""}`:""}<figcaption class="by">— ${esc(q.by)}</figcaption></figure>`; }
 function ph(f){ return (EX&&f.ex&&f.ex[EX])?f.ex[EX]:""; }
 function fieldHTML(f){
   if(f.type==="group") return `<div class="grid${f.cols}">${f.fields.map(fieldHTML).join("")}</div>`;
@@ -385,9 +392,9 @@ function turnHTML(){
 function stageHTML(st){
   const deeper=st.deeper&&st.deeper.length?`<details class="deeper"${S["open-"+st.id]?" open":""} data-open="${st.id}"><summary>Go deeper</summary><div class="in">${st.deeper.map(fieldHTML).join("")}</div></details>`:"";
   return `<section class="stage" id="${st.id}"><div class="strip">${strip(st.id)}</div><div class="stage-body">
-  <div class="stage-num">Stage ${st.num} of 8</div><h2>${st.title}</h2><p class="q">${st.q}</p>${quoteHTML(st.quote)}
-  <div class="lead"><label for="f-lead-${st.id}">Who is leading this stage?</label><input id="f-lead-${st.id}" data-k="lead-${st.id}" value="${esc(S["lead-"+st.id]||"")}" placeholder="Name"></div>
-  ${st.fields.map(fieldHTML).join("")}${deeper}</div></section>`;
+  <h2>${st.title}</h2><p class="q">${st.q}</p>${quoteHTML(st.quote)}
+  ${st.fields.map(fieldHTML).join("")}${deeper}
+  <div class="field lead-end"><label for="f-lead-${st.id}">Who Is Leading This Stage?</label><span class="help">Now that you've thought it through: who will lead ${esc(st.title)}?</span><input type="text" id="f-lead-${st.id}" data-k="lead-${st.id}" value="${esc(S["lead-"+st.id]||"")}"></div></div></section>`;
 }
 function allFields(){ const out=[]; const walk=f=>{ if(f.type==="group") f.fields.forEach(walk); else out.push(f); }; STAGES.forEach(s=>{ s.fields.forEach(walk); (s.deeper||[]).forEach(walk); }); return out; }
 const ROWDEFS=Object.fromEntries(allFields().filter(f=>f.type==="rows").map(f=>[f.id,f]));
@@ -396,6 +403,7 @@ function renderRows(id){
   const f=ROWDEFS[id], box=$("#rows-"+id); if(!box) return;
   let rows=rowsOf(id); while(rows.length<(f.min||1)) rows.push({}); S[id]=rows;
   box.innerHTML=rows.map((r,i)=>`<div class="row" style="grid-template-columns:${f.cols||"1fr"}">${colHTML(f,r,i)}${rows.length>(f.min||1)?`<button class="x" data-del="${id}" data-i="${i}" aria-label="Remove this row">×</button>`:""}</div>`).join("");
+  titleCaseAll(box);
 }
 function colHTML(f,r,i){
   return f.colsDef.map(([k,l],ci)=>`<div><span class="rl">${esc(l)}</span><textarea rows="1" data-row="${f.id}" data-i="${i}" data-c="${k}" placeholder="${i===0&&EX&&f.ex&&f.ex[EX]?esc(f.ex[EX][ci]||""):""}">${esc(r[k]||"")}</textarea></div>`).join("");
@@ -426,7 +434,7 @@ function tasksRender(){
       ${flags.map(x=>`<span class="flag">${esc(x)}</span>`).join("")}
       ${ts.length>1?`<button class="x" data-deltask="${i}" aria-label="Remove task ${i+1}">×</button>`:""}</div>`;}).join("")}</div>
   <button class="btn small addrow" id="addtask">+ Add a task</button><div id="routesum"></div>`;
-  routeSummary();
+  routeSummary(); titleCaseAll(box);
 }
 function routeSummary(){
   const box=$("#routesum"); if(!box) return; const ts=rowsOf("tasks");
@@ -434,7 +442,7 @@ function routeSummary(){
   if(last==null){ box.innerHTML=""; return; }
   const chain=[]; let c=li, guard=0; while(c!==""&&c!==undefined&&ts[c]&&guard++<50){ chain.unshift(ts[c].name||`Task ${+c+1}`); c=ts[c].after; }
   const dl=pd(S.deadline), late=dl!=null&&last>dl;
-  box.innerHTML=`<div class="summary ${late?"flag":"ok"}" style="margin-top:12px">Realistic finish for the whole project: ${nice(fd(last))}${S.deadline?`. Deadline: ${nice(S.deadline)}. ${late?"That's past your deadline. Look at your longest chain, your minimum summit, or your deadline.":"You're inside your deadline."}`:". Add a deadline in Base Camp to check it."}${chain.length>1?`<br>Your longest chain: ${chain.map(esc).join(" → ")}`:""}</div>`;
+  box.innerHTML=`<div class="summary ${late?"flag":"ok"}" style="margin-top:12px">Realistic finish for the whole project: ${nice(fd(last))}${S.deadline?`. Deadline: ${nice(S.deadline)}. ${late?"That's past your deadline. Look at your longest chain, your minimum, or your deadline.":"You're inside your deadline."}`:". Add a deadline in Base Camp to check it."}${chain.length>1?`<br>Your longest chain: ${chain.map(esc).join(" → ")}`:""}</div>`;
 }
 function actualsRender(){
   const box=$("#actuals-wrap"); if(!box) return;
@@ -448,6 +456,7 @@ function actualsRender(){
   <div class="grid2"><div class="note" style="margin:0"><b>My measured TIME</b><div class="big">${measured?"×"+measured.toFixed(1):"–"}</div><span class="help" style="margin:0">I planned with ×${TIMEV()}.</span></div>
   ${fieldHTML(A("nexttime","My TIME for next time, and why","What will you set your TIME to on your next project?",{lemon:"×1.8. Everything took longer when Sam got bored.",film:"×2. Editing always takes longer than I think."}))}</div>
   ${fieldHTML(A("estimates","What surprised me about my estimates?","Which tasks took much longer (or shorter) than you guessed, and why?",{lemon:"The sign took three days, not one.",film:"Filming was faster than expected; sound fixes took forever."}))}`;
+  titleCaseAll(box);
 }
 function hatWarn(){
   const H=S.hats||{}; const empty=HATS.filter(h=>!(H[h.id]&&H[h.id].who)).map(h=>h.name);
@@ -464,6 +473,7 @@ function render(){
   $("#jump").innerHTML=`<option value="">Choose</option>`+STAGES.map(s=>`<option value="${s.id}">${s.num}. ${s.title}</option>`).join("");
   Object.keys(ROWDEFS).forEach(renderRows); tasksRender(); actualsRender(); hatWarn(); backRefs();
   document.querySelectorAll("textarea").forEach(autoGrow);
+  titleCaseAll($("#app"));
 }
 function autoGrow(t){ t.style.height="auto"; t.style.height=Math.max(t.scrollHeight+2, t.closest(".row")?40:76)+"px"; }
 
