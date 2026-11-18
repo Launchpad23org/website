@@ -30,7 +30,8 @@ h1,h2,h3{color:var(--navy);line-height:1.2;margin:0}
 .hero img{display:block;width:100%;height:auto}
 .titlebox{background:var(--navy);border-radius:18px;padding:22px 28px;margin:24px 0 0;text-align:center;box-shadow:0 6px 24px rgba(18,48,95,.12)}
 .titlebox h1{color:#fff}
-.titlebox p{color:#fff;margin:8px 0 0}
+.titlebox p{color:#fff;margin:0;font-weight:700;line-height:1.35}
+.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .intro h2{margin:0 0 10px}
 .intro{background:#fff;border-radius:18px;padding:20px 28px;margin:24px 0 0;box-shadow:0 6px 24px rgba(18,48,95,.08)}
 .intro p{margin:0 0 10px}
@@ -149,15 +150,15 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 40px;text-align:center
 :root{--h-page:clamp(1.8rem,4.5vw,2.6rem);--h-title:clamp(1.35rem,3vw,1.7rem)}
 #app *, .intro *, .titlebox *{font-size:1rem}
 .titlebox h1{font-size:var(--h-page)!important;font-weight:800;line-height:1.15}
-.stage h2,.stage .big,.intro h2{font-size:var(--h-title)!important;font-weight:800}
+.stage h2,.stage .big,.intro h2,.titlebox p{font-size:var(--h-title)!important;font-weight:800}
 @media print{#print-view *{font-size:10.5pt}#print-view h1{font-size:20pt!important}#print-view h2{font-size:14pt!important}}
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap"><a class="brand" href="../"><img src="../img/logo.svg" alt="" width="40" height="40"><span>Launchpad<b>23</b></span></a></div></header>
 <div class="wrap">
-  <div class="hero"><img src="images/header.jpg" alt="A snowy mountain peak painted in ink and watercolor"></div>
-  <section class="titlebox"><h1>Summit</h1><p>Every big project is a journey.<br>Plan yours from Base Camp to the Trip Home.</p></section>
+  <div class="hero"><img src="images/header.jpg" alt="Summit"></div>
+  <section class="titlebox"><h1 class="sr">Summit</h1><p>Every big project is a journey.<br>Plan yours from Base Camp to the Trip Home.</p></section>
   <section class="intro">
     <h2>Technical Notes</h2>
     <p class="saved" id="saved" aria-live="polite"></p>
