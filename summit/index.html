@@ -190,7 +190,7 @@ const R=(id,label,help,colsDef,ex,o={})=>Object.assign({id,type:"rows",label,hel
 
 const STAGES=[
 {id:"base",num:1,title:"Base Camp",q:"Where are you going, and why?",
- quote:{orig:"Hat man sein warum? des Lebens, so verträgt man sich fast mit jedem wie?",lang:"de",en:"If you have your own why of life, you can get along with almost any how.",by:"Friedrich Nietzsche, Twilight of the Idols (1889), original German"},
+ quote:{orig:"Hat man sein warum? des Lebens, so verträgt man sich fast mit jedem wie?",lang:"de",en:"If you have your own why of life, you can get along with almost any how.",by:"Friedrich Nietzsche, *Twilight of the Idols* (1889), original German"},
  fields:[
   T("name","Project name","Think of a name that sells the idea to yourself and others.",{lemon:"Sunny Cups",film:"The Last Library Card"}),
   A("pitch","Elevator pitch","Explain your project in two or three sentences: short enough to say in a 30-second elevator ride.",{lemon:"A lemonade stand on our street on Saturday mornings in June, raising money for the animal shelter.",film:"A five-minute film about a girl who finds out her town's library is closing, shot over two weekends with friends."},{counter:true}),
@@ -199,12 +199,12 @@ const STAGES=[
   A("minsummit","The Minimum","What is the smallest version that would still be worth finishing?",{lemon:"Two Saturdays and $50 for the shelter.",film:"A three-minute cut with no original music, shared with family."}),
   {id:"deadlinegroup",type:"group",cols:3,fields:[
     {id:"deadline",type:"date",label:"Deadline",help:"Your hard stop."},
-    {id:"deadlinekind",type:"select",label:"How firm is it?",help:"Can it move?",options:["","Hard stop: it can't move","Firm, but it could move","Flexible"]},
-    {id:"deadlinewho",type:"select",label:"Who set it?",help:"Outside or self-imposed?",options:["","Someone else (external)","Me (self-imposed)"]}]},
+    {id:"deadlinekind",type:"select",label:"Firmness",help:"Can it move?",options:["","Hard stop: it can't move","Firm, but it could move","Flexible"]},
+    {id:"deadlinewho",type:"select",label:"Set By",help:"Someone else, or you?",options:["","Someone else (external)","Me (self-imposed)"]}]},
   A("budget","Budget: the most I'm willing to give","Money, time, and energy. Be specific; you'll check against this later, at your turnaround point.",{lemon:"$20 from my savings, and no more than 4 Saturdays (about 3 hours each).",film:"$0 (we'll use phones we have), two filming weekends, and about 4 hours a week of editing until February."})
  ],
  deeper:[
-  A("audience","Who is it for?","Every project serves someone, even if it's only you. Who will use it, see it, or benefit?",{lemon:"Neighbors walking to the park, and the animals at the shelter.",film:"People in our town who love the library, and other kids who want to make films."}),
+  A("audience","Audience","Every project serves someone, even if it's only you. Who will use it, see it, or benefit?",{lemon:"Neighbors walking to the park, and the animals at the shelter.",film:"People in our town who love the library, and other kids who want to make films."}),
   {id:"scopegroup",type:"group",cols:1,fields:[
     A("scopein","In scope","What this project includes.",{lemon:"Lemonade, cups, a sign, a donation jar.",film:"Script, filming, editing, music, a screening."}),
     A("scopeout","Not doing","What you are deliberately leaving out.",{lemon:"No food, no deliveries, no second location.",film:"No special effects, no extra locations, no sequel (yet)."})]}
@@ -216,16 +216,16 @@ const STAGES=[
   R("members","Team members","Ideally, who would the team include? How will you recruit them?",[["name","Name"],["needed","Needed by (date or stage)"],["committed","Committed? / How I'll recruit them"],["strengths","Strengths"],["watch","Things to monitor"]],{lemon:["Sam (my brother)","First Saturday","Yes","Loud and friendly; great at waving people over","Gets bored after an hour"],film:["Priya","Filming weekend 1","Asking her at lunch on Monday","Steady hands; owns a tripod","Has soccer on Sundays"]},{cols:"1fr 1fr",min:1})
 ,
   {id:"specgroup",type:"group",cols:1,fields:[
-    A("specneed","Do you need a specialist?","Is there a skill your project needs that nobody on the team has? Would an expert make the project much better, even if you don't strictly need one?",{lemon:"Not strictly, but someone who has run a stand could help me price it.",film:"Yes: sound. Bad audio ruins films, and none of us knows how to record it well."}),
-    A("speccost","What would a specialist cost?","Money, time, favors, or giving up some control. Who could it be?",{lemon:"An hour of my neighbor's time, and a free lemonade.",film:"I'd edit our sound person's video in trade. Maybe Mr. Ortiz from the theater club."})]},
-  R("yes","Who needs to say yes?","Think through the logic of each person who could say no, instead of just trying to talk them into it.",[["who","Who needs to say yes?"],["worry","What will worry them?"],["address","How can I address that worry?"],["inspire","What will inspire them?"]],{lemon:["My parents","Safety; being near the street","Set up on our lawn, with Dad nearby","Seeing me plan the whole thing myself"],film:["The librarian","Noise, and blocking the aisles","Film before opening hours","A film that celebrates the library"]},{cols:"1fr 1fr",min:1,quote:{en:"Seek first to understand, then to be understood.",by:"Stephen R. Covey, The 7 Habits of Highly Effective People (1989)"}})
+    A("specneed","Specialist","Do you need one? Is there a skill your project needs that nobody on the team has? Would an expert make the project much better, even if you don't strictly need one?",{lemon:"Not strictly, but someone who has run a stand could help me price it.",film:"Yes: sound. Bad audio ruins films, and none of us knows how to record it well."}),
+    A("speccost","Specialist Cost","What would one cost? Money, time, favors, or giving up some control. Who could it be?",{lemon:"An hour of my neighbor's time, and a free lemonade.",film:"I'd edit our sound person's video in trade. Maybe Mr. Ortiz from the theater club."})]},
+  R("yes","Who needs to say yes?","Think through the logic of each person who could say no, instead of just trying to talk them into it.",[["who","Who needs to say yes?"],["worry","What will worry them?"],["address","How can I address that worry?"],["inspire","What will inspire them?"]],{lemon:["My parents","Safety; being near the street","Set up on our lawn, with Dad nearby","Seeing me plan the whole thing myself"],film:["The librarian","Noise, and blocking the aisles","Film before opening hours","A film that celebrates the library"]},{cols:"1fr 1fr",min:1,quote:{en:"Seek first to understand, then to be understood.",by:"Stephen R. Covey, *The 7 Habits of Highly Effective People* (1989)"}})
  ],
  deeper:[]},
 {id:"route",num:3,title:"The Route",q:"What are the steps, and how long will they really take?",
  quote:{en:"Plans are worthless, but planning is everything.",by:"Dwight D. Eisenhower (1957), quoting an old Army saying"},
  fields:[
   {id:"time",type:"time"},
-  R("first","First steps","What are the very first things I need to do to get going?",[["step","Step"]],{lemon:["Ask my parents"],film:["Finish the script"]},{min:3,cols:"1fr",quote:{orig:"千里之行，始于足下",lang:"zh",tr:"qiān lǐ zhī xíng, shǐ yú zú xià",en:"A journey of a thousand li starts beneath one's feet. (A li is a traditional Chinese measure of distance, about half a kilometer today.)",by:"Laozi, Tao Te Ching, chapter 64"}}),
+  R("first","First steps","What are the very first things I need to do to get going?",[["step","Step"]],{lemon:["Ask my parents"],film:["Finish the script"]},{min:3,cols:"1fr",quote:{orig:"千里之行，始于足下",lang:"zh",tr:"qiān lǐ zhī xíng, shǐ yú zú xià",en:"A journey of a thousand li starts beneath one's feet. (A li is a traditional Chinese measure of distance, about half a kilometer today.)",by:"Laozi, *Tao Te Ching*, chapter 64"}}),
   {id:"tasks",type:"tasks",label:"Tasks",help:"Add each task with your best guess for its dates. The realistic finish fills in from your TIME, and you can change it. Red flags appear if a range is tighter than your TIME suggests, if it runs past your deadline, or if a task starts before the task it depends on is done."},
   A("creation","Building the best version","How do I build the best version of this project possible, given the time and attention I want to spend on it?",{lemon:"Practice the recipe twice before the first Saturday, and make the sign big enough to read from the corner.",film:"Shoot the most important scene first, in case we run out of time."})
  ],
@@ -254,7 +254,7 @@ const STAGES=[
   R("launchlist","Launch-day checklist","Everything that has to be ready on the day.",[["item","Item"],["who","Who"]],{lemon:["Ice","Sam"],film:["Projector and cable","Me"]},{min:3,cols:"2fr 1fr"})
  ]},
 {id:"flag",num:6,title:"Keep the Flag Flying",q:"How will you keep it going, and keep it fresh?",
- quote:{en:"How we spend our days is, of course, how we spend our lives.",by:"Annie Dillard, The Writing Life (1989)"},
+ quote:{en:"How we spend our days is, of course, how we spend our lives.",by:"Annie Dillard, *The Writing Life* (1989)"},
  fields:[
   A("momentum","Momentum","How do I keep momentum, and keep the project as fresh on day X as it was at launch?",{lemon:"Add a new flavor each week.",film:"Post one behind-the-scenes clip a week until the screening."}),
   A("checkins","Check-ins","How often will I check how it's going, and with whom?",{lemon:"Every Friday with Mom, counting the jar.",film:"A Sunday-night call with the cast."})
@@ -263,7 +263,7 @@ const STAGES=[
   A("stale","Warning signs","What are the signs that it's getting stale, and what will refresh it?",{lemon:"Fewer than 10 customers in a morning. Try a new corner or a new sign.",film:"Nobody's replying in the group chat. Plan a pizza night for the cast."})
  ]},
 {id:"descent",num:7,title:"Descent",q:"How will you finish faithfully and responsibly?",
- quote:{en:"You cannot stay on the summit forever; you have to come down again. So why bother in the first place? Just this: what is above knows what is below, but what is below does not know what is above. One climbs, one sees. One descends, one sees no longer, but one has seen.",by:"René Daumal, Mount Analogue (1952), translated by Roger Shattuck"},
+ quote:{en:"You cannot stay on the summit forever; you have to come down again. So why bother in the first place? Just this: what is above knows what is below, but what is below does not know what is above. One climbs, one sees. One descends, one sees no longer, but one has seen.",by:"René Daumal, *Mount Analogue* (1952), translated by Roger Shattuck"},
  fields:[
   A("wrapup","Wrapping up","What has to happen so the project ends well? Thank people, return what you borrowed, settle any money, save your work.",{lemon:"Deliver the money to the shelter with a photo, write thank-you notes, and return the folding table.",film:"Credits for everyone, return the borrowed microphone, and back up the files twice."}),
   A("celebrate","Celebrate","How will you mark the end?",{lemon:"A pizza lunch with Sam.",film:"A cast party after the screening."})
@@ -350,7 +350,7 @@ function strip(id){
 }
 
 /* ======================= Rendering ======================= */
-function quoteHTML(q){ if(!q) return ""; return `<figure class="quote"><p class="en">“${esc(q.en)}”</p>${q.orig?`<p class="orig" lang="${q.lang}">${esc(q.orig)}</p>${q.tr?`<p class="tr">${esc(q.tr)}</p>`:""}`:""}<figcaption class="by">— ${esc(q.by)}</figcaption></figure>`; }
+function quoteHTML(q){ if(!q) return ""; return `<figure class="quote"><p class="en">“${esc(q.en)}”</p>${q.orig?`<p class="orig" lang="${q.lang}">${esc(q.orig)}</p>${q.tr?`<p class="tr">${esc(q.tr)}</p>`:""}`:""}<figcaption class="by">— ${esc(q.by).replace(/\*([^*]+)\*/g,"<i>$1</i>")}</figcaption></figure>`; }
 function ph(f){ return (EX&&f.ex&&f.ex[EX])?f.ex[EX]:""; }
 function fieldHTML(f){
   if(f.type==="group") return `<div class="grid${f.cols}">${f.fields.map(fieldHTML).join("")}</div>`;
