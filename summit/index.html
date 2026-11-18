@@ -271,7 +271,7 @@ const STAGES=[
  deeper:[
   A("handoff","Hand-off","Does anything continue after you stop? Who takes it over, and what do they need from you?",{lemon:"My cousin wants to run the stand next summer; I'll give her my recipe card and my notes.",film:"Upload the film so the library can keep showing it."})
  ]},
-{id:"home",num:8,title:"Trip Home",q:"What did you learn, and how did you grow?",
+{id:"home",num:8,noLead:true,title:"Trip Home",q:"What did you learn, and how did you grow?",
  quote:{orig:"Det er ganske sandt, hvad Philosophien siger, at Livet maa forstaaes baglænds. Men derover glemmer man den anden Sætning, at det maa leves forlænds.",lang:"da",en:"It is perfectly true, as the philosophers say, that life must be understood backwards. But they forget the other proposition, that it must be lived forwards.",by:"Søren Kierkegaard, journal (1843), original Danish"},
  fields:[
   A("lessons","Lessons Learned","What did you learn? What will you do differently next time?",{}),
@@ -386,7 +386,8 @@ function turnHTML(){
 }
 function stageHTML(st){
   const lead=`<div class="field"><label for="f-lead-${st.id}">Who Is Leading This Stage?</label><span class="help">Now that you've thought it through: who will lead ${esc(st.title)}?</span><input type="text" id="f-lead-${st.id}" data-k="lead-${st.id}" value="${esc(S["lead-"+st.id]||"")}"></div>`;
-  const deeper=`<details class="deeper"${S["open-"+st.id]?" open":""} data-open="${st.id}"><summary>Go deeper</summary><div class="in">${(st.deeper||[]).map(fieldHTML).join("")}${lead}</div></details>`;
+  const inner=(st.deeper||[]).map(fieldHTML).join("")+(st.noLead?"":lead);
+  const deeper=inner?`<details class="deeper"${S["open-"+st.id]?" open":""} data-open="${st.id}"><summary>Go deeper</summary><div class="in">${inner}</div></details>`:"";
   return `<section class="stage" id="${st.id}"><div class="strip">${strip(st.id)}</div><div class="stage-body">
   <h2>${st.title}</h2><p class="q">${st.q}</p>${quoteHTML(st.quote)}
   ${st.fields.map(fieldHTML).join("")}${deeper}</div></section>`;
