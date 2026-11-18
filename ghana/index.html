@@ -468,13 +468,16 @@ function chip(f){
   return `<span class="v v-wait">Not checked yet</span>`;
 }
 function pickTeam(ri){ let t=null; try{t=localStorage.getItem(TEAM_KEY)}catch(e){} return ri.teams.includes(t)?t:ri.teams[0]; }
-const RULES=`<details style="margin-top:12px"><summary>The rules</summary><div class="inside"><ul class="x-rules">
-<li>Ten topics. Get ten facts for each, as one team, before time runs out.</li>
-<li>Click <b>Add a fact</b> on a topic. One fact per submission, in your own words. Once it's in, it's in: it can't be changed or taken back.</li>
-<li>Research is allowed. Say what something <b>is</b> or <b>does</b>. Facts about what something is not score 0.</li>
-<li>A fact already on the board for that topic is a duplicate and scores 0. Read the board before you add!</li>
-<li>Correct: +1. Wrong: −1. Each topic takes ${"MAX"} facts at most (10 plus 2 extras to cover mistakes) and scores 10 at most.</li>
-<li>When time is up, Cousin Claude (an AI) checks every fact, and we reveal the results together.</li></ul></div></details>`;
+const RULES=`<details style="margin-top:12px" OPEN><summary>The rules</summary><div class="inside"><ul class="x-rules">
+<li>Collectively, you must add ten facts for each topic before time runs out.</li>
+<li>Research is allowed, but remember that you will get out of this what you put into it, and turning your thinking over to AI will not help you learn as much as doing the research yourself.</li>
+<li>When you have a fact, click <b>Add a fact</b> on a topic. Each fact must be added separately, and use your own words (don't copy and paste).</li>
+<li>Once submitted, a fact may not be changed, so be careful.</li>
+<li>Correct facts earn you +1.</li>
+<li>Incorrect facts earn you −1.</li>
+<li>Duplicate facts earn you 0.</li>
+<li>You may submit up to two extra facts per topic as a hedge against incorrect facts.</li>
+<li>When time is up, Cousin Claude will check every fact. You may dispute his verdicts.</li></ul></div></details>`;
 async function board(){
   stopBoard();
   view(`<div class="wrap page"><section class="panel"><h1>10x10 Challenge</h1><p>Loading the board…</p></section></div>`);
@@ -485,7 +488,7 @@ async function board(){
     const key=JSON.stringify([w.set,w.x,topics,team]); if(key===xLast) return; xLast=key;
     const now=Date.now(); const running=ri.start&&now<ri.end; const over=ri.start&&now>=ri.end;
     const teamBtns=ri.teams.length>1?`<div class="x-teams" role="group" aria-label="Your team">${ri.teams.map(t=>`<button data-team="${esc(t)}" aria-pressed="${t===team}">${esc(t)}</button>`).join("")}</div>`:"";
-    const rules=RULES.replace("MAX",ri.max);
+    const rules=RULES.replace(" OPEN",ri.start?"":" open");
     let body;
     if(ri.results){
       const sc=topics.map(t=>scoreTopic(t.list)); const tot=sc.reduce((a,s)=>a+s.score,0), ok=sc.reduce((a,s)=>a+s.ok,0), bad=sc.reduce((a,s)=>a+s.bad,0), sub=topics.reduce((a,t)=>a+t.list.length,0);
