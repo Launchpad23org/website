@@ -5,7 +5,7 @@ The Launchpad23 website, hosted free on GitHub Pages.
 ## How it's organized
 - `_src/pages/` — the content of each page (plain HTML, with a short header for the title and description).
 - `_src/layout.html` — the shared menu and footer used by every page.
-- `_src/build.py` — wraps each page in the layout. After editing anything in `_src/`, run `python3 _src/build.py` and commit the results.
+- `_src/build.py` — wraps each page in the layout, and adds `?v=<hash>` to the site's CSS and JS links so browsers pick up changes immediately. After editing anything in `_src/`, run `python3 _src/build.py` and commit the results.
 - `css/`, `js/`, `img/`, `files/` — styles, scripts, images and downloadable PDFs.
 - `data/` — saved copies of the Examples Google Sheet, used only if the sheet can't be reached.
 

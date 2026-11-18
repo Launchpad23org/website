@@ -14,7 +14,7 @@ This script wraps every page in _src/layout.html (shared header, menu and
 footer) and writes the finished .html files to the site root. Run it after
 any edit:  python3 _src/build.py
 """
-import os, re, pathlib
+import os, re, pathlib, hashlib
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 SRC = ROOT / "_src" / "pages"
@@ -57,8 +57,22 @@ def build_page(path):
             .replace("{{content}}", body.strip()))
     out = ROOT / rel
     out.parent.mkdir(parents=True, exist_ok=True)
+    html = bust(html)
     out.write_text(html, encoding="utf-8")
     return rel.as_posix()
+
+
+def bust(html):
+    """Add ?v=<content hash> to the site's own .js and .css links, so browsers
+    fetch the new version right after a change instead of a cached old one."""
+    def fix(m):
+        attr, path = m.group(1), m.group(2)
+        f = ROOT / re.sub(r"^(\.\./|\./|/)+", "", path)
+        if not f.is_file():
+            return m.group(0)
+        v = hashlib.md5(f.read_bytes()).hexdigest()[:8]
+        return f'{attr}="{path}?v={v}"'
+    return re.sub(r'(src|href)="((?:\.\./|\./|/)*(?:js|css)/[^"?]+\.(?:js|css))"', fix, html)
 
 
 def build_redirects():
