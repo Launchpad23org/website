@@ -63,6 +63,7 @@ select,input,textarea{font-family:var(--font);font-size:1rem;color:var(--ink)}
 .quote .en{font-weight:600}
 .quote .orig{font-style:italic;margin-top:8px}
 .quote .by{margin-top:8px}
+.quote .qnote{margin-top:12px;font-style:italic}
 .lead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;font-size:.92rem;font-weight:600;color:var(--slate)}
 .lead input{flex:1;min-width:180px;border:1px dashed var(--line);border-radius:10px;padding:6px 10px;font-size:.92rem}
 .field{margin:0 0 18px}
@@ -118,7 +119,12 @@ details.deeper .in{padding-top:14px}
 .signs b{display:block;margin-bottom:4px}
 .signs ul{margin:0;padding-left:18px}
 .task .meta{display:grid;grid-template-columns:2fr 1.3fr;gap:8px}
-.task .dates{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.task .dates{display:grid;grid-template-columns:2fr 1fr;gap:8px;align-items:start}
+.task .pair{display:flex;align-items:center;gap:8px}
+.task .pair span{color:var(--muted)}
+.task .sub{display:block;color:var(--muted);font-style:italic;margin-top:2px}
+.rl .nb{font-weight:400}
+.row select.dd{appearance:auto;-webkit-appearance:menulist;cursor:pointer}
 .task .auto{color:var(--slate);font-style:italic}
 .task .num{font-weight:800;color:var(--navy);font-size:.8rem}
 .tt{width:100%;border-collapse:collapse;font-size:.92rem;margin:0 0 12px}
@@ -135,7 +141,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 40px;text-align:center
   .intro,.titlebox{padding:18px}
   .stage-body{padding:18px}
   .grid2,.grid3,.signs,.task .meta{grid-template-columns:1fr}
-  .task .dates{grid-template-columns:1fr 1fr}
+  .task .dates{grid-template-columns:1fr}
   .row{grid-template-columns:1fr!important}
 }
 @media print{
@@ -213,6 +219,7 @@ const STAGES=[
   {id:"scopegroup",type:"group",cols:1,fields:[
     A("scopein","In scope","What this project includes.",{lemon:"Lemonade, cups, a sign, a donation jar.",film:"Script, filming, editing, music, a screening."}),
     A("scopeout","Not doing","What you are deliberately leaving out.",{lemon:"No food, no deliveries, no second location.",film:"No special effects, no extra locations, no sequel (yet)."})]},
+  A("creation","Building the best version","How do I build the best version of this project possible, given the time and attention I want to spend on it?",{lemon:"Practice the recipe twice before the first Saturday, and make the sign big enough to read from the corner.",film:"Shoot the most important scene first, in case we run out of time."}),
   {id:"teamhead",type:"subhead",label:"The Team",quote:{en:"Alone we can do so little; together we can do so much.",by:"Helen Keller"}},
   {id:"hats",type:"hats",label:"Every Project Needs Every Hat Worn"},
   R("members","Team Members","Ideally, who would the team include? How will you recruit them?",[["name","Name"],["hat","Primary hat","hat"],["needed","Needed by (date or stage)"],["committed","Committed? / How I'll recruit them"],["strengths","Strengths"],["watch","Things to monitor"]],{lemon:["Sam (my brother)","","First Saturday","Yes","Loud and friendly; great at waving people over","Gets bored after an hour"],film:["Priya","","Filming weekend 1","Asking her at lunch on Monday","Steady hands; owns a tripod","Has soccer on Sundays"]},{cols:"1fr",min:1,add:"Add a team member"}),
@@ -222,9 +229,8 @@ const STAGES=[
  quote:{en:"Plans are worthless, but planning is everything.",by:"Dwight D. Eisenhower (1957), quoting an old Army saying"},
  fields:[
   {id:"time",type:"time"},
-  R("first","First steps","What are the very first things I need to do to get going?",[["step","Step"]],{lemon:["Ask my parents"],film:["Finish the script"]},{min:3,cols:"1fr",quote:{orig:"千里之行，始于足下",lang:"zh",tr:"qiān lǐ zhī xíng, shǐ yú zú xià",en:"A journey of a thousand li starts beneath one's feet. (A li is a traditional Chinese measure of distance, about half a kilometer today.)",by:"Laozi, *Tao Te Ching*, chapter 64"}}),
+  R("first","First steps","What are the very first things I need to do to get going?",[["step","Step"]],{lemon:["Ask my parents"],film:["Finish the script"]},{min:3,cols:"1fr",quote:{orig:"千里之行，始于足下",lang:"zh",tr:"qiān lǐ zhī xíng, shǐ yú zú xià",en:"A journey of a thousand li starts beneath one's feet.",by:"Laozi, *Tao Te Ching*, chapter 64",note:"A li is a traditional Chinese measure of distance, about half a kilometer today."}}),
   {id:"tasks",type:"tasks",label:"Tasks",help:"Add each task with your best guess for its dates. The realistic finish fills in from your TIME, and you can change it. Red flags appear if a range is tighter than your TIME suggests, if it runs past your deadline, or if a task starts before the task it depends on is done."},
-  A("creation","Building the best version","How do I build the best version of this project possible, given the time and attention I want to spend on it?",{lemon:"Practice the recipe twice before the first Saturday, and make the sign big enough to read from the corner.",film:"Shoot the most important scene first, in case we run out of time."})
  ],
  deeper:[]},
 {id:"safety",num:4,title:"Safety Check",q:"What could go wrong, and when would you turn around?",
@@ -294,7 +300,7 @@ const SMALL=new Set("a an the and but or nor for so yet as at by in of on to up 
 function tc(str){ const w=String(str||"").split(" "); return w.map((x,i)=>{ const afterColon=i>0&&/[:–—]$/.test(w[i-1]); const bare=x.toLowerCase().replace(/[^a-z']/g,"");
   if(i>0&&i<w.length-1&&!afterColon&&SMALL.has(bare)) return x.toLowerCase();
   return x.replace(/[a-zA-Z]/,c=>c.toUpperCase()).replace(/([–])([a-z])/g,(m,d,c)=>d+c.toUpperCase()); }).join(" "); }
-function titleCaseAll(root){ (root||document).querySelectorAll("label, .lab, .rl, .tt th, .note b").forEach(el=>{ if(!el.children.length&&!el.closest(".jump")) el.textContent=tc(el.textContent); }); }
+function titleCaseAll(root){ (root||document).querySelectorAll("label, .lab, .rl, .tt th, .note b").forEach(el=>{ if(!el.children.length&&!el.closest(".jump")&&!el.classList.contains("notc")) el.textContent=tc(el.textContent); }); }
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 let saveT=null;
 function save(){
@@ -309,8 +315,13 @@ const pd=s=>{ if(!s) return null; const [y,m,d]=s.split("-").map(Number); return
 const fd=t=>{ const d=new Date(t); return d.toISOString().slice(0,10); };
 const nice=s=>{ const t=pd(s); return t==null?"":new Date(t).toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"}); };
 const TIMEV=()=>{ const v=parseFloat(S.time); return v>=1?v:1.5; };
-function suggested(t){ const a=pd(t.start), b=pd(t.finish); if(a==null||b==null||b<a) return null; return fd(a+Math.ceil((b-a)/DAY*TIMEV())*DAY); }
+const todayISO=()=>{ const d=new Date(); return fd(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())); };
+/* A task's clock starts when the task it waits for is due (best guess), or else on the day the task was planned. */
+function baseOf(t){ const ts=rowsOf("tasks"); const dep=(t.after!==undefined&&t.after!=="")?ts[+t.after]:null; return (dep&&dep.finish)||t.planned||t.start||todayISO(); }
+function suggested(t){ const a=pd(baseOf(t)), b=pd(t.finish); if(a==null||b==null) return null; if(b<=a) return t.finish; return fd(a+Math.ceil((b-a)/DAY*TIMEV())*DAY); }
+function cyc(i){ const ts=rowsOf("tasks"); let c=ts[i]&&ts[i].after, n=0; while(c!==undefined&&c!==""&&n++<60){ if(+c===i) return true; c=ts[+c]&&ts[+c].after; } return false; }
 const realOf=t=>t.real||suggested(t)||t.finish||"";
+const byDate=arr=>arr.map((t,i)=>({t,i})).sort((x,y)=>((pd(x.t.finish)??9e15)-(pd(y.t.finish)??9e15))||x.i-y.i).map(o=>o.t);
 
 /* ======================= Strips (the same mountain, through one day) ======================= */
 function rng(seed){ let h=2166136261; for(const c of seed) h=Math.imul(h^c.charCodeAt(0),16777619); return ()=>{ h^=h<<13; h^=h>>>17; h^=h<<5; return ((h>>>0)%10000)/10000; }; }
@@ -347,7 +358,7 @@ function strip(id){
 }
 
 /* ======================= Rendering ======================= */
-function quoteHTML(q){ if(!q) return ""; return `<figure class="quote"><p class="en">“${esc(q.en)}”</p>${q.orig?`<p class="orig" lang="${q.lang}">${esc(q.orig)}</p>${q.tr?`<p class="tr">${esc(q.tr)}</p>`:""}`:""}<figcaption class="by">— ${esc(q.by).replace(/\*([^*]+)\*/g,"<i>$1</i>")}</figcaption></figure>`; }
+function quoteHTML(q){ if(!q) return ""; return `<figure class="quote"><p class="en">“${esc(q.en)}”</p>${q.orig?`<p class="orig" lang="${q.lang}">${esc(q.orig)}</p>${q.tr?`<p class="tr">${esc(q.tr)}</p>`:""}`:""}<figcaption class="by">— ${esc(q.by).replace(/\*([^*]+)\*/g,"<i>$1</i>")}</figcaption>${q.note?`<p class="qnote">${esc(q.note)}</p>`:""}</figure>`; }
 function ph(f){ return (EX&&f.ex&&f.ex[EX])?f.ex[EX]:""; }
 function fieldHTML(f){
   if(f.type==="group") return `<div class="grid${f.cols}">${f.fields.map(fieldHTML).join("")}</div>`;
@@ -370,7 +381,7 @@ function hatsHTML(f){
 function timeHTML(){
   const v=S.time||"1.5";
   return `<div class="note"><b>Your TIME: Time Increase Multiplier Effect.</b> Almost everyone underestimates how long things take (psychologists call it the <i>planning fallacy</i>). Your TIME is how much longer things usually take you than you expect. Not sure? Start with ×1.5, then measure your real TIME in the Trip Home.
-  <div class="field" style="margin:10px 0 0;max-width:260px"><label for="f-time">My TIME is ×</label><input type="number" id="f-time" data-k="time" min="1" max="4" step="0.1" value="${esc(v)}"></div></div>`;
+  <div class="field" style="margin:10px 0 0;max-width:260px"><label for="f-time" class="notc">My TIME factor is ×</label><input type="number" id="f-time" data-k="time" min="1" max="4" step="0.1" value="${esc(v)}"></div></div>`;
 }
 function turnHTML(){
   return `<div class="field"><span class="lab" style="font-size:1.15rem;color:var(--navy)">Turnaround check</span>
@@ -410,22 +421,20 @@ function tasksRender(){
   const box=$("#tasks-wrap"); if(!box) return;
   let ts=rowsOf("tasks"); if(!ts.length) ts=[{}]; S.tasks=ts;
   const dl=pd(S.deadline);
-  const exT={lemon:[{name:"Make the sign",start:"",finish:""}],film:[{name:"Film the library scenes"}]};
-  box.innerHTML=`<span class="lab">Tasks</span><span class="help">Add each task with your best-guess dates. <b>Realistic finish</b> fills in from your TIME (×${TIMEV()}); change it if you like. Record the <b>actual finish</b> the day a task is done, so you can measure your real TIME later.</span>
+  box.innerHTML=`<span class="lab">Tasks</span><span class="help">For each task, enter your best guess for when it will be done. The other end of the due range fills in from your TIME factor (×${TIMEV()}); you can change it. Record the actual finish the day a task is done, so you can measure your real TIME factor later.</span>
   <div class="rows">${ts.map((t,i)=>{
     const sug=suggested(t), real=realOf(t), flags=[];
-    if(t.start&&t.finish&&pd(t.finish)<pd(t.start)) flags.push("The finish date is before the start date.");
-    if(t.real&&sug&&pd(t.real)<pd(sug)) flags.push(`This range is tighter than your TIME suggests. With ×${TIMEV()}, a realistic finish is ${nice(sug)}.`);
+    if(t.real&&sug&&pd(t.real)<pd(sug)) flags.push(`This range is tighter than your TIME factor suggests. With ×${TIMEV()}, the realistic end of the range is ${nice(sug)}.`);
+    if(t.real&&t.finish&&pd(t.real)<pd(t.finish)) flags.push("The end of the range is before your best guess.");
     if(dl!=null&&real&&pd(real)>dl) flags.push(`This runs past your deadline (${nice(S.deadline)}).`);
-    if(t.after!==undefined&&t.after!==""&&ts[t.after]&&t.start){ const dep=ts[t.after], dr=realOf(dep); if(dr&&pd(t.start)<=pd(dr)) flags.push(`This starts before “${dep.name||"task "+(+t.after+1)}” is realistically finished (${nice(dr)}).`); }
-    const opts=ts.map((o,j)=>j<i?`<option value="${j}"${String(t.after)===String(j)?" selected":""}>${j+1}. ${esc(o.name||"(unnamed task)")}</option>`:"").join("");
+    if(cyc(i)) flags.push("These tasks are waiting on each other in a loop. One of them has to be able to start first.");
+    else if(t.after!==undefined&&t.after!==""&&ts[+t.after]){ const dep=ts[+t.after]; if(dep.finish&&t.finish&&pd(t.finish)<=pd(dep.finish)) flags.push(`This is due before “${dep.name||"task "+(+t.after+1)}” is done, but it can't start until then.`); }
+    const opts=ts.map((o,j)=>j!==i?`<option value="${j}"${String(t.after)===String(j)?" selected":""}>${j+1}. ${esc(o.name||"(unnamed task)")}</option>`:"").join("");
     return `<div class="row task"><span class="num">TASK ${i+1}</span>
-      <div class="meta"><div><span class="rl">Task</span><input data-task="${i}" data-c="name" value="${esc(t.name)}" placeholder="${i===0&&EX?esc(exT[EX][0].name):""}"></div>
-      <div><span class="rl">Can't start until…</span><select data-task="${i}" data-c="after"><option value="">Nothing; it can start anytime</option>${opts}</select></div></div>
-      <div class="dates"><div><span class="rl">Start</span><input type="date" data-task="${i}" data-c="start" value="${esc(t.start)}"></div>
-      <div><span class="rl">My best guess: finish</span><input type="date" data-task="${i}" data-c="finish" value="${esc(t.finish)}"></div>
-      <div><span class="rl">Realistic finish</span><input type="date" class="${t.real?"":"auto"}" data-task="${i}" data-c="real" value="${esc(t.real||sug||"")}" title="${t.real?"You set this":"Filled in from your TIME"}"></div>
-      <div><span class="rl">Actual finish (when done)</span><input type="date" data-task="${i}" data-c="actual" value="${esc(t.actual)}"></div></div>
+      <div class="meta"><div><span class="rl">Task</span><input data-task="${i}" data-c="name" value="${esc(t.name)}"></div>
+      <div><span class="rl">Can't start until…</span><select class="dd" data-task="${i}" data-c="after"><option value="">${ts.length>1?"Nothing: it can start anytime":"Nothing yet (add another task to choose from)"}</option>${opts}</select></div></div>
+      <div class="dates"><div class="range"><span class="rl">Due range</span><div class="pair"><input type="date" data-task="${i}" data-c="finish" value="${esc(t.finish)}" aria-label="Due range: my best guess"><span>to</span><input type="date" class="${t.real?"":"auto"}" data-task="${i}" data-c="real" value="${esc(t.real||sug||"")}" aria-label="Due range: realistic, from my TIME factor" title="${t.real?"You set this":"Filled in from your TIME factor"}"></div><span class="sub">best guess &nbsp;·&nbsp; realistic</span></div>
+      <div><span class="rl">Actual finish <span class="nb">(when done)</span></span><input type="date" data-task="${i}" data-c="actual" value="${esc(t.actual)}"></div></div>
       <div class="meta"><div><span class="rl">Who</span><input data-task="${i}" data-c="who" value="${esc(t.who)}"></div><div><span class="rl">Notes</span><input data-task="${i}" data-c="notes" value="${esc(t.notes)}"></div></div>
       ${flags.map(x=>`<span class="flag">${esc(x)}</span>`).join("")}
       ${ts.length>1?`<button class="x" data-deltask="${i}" aria-label="Remove task ${i+1}">×</button>`:""}</div>`;}).join("")}</div>
@@ -442,13 +451,13 @@ function routeSummary(){
 }
 function actualsRender(){
   const box=$("#actuals-wrap"); if(!box) return;
-  const ts=rowsOf("tasks").filter(t=>t.name||t.start);
-  let plan=0,act=0; const rows=ts.map(t=>{ const a=pd(t.start),f=pd(t.finish),x=pd(t.actual); let m="";
+  const ts=byDate(rowsOf("tasks").filter(t=>t.name||t.finish));
+  let plan=0,act=0; const rows=ts.map(t=>{ const a=pd(baseOf(t)),f=pd(t.finish),x=pd(t.actual); let m="";
     if(a!=null&&f!=null&&x!=null&&f>a){ const p=(f-a)/DAY, q=Math.max(0,(x-a)/DAY); plan+=p; act+=q; m="×"+(q/p).toFixed(1); }
-    return `<tr><td>${esc(t.name||"")}</td><td>${nice(t.start)}</td><td>${nice(t.finish)}</td><td>${t.actual?nice(t.actual):`<span style="color:var(--red)">Not recorded</span>`}</td><td>${m}</td></tr>`; }).join("");
+    return `<tr><td>${esc(t.name||"")}</td><td>${nice(t.finish)}</td><td>${t.actual?nice(t.actual):`<span style="color:var(--red)">Not recorded</span>`}</td><td>${m}</td></tr>`; }).join("");
   const measured=plan?(act/plan):null;
   box.innerHTML=`<span class="lab">My estimates vs. reality</span><span class="help">Compare your guesses from The Route with what actually happened. Missing a date? Add it in The Route (Actual finish).</span>
-  ${ts.length?`<table class="tt"><thead><tr><th>Task</th><th>Start</th><th>My guess</th><th>Actual</th><th>Took</th></tr></thead><tbody>${rows}</tbody></table>`:`<p class="help">No tasks yet.</p>`}
+  ${ts.length?`<table class="tt"><thead><tr><th>Task</th><th>My best guess</th><th>Actual</th><th>Took</th></tr></thead><tbody>${rows}</tbody></table>`:`<p class="help">No tasks yet.</p>`}
   <div class="grid2"><div class="note" style="margin:0"><b>My measured TIME</b><div class="big">${measured?"×"+measured.toFixed(1):"–"}</div><span class="help" style="margin:0">I planned with ×${TIMEV()}.</span></div>
   ${fieldHTML(A("nexttime","My TIME for next time, and why","What will you set your TIME to on your next project?",{lemon:"×1.8. Everything took longer when Sam got bored.",film:"×2. Editing always takes longer than I think."}))}</div>
   ${fieldHTML(A("estimates","What surprised me about my estimates?","Which tasks took much longer (or shorter) than you guessed, and why?",{lemon:"The sign took three days, not one.",film:"Filming was faster than expected; sound fixes took forever."}))}`;
@@ -486,7 +495,7 @@ document.addEventListener("input",e=>{
 });
 document.addEventListener("change",e=>{
   const el=e.target;
-  if(el.dataset.task!==undefined&&(el.tagName==="SELECT"||el.type==="date")){ const t=S.tasks[+el.dataset.task]; t[el.dataset.c]=el.value; if(el.dataset.c==="real"&&el.value===suggested(t)) delete t.real; tasksRender(); actualsRender(); save(); }
+  if(el.dataset.task!==undefined&&(el.tagName==="SELECT"||el.type==="date")){ const t=S.tasks[+el.dataset.task]; t[el.dataset.c]=el.value; if(el.dataset.c==="finish"&&el.value&&!t.planned) t.planned=todayISO(); if(el.dataset.c==="real"&&el.value===suggested(t)) delete t.real; tasksRender(); actualsRender(); save(); }
   if(el.dataset.k==="deadline"){ tasksRender(); }
   if(el.dataset.row&&el.tagName==="SELECT"){ const r=rowsOf(el.dataset.row); r[+el.dataset.i]=r[+el.dataset.i]||{}; r[+el.dataset.i][el.dataset.c]=el.value; S[el.dataset.row]=r; hatWarn(); save(); }
   if(el.id==="jump"&&el.value){ document.getElementById(el.value).scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); el.value=""; }
@@ -528,13 +537,13 @@ function buildPrint(){
     if(f.type==="group"){ f.fields.forEach(walk); return; }
     if(f.type==="rows"){ const rs=rowsOf(f.id).filter(r=>Object.values(r).some(v=>String(v).trim())); if(rs.length) P.push(`<p class="pq">${esc(f.label)}</p>`+tbl(f.colsDef.map(c=>c[1]),rs.map(r=>f.colsDef.map(([k])=>esc(r[k]||""))))); return; }
     if(f.type==="hats"||f.type==="subhead"){ if(f.type==="subhead") P.push(`<p class="pq" style="font-size:12pt">${esc(f.label)}</p>`); return; }
-    if(f.type==="tasks"){ const ts=rowsOf("tasks").filter(t=>t.name); P.push(qa("My TIME","×"+TIMEV())); if(ts.length) P.push(`<p class="pq">Tasks</p>`+tbl(["#","Task","After","Start","Best guess","Realistic","Actual","Who"],ts.map((t,i)=>[i+1,esc(t.name),t.after!==undefined&&t.after!==""?+t.after+1:"",nice(t.start),nice(t.finish),nice(realOf(t)),nice(t.actual),esc(t.who||"")]))); return; }
+    if(f.type==="tasks"){ const all=rowsOf("tasks"); const ts=byDate(all.filter(t=>t.name)); P.push(qa("My TIME factor","×"+TIMEV())); if(ts.length) P.push(`<p class="pq">Tasks (in order of due date)</p>`+tbl(["Task","Can't start until","Due range","Actual finish","Who","Notes"],ts.map(t=>[esc(t.name),t.after!==undefined&&t.after!==""&&all[+t.after]?esc(all[+t.after].name||""):"",[nice(t.finish),nice(realOf(t))].filter(Boolean).join(" to "),nice(t.actual),esc(t.who||""),esc(t.notes||"")]))); return; }
     if(f.type==="turn"){ P.push(qa("Turnaround date",nice(S.turndate))+qa("I'll keep climbing if…",S.push)+qa("I'll reroute if…",S.reroute)+qa("I'll turn back if…",S.back)); return; }
     if(f.type==="actuals"){ P.push(qa("My TIME for next time",S.nexttime)+qa("What surprised me about my estimates",S.estimates)); return; }
     if(["time","pitchback"].includes(f.type)) return;
     let v=S[f.id]; if(f.type==="date") v=nice(v); P.push(qa(f.label,v));
   };
-  STAGES.forEach(st=>{ const before=P.length; P.push(`<h2>${st.num}. ${st.title}</h2>`+qa("Leading this stage",S["lead-"+st.id])); st.fields.forEach(walk); (st.deeper||[]).forEach(walk); if(P.length===before+1&&!S["lead-"+st.id]) P.push(`<p class="pa" style="color:#888">Not filled in yet.</p>`); });
+  STAGES.forEach(st=>{ const before=P.length; P.push(`<h2>${STAGES.indexOf(st)+1}. ${st.title}</h2>`+qa("Leading this stage",S["lead-"+st.id])); st.fields.forEach(walk); (st.deeper||[]).forEach(walk); if(P.length===before+1&&!S["lead-"+st.id]) P.push(`<p class="pa" style="color:#888">Not filled in yet.</p>`); });
   $("#print-view").innerHTML=P.join("");
 }
 
