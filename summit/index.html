@@ -176,7 +176,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 40px;text-align:center
   <section class="intro">
     <h2>Technical Notes</h2>
     <p class="saved" id="saved" aria-live="polite"></p>
-    <p>Your plan saves itself on this device as you type. You can <a href="#" id="print">print your responses</a>, <a href="#" id="dl">save a copy to work on later</a>, <a href="#" id="open">open a saved copy</a>, or <a href="#" id="reset">start over</a> at any time.</p>
+    <p>Your plan saves itself on this device as you type. You can <a href="#" id="print">print your responses</a>, <a href="#" id="dl">save a copy to work on later</a>, <a href="#" id="open">open a saved copy</a>, or <a href="#" id="reset">start over</a> at any time. Want to see one filled in? Open the <a href="example-plan.pdf" target="_blank" rel="noopener">example plan</a>.</p>
     <input type="file" id="file" accept=".json,application/json" hidden>
     <div class="jump"><label for="jump">Jump to a stage:</label> <select id="jump"><option value="">Choose</option></select></div>
   </section>
@@ -227,7 +227,7 @@ const STAGES=[
   {id:"teamhead",type:"subhead",label:"The Team",quote:{en:"Alone we can do so little; together we can do so much.",by:"Helen Keller"}},
   {id:"hats",type:"hats",label:"Every Project Needs Every Hat Worn"},
   R("members","Team Members","Ideally, who would the team include? How will you recruit them?",[["name","Name"],["hat","Primary hat","hat"],["needed","Needed by (date or stage)"],["committed","Committed? / How I'll recruit them"],["strengths","Strengths"],["watch","Things to monitor"]],{lemon:["Sam (my brother)","","First Saturday","Yes","Loud and friendly; great at waving people over","Gets bored after an hour"],film:["Priya","","Filming weekend 1","Asking her at lunch on Monday","Steady hands; owns a tripod","Has soccer on Sundays"]},{cols:"1fr",min:1,add:"Add a team member"}),
-  A("derisk","Hats at Risk","Is any hat unclaimed, or worn by someone for whom it isn't a strength (or who is already wearing several)? How will you de-risk it?",{lemon:"I'm the Checker, but I rush. Mom will check my change-counting the first Saturday.",film:"I'm the Guide and the Maker, so a friend will watch every cut and tell me if we've drifted from the story."})
+  A("derisk","Hats at Risk","Is any hat unclaimed, or worn by someone for whom it isn't a strength (or who is already wearing several)? How will you de-risk it?",{lemon:"Nobody has Spark, Planner, Maker, or Encourager as a primary hat. I will plan and make the lemonade; Sam will keep everyone cheerful; Mom will help me brainstorm.",film:"I'm the Guide and the Maker, so a friend will watch every cut and tell me if we've drifted from the story."})
  ]},
 {id:"route",num:3,title:"The Route",q:"What are the steps, and how long will they really take?",
  quote:{en:"Plans are worthless, but planning is everything.",by:"Dwight D. Eisenhower (1957), quoting an old Army saying"},
@@ -239,6 +239,7 @@ const STAGES=[
 {id:"safety",num:4,title:"Safety Check",q:"What could go wrong, and when would you turn around?",
  quote:{en:"Getting to the top is optional. Getting down is mandatory.",by:"Ed Viesturs, the first American to climb all fourteen 8,000-meter peaks without bottled oxygen"},
  fields:[
+  {id:"hardwrong",type:"line",text:"When the climb gets hard, ask: Is it hard, or is it wrong? (Open Go deeper for the full Turnaround Check.)"},
   R("quality","Quality Control / Quality Assurance","What will you check before Summit Day? List each thing to check (quality control), and the habits or checklists that help you get it right the first time (quality assurance).",[["check","What to check"],["who","Who checks it"]],{lemon:["Taste test with three neighbors","Me and Mom"],film:["Sound is clear in every scene","My English teacher"]},{min:3,cols:"2fr 1fr",add:"Add a check"}),
  ],
  deeper:[
@@ -357,6 +358,7 @@ function ph(f){ return (EX&&f.ex&&f.ex[EX])?f.ex[EX]:""; }
 function fieldHTML(f){
   if(f.type==="group") return `<div class="grid${f.cols}">${f.fields.map(fieldHTML).join("")}</div>`;
   if(f.type==="hats") return hatsHTML(f);
+  if(f.type==="line") return `<p class="note"><b>${esc(f.text)}</b></p>`;
   if(f.type==="subhead") return `<div class="subhead"><h3>${esc(f.label)}</h3></div>${quoteHTML(f.quote)}`;
   if(f.type==="tasks") return `<div class="field" id="tasks-wrap"></div>`;
   if(f.type==="actuals") return `<div class="field" id="actuals-wrap"></div>`;
@@ -428,7 +430,7 @@ function tasksRender(){
     return `<div class="row task"><span class="num">TASK ${i+1}</span>
       <div class="meta"><div><span class="rl">Task</span><input data-task="${i}" data-c="name" value="${esc(t.name)}"></div>
       <div><span class="rl">Can't start until…</span><select class="dd" data-task="${i}" data-c="after"><option value="">${ts.length>1?"Nothing: it can start anytime":"Nothing yet (add another task to choose from)"}</option>${opts}</select></div></div>
-      <div class="dates"><div class="range"><span class="rl">Due range</span><div class="pair"><input type="date" data-task="${i}" data-c="finish" value="${esc(t.finish)}" aria-label="Due range: my best guess"><span>to</span><input type="date" class="${t.real?"":"auto"}" data-task="${i}" data-c="real" value="${esc(t.real||sug||"")}" aria-label="Due range: realistic, from my TIME factor" title="${t.real?"You set this":"Filled in from your TIME factor"}"></div><span class="sub">best guess &nbsp;·&nbsp; realistic</span></div>
+      <div class="dates"><div class="range"><span class="rl">Due range</span><div class="pair"><input type="date" data-task="${i}" data-c="finish" value="${esc(t.finish)}" aria-label="Due range: my best guess"><span>to</span><input type="date" class="${t.real?"":"auto"}" data-task="${i}" data-c="real" value="${esc(t.real||sug||"")}" aria-label="Due range: realistic, from my TIME factor" title="${t.real?"You set this":"Filled in from your TIME factor"}"></div><span class="sub">best guess &nbsp;·&nbsp; realistic${t.finish?` (counted from ${nice(baseOf(t))}, ${(t.after!==undefined&&t.after!==""&&ts[+t.after]&&ts[+t.after].finish)?"when the task it waits for is due":"the day you planned it"})`:""}</span></div>
       <div><span class="rl">Actual finish <span class="nb">(when done)</span></span><input type="date" data-task="${i}" data-c="actual" value="${esc(t.actual)}"></div></div>
       <div class="meta"><div><span class="rl">Who</span><input data-task="${i}" data-c="who" value="${esc(t.who)}"></div><div><span class="rl">Notes</span><input data-task="${i}" data-c="notes" value="${esc(t.notes)}"></div></div>
       ${flags.map(x=>`<span class="flag">${esc(x)}</span>`).join("")}
@@ -525,20 +527,20 @@ $("#reset").onclick=e=>{
 $("#print").onclick=e=>{ e.preventDefault(); buildPrint(); window.print(); };
 window.addEventListener("beforeprint",buildPrint);
 function buildPrint(){
-  const P=[]; const qa=(l,v)=>v&&String(v).trim()?`<p class="pq">${esc(l)}</p><p class="pa">${esc(v)}</p>`:"";
-  const tbl=(head,rows)=>rows.length?`<table><tr>${head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</table>`:"";
+  const P=[]; const qa=(l,v)=>v&&String(v).trim()?`<p class="pq">${esc(tc(l))}</p><p class="pa">${esc(v)}</p>`:"";
+  const tbl=(head,rows)=>rows.length?`<table><tr>${head.map(h=>`<th>${esc(tc(h))}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</table>`:"";
   P.push(`<h1>${esc(S.name||"My Summit plan")}</h1>${S.pitch?`<p class="pa"><i>${esc(S.pitch)}</i></p>`:""}`);
   const walk=f=>{
     if(f.type==="group"){ f.fields.forEach(walk); return; }
-    if(f.type==="rows"){ const rs=rowsOf(f.id).filter(r=>Object.values(r).some(v=>String(v).trim())); if(rs.length) P.push(`<p class="pq">${esc(f.label)}</p>`+tbl(f.colsDef.map(c=>c[1].replace("|"," ")),rs.map(r=>f.colsDef.map(([k,l,t])=>t==="date"?nice(r[k]):esc(r[k]||""))))); return; }
+    if(f.type==="rows"){ const rs=rowsOf(f.id).filter(r=>Object.values(r).some(v=>String(v).trim())); if(rs.length) P.push(`<p class="pq">${esc(tc(f.label))}</p>`+tbl(f.colsDef.map(c=>c[1].replace("|"," ")),rs.map(r=>f.colsDef.map(([k,l,t])=>t==="date"?nice(r[k]):esc(r[k]||""))))); return; }
     if(f.type==="hats"||f.type==="subhead"){ if(f.type==="subhead"&&(rowsOf("members").some(r=>Object.values(r).some(v=>String(v).trim()))||S.derisk)) P.push(`<p class="pq" style="font-size:12pt">${esc(f.label)}</p>`); return; }
     if(f.type==="tasks"){ const all=rowsOf("tasks"); const ts=byDate(all.filter(t=>t.name)); P.push(qa("My TIME factor","×"+TIMEV())); if(ts.length) P.push(`<p class="pq">Tasks (in order of due date)</p>`+tbl(["Task","Can't start until","Due range","Actual finish","Who","Notes"],ts.map(t=>[esc(t.name),t.after!==undefined&&t.after!==""&&all[+t.after]?esc(all[+t.after].name||""):"",[nice(t.finish),nice(realOf(t))].filter(Boolean).join(" to "),nice(t.actual),esc(t.who||""),esc(t.notes||"")]))); return; }
     if(f.type==="turn"){ P.push(qa("I'll keep climbing if…",S.push)+qa("I'll reroute if…",S.reroute)+qa("I'll turn back if…",S.back)); return; }
     if(f.type==="actuals"){ let pl=0,ac=0; rowsOf("tasks").forEach(t=>{ const a=pd(baseOf(t)),f2=pd(t.finish),x=pd(t.actual); if(a!=null&&f2!=null&&x!=null&&f2>a){ pl+=(f2-a)/DAY; ac+=Math.max(0,(x-a)/DAY); } }); if(pl) P.push(qa("My measured TIME factor","×"+(ac/pl).toFixed(1)+" (planned with ×"+TIMEV()+")")); return; }
-    if(["time","pitchback"].includes(f.type)) return;
+    if(["time","pitchback","line"].includes(f.type)) return;
     let v=S[f.id]; if(f.type==="date") v=nice(v); P.push(qa(f.label,v));
   };
-  STAGES.forEach((st,si)=>{ const before=P.length; P.push(""); if(!st.noLead) P.push(qa("Leading this stage",S["lead-"+st.id])); st.fields.forEach(walk); (st.deeper||[]).forEach(walk); const body=P.splice(before).join(""); P.push(`<h2>${si+1}. ${st.title}</h2>`+(body.trim()?body:`<p class="pa" style="color:#888">Not filled in yet.</p>`)); });
+  STAGES.forEach((st,si)=>{ const before=P.length; P.push(""); st.fields.forEach(walk); (st.deeper||[]).forEach(walk); if(!st.noLead) P.push(qa("Who is leading this stage?",S["lead-"+st.id])); const body=P.splice(before).join(""); P.push(`<h2>${si+1}. ${st.title}</h2>`+(body.trim()?body:`<p class="pa" style="color:#888">Not filled in yet.</p>`)); });
   $("#print-view").innerHTML=P.join("");
 }
 
