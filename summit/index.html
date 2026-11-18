@@ -115,7 +115,10 @@ details.deeper .in{padding-top:14px}
 .tt th{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
 .big{font-size:1.6rem;font-weight:800;color:var(--navy)}
 .pitchback{background:var(--warm);border-radius:12px;padding:10px 14px;margin:0 0 16px;font-size:.95rem}
-.privacy{font-size:.82rem;color:var(--muted);margin-top:10px}
+.privacy{font-size:.85rem;color:var(--muted);margin-top:12px}
+.intro a{font-weight:700}
+.jump{margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700;color:var(--navy)}
+.jump select{border:2px solid var(--line);border-radius:999px;padding:8px 14px;background:#fff;font-weight:600;min-width:240px}
 footer{color:var(--muted);font-size:.85rem;padding:30px 0 40px;text-align:center}
 #print-view{display:none}
 @media (max-width:720px){
@@ -127,7 +130,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 40px;text-align:center
 }
 @media print{
   body{background:#fff;font-size:11pt}
-  .top,.hero,.intro,.nav,#app,footer{display:none!important}
+  .top,.hero,.intro,#app,footer{display:none!important}
   #print-view{display:block}
   #print-view h1{font-size:20pt;margin:0 0 4pt}
   #print-view h2{font-size:14pt;margin:16pt 0 6pt;border-bottom:1.5pt solid var(--navy);padding-bottom:2pt;break-after:avoid}
@@ -144,23 +147,12 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 40px;text-align:center
 <div class="wrap">
   <div class="hero"><img src="images/header.jpg" alt="A snowy mountain peak painted in ink and watercolor"></div>
   <section class="intro">
-    <h1>SUMMIT: Plan Your Climb</h1>
-    <p>Every big project is a climb. Plan yours from Base Camp to the Trip Home. Start with the questions you see; open <b>Go deeper</b> when you're ready for more.</p>
-    <div class="toolbar">
-      <label class="exsel">Show example answers:
-        <select id="ex"><option value="">None</option><option value="lemon">Lemonade stand</option><option value="film">Short film</option></select>
-      </label>
-      <span class="saved" id="saved" aria-live="polite"></span>
-    </div>
-    <div class="toolbar">
-      <button class="btn main" id="print">Print or save as PDF</button>
-      <button class="btn" id="dl">Save a copy to keep working on</button>
-      <button class="btn" id="open">Open a saved copy</button>
-      <input type="file" id="file" accept=".json,application/json" hidden>
-      <button class="btn ghost" id="reset">Start over</button>
-    </div>
-    <p class="privacy">Your plan saves itself on this device as you type. Nothing you write is sent anywhere. To move it to another computer, use <b>Save a copy</b>, then <b>Open a saved copy</b> there.</p>
-    <nav class="nav" id="nav" aria-label="Stages"></nav>
+    <h1>Summit: Plan Your Climb</h1>
+    <p>Every big project is a journey. Plan yours from Base Camp to the Trip Home.</p>
+    <p>Your plan saves itself on this device as you type. You can <a href="#" id="print">print your responses</a>, <a href="#" id="dl">save a copy to work on later</a>, <a href="#" id="open">open a saved copy</a>, or <a href="#" id="reset">start over</a> at any time. <span class="saved" id="saved" aria-live="polite"></span></p>
+    <input type="file" id="file" accept=".json,application/json" hidden>
+    <div class="jump"><label for="jump">Jump to a section:</label> <select id="jump"><option value="">Choose a stage…</option></select></div>
+    <p class="privacy">Nothing you write is sent anywhere. To move your plan to another computer, save a copy, then open it there.</p>
   </section>
   <main id="app"></main>
 </div>
@@ -457,7 +449,7 @@ function backRefs(){
 }
 function render(){
   $("#app").innerHTML=STAGES.map(stageHTML).join("");
-  $("#nav").innerHTML=STAGES.map(s=>`<a href="#${s.id}"><span class="n">${s.num}</span>${s.title}</a>`).join("");
+  $("#jump").innerHTML=`<option value="">Choose a stage…</option>`+STAGES.map(s=>`<option value="${s.id}">${s.num}. ${s.title}</option>`).join("");
   Object.keys(ROWDEFS).forEach(renderRows); tasksRender(); actualsRender(); hatWarn(); backRefs();
   document.querySelectorAll("textarea").forEach(autoGrow);
 }
@@ -477,7 +469,7 @@ document.addEventListener("change",e=>{
   const el=e.target;
   if(el.dataset.task!==undefined&&(el.tagName==="SELECT"||el.type==="date")){ const t=S.tasks[+el.dataset.task]; t[el.dataset.c]=el.value; if(el.dataset.c==="real"&&el.value===suggested(t)) delete t.real; tasksRender(); actualsRender(); save(); }
   if(el.dataset.k==="deadline"){ tasksRender(); }
-  if(el.id==="ex"){ EX=el.value; render(); }
+  if(el.id==="jump"&&el.value){ document.getElementById(el.value).scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); el.value=""; }
 });
 document.addEventListener("click",e=>{
   const b=e.target.closest("button"); if(!b) return;
@@ -489,24 +481,24 @@ document.addEventListener("click",e=>{
 document.addEventListener("toggle",e=>{ const d=e.target; if(d.dataset&&d.dataset.open){ S["open-"+d.dataset.open]=d.open; save(); } },true);
 
 /* save / open / print / reset */
-$("#dl").onclick=()=>{
+$("#dl").onclick=e=>{ e.preventDefault();
   const name=(S.name||"my-project").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"my-project";
   const blob=new Blob([JSON.stringify({summitPlan:1,saved:new Date().toISOString(),data:S},null,1)],{type:"application/json"});
   const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`${name}-summit-plan.json`; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
 };
-$("#open").onclick=()=>$("#file").click();
+$("#open").onclick=e=>{ e.preventDefault(); $("#file").click(); };
 $("#file").onchange=async e=>{
   const f=e.target.files[0]; if(!f) return;
   try{ const j=JSON.parse(await f.text()); if(!j||!j.data) throw 0; S=j.data; save(); render(); $("#saved").textContent="✓ Opened "+f.name; }
   catch(err){ $("#saved").textContent="That file isn't a SUMMIT plan."; }
   e.target.value="";
 };
-$("#reset").onclick=()=>{
-  const b=$("#reset");
-  if(b.dataset.sure){ S={}; save(); render(); b.textContent="Start over"; delete b.dataset.sure; $("#saved").textContent="Cleared."; window.scrollTo(0,0); }
-  else { b.dataset.sure="1"; b.textContent="Click again to erase everything"; setTimeout(()=>{ if(b.dataset.sure){ delete b.dataset.sure; b.textContent="Start over"; } },4000); }
+$("#reset").onclick=e=>{
+  e.preventDefault(); const b=$("#reset");
+  if(b.dataset.sure){ S={}; save(); render(); b.textContent="start over"; delete b.dataset.sure; $("#saved").textContent="Cleared."; window.scrollTo(0,0); }
+  else { b.dataset.sure="1"; b.textContent="click again to erase everything"; setTimeout(()=>{ if(b.dataset.sure){ delete b.dataset.sure; b.textContent="start over"; } },4000); }
 };
-$("#print").onclick=()=>{ buildPrint(); window.print(); };
+$("#print").onclick=e=>{ e.preventDefault(); buildPrint(); window.print(); };
 window.addEventListener("beforeprint",buildPrint);
 function buildPrint(){
   const P=[]; const qa=(l,v)=>v&&String(v).trim()?`<p class="pq">${esc(l)}</p><p class="pa">${esc(v)}</p>`:"";
