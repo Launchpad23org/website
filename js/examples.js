@@ -61,29 +61,34 @@
   }
 
   /* ---------- Free Resources ---------- */
+  // Every card picture sits in a 16:9 frame. A picture of another shape is shown whole,
+  // with a blurred copy of itself filling the sides, so nothing is cropped.
+  function frame(img){ var u=esc(fixImage(img)); return '<div class="frame"><img class="bg" src="'+u+'" alt="" aria-hidden="true" loading="lazy"><img class="fg" src="'+u+'" alt="" loading="lazy"></div>'; }
   function renderResources(rows){
-    var grid=document.getElementById('resource-grid'), html='', n=0;
+    var grids={tools:document.getElementById('tool-grid'), archive:document.getElementById('resource-grid')}, html={tools:'',archive:''}, n=0;
     rows.forEach(function(r){
       var status=get(r,['status','show']).toLowerCase();
       if (status==='hide' || status==='no' || status==='hidden') return;
       // "Show on": Website (or blank), Launch page, or Both. Launch-page-only rows stay off this page.
       var where=get(r,['show on']).toLowerCase();
       if (where.indexOf('launch')>-1 && where.indexOf('both')<0) return;
+      // "Section": Tools & Games, or Challenge Archive (the default)
+      var sec=get(r,['section']).toLowerCase().indexOf('tool')>-1 ? 'tools' : 'archive';
       var title=get(r,['title']), sub=get(r,['subtitle','tagline']), link=get(r,['link','pdf','url']), img=get(r,['image','thumbnail']);
       if (!title) return;
       var soon = status.indexOf('soon')>-1;
-      var media = img ? '<img src="'+esc(fixImage(img))+'" alt="" loading="lazy">'
-                      : '<div class="titlecard c'+(n%3+1)+'">'+esc(title)+(sub?'<small>'+esc(sub)+'</small>':'')+'</div>';
+      var media = img ? frame(img) : '<div class="titlecard c'+(n%3+1)+'">'+esc(title)+(sub?'<small>'+esc(sub)+'</small>':'')+'</div>';
       var body='<div class="body">'+(soon?'<span class="badge">Coming soon</span>':'')+'<h3>'+esc(title)+'</h3>'+(sub?'<p>'+esc(sub)+'</p>':'')+'</div>';
       if (link && !soon){
         var ext=/^https?:/.test(link) && link.indexOf(location.host)<0;
-        html+='<a class="card" href="'+esc(fixLink(link))+'"'+(ext?' target="_blank" rel="noopener"':'')+'>'+media+body+'</a>';
+        html[sec]+='<a class="card" href="'+esc(fixLink(link))+'"'+(ext?' target="_blank" rel="noopener"':'')+'>'+media+body+'</a>';
       } else {
-        html+='<div class="card">'+media+body+'</div>';
+        html[sec]+='<div class="card">'+media+body+'</div>';
       }
       n++;
     });
-    grid.innerHTML = html || '<p>Resources coming soon.</p>';
+    if (grids.tools) grids.tools.innerHTML = html.tools || '<p>New tools coming soon.</p>';
+    grids.archive.innerHTML = html.archive || '<p>Resources coming soon.</p>';
   }
 
   /* ---------- Weekly Topics ---------- */

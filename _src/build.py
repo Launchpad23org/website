@@ -27,7 +27,6 @@ REDIRECTS = {
     "homeschool": "homeschoolers",
     "the-great-debate": "challenges/great-debate",
     "portmeridian": "challenges/port-meridian",
-    "secret23": "archive/secret23",
     "mystery": "archive/midsummer-mystery",
     "disclaimer": "privacy#disclaimers",
     "bright": "./#the-facts",

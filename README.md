@@ -11,6 +11,7 @@ The Launchpad23 website, hosted free on GitHub Pages.
 
 ## The Examples page
 `4fun.html` reads the Google Sheet **"Launchpad23 Website — Examples & Topics"** (in the Launchpad23 › Website folder in Drive) on every visit. Edit the sheet to add or change free resources and weekly topics; the sheet's first tab explains how.
+- **Free Resources → "Section"**: Tools & Games (shown first) or Challenge Archive (default). The page order is Tools & Games, Weekly Topics, Challenge Archive. Every card picture sits in a 16:9 frame; other shapes are shown whole on a blurred copy of themselves.
 - **Free Resources → "Show on"**: Website (or blank) shows the card here; Launch page shows it only in Tools & Games on the This Week at Launchpad23 page; Both shows it in both places.
 - **Weekly Topics archive**: from Launch Year 2026–27 on, the archive also reads the **Wednesday Topics** tab of the Weekly Pages sheet. Every row with a date up to today appears, grouped by week, with its picture and host; a row with a Button link becomes a clickable card. Older years still come from the Examples sheet's Weekly Topics tab (names only). Saved copies: `data/weekly-topics.json`, `data/wednesday-topics.json`.
 
@@ -28,3 +29,6 @@ The two forms (10x10 fact form, exit ticket) were built once by an Apps Script i
 
 ## SUMMIT planner
 `summit/index.html` is a stand-alone project planner (not in the menu, noindex) at `/summit/`. Everything is in the one file: the eight stages, their questions, example answers, and quotations are in the `STAGES` list near the top of the script. Students' plans save only in their own browser (localStorage), and they can download a `.json` copy to reopen later, or print / save as PDF. The stage pictures are drawn in code (`SKIES` and `strip()`); to use a real image instead, replace a stage's `<svg>` with an `<img>` (4:1). Header: `summit/images/header.jpg` (3:1).
+
+## Secret23
+`secret23.html` (built from `_src/pages/secret23.html`) with `js/secret23.js`. Twenty clue pictures in `img/secret23/`; one guess per clue, a missed clue stays locked until the player presses Reveal; progress saves in the player's browser. Answers are stored as SHA-256 hashes (with accepted alternative spellings) so they can't be read from the page code; the final answer is THE FUTURE NEEDS YOU NOW (row = fireflies, column = sky objects, in a 5x5 square with I/J together). The old static version stays at `archive/secret23`.

@@ -1,5 +1,269 @@
 [
  {
+  "date": "2026-05-20",
+  "topic": "Demo Day",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-05-13",
+  "topic": "Workshop",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-05-06",
+  "topic": "Workshop",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-04-29",
+  "topic": "Improv Challenge",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-04-22",
+  "topic": "Public Speaking: Vocal Development",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-04-22",
+  "topic": "The Map of Mathematics",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-04-15",
+  "topic": "Mission Focus",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-04-08",
+  "topic": "The Airport Design Challenge",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-04-08",
+  "topic": "The Straits of Hormuz",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-04-08",
+  "topic": "Why Everything Becomes a Crab",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-04-01",
+  "topic": "Scale Wars",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-03-25",
+  "topic": "The Airport Design Challenge",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-03-25",
+  "topic": "Rogue Earth",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-03-25",
+  "topic": "DIY School",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-03-18",
+  "topic": "Speed Dating",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-03-11",
+  "topic": "NASA Pi Day Challenge",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-03-11",
+  "topic": "The Zanclean Megaflood",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-03-11",
+  "topic": "Airport Design Challenge",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-03-11",
+  "topic": "Spelling Spree",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-03-04",
+  "topic": "Secret23",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-02-25",
+  "topic": "Proofreading",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-02-25",
+  "topic": "Spring Fashion Show",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-02-25",
+  "topic": "Gerrymandering",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-02-25",
+  "topic": "Ocean Pollution",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-02-18",
+  "topic": "Team Deep Dive",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-02-11",
+  "topic": "Debate: AI Ethics",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-02-11",
+  "topic": "Fight, Flight, Freeze, Fawn",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-02-04",
+  "topic": "Solve It: Snakebites",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-01-28",
+  "topic": "Go Big or Go Home: High Agency Thinking and Inversion as Tools",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-01-28",
+  "topic": "Your Personal Defense Force",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-01-21",
+  "topic": "Debates",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-01-14",
+  "topic": "Survivorship Bias",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-01-14",
+  "topic": "Turbulence",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-01-14",
+  "topic": "Go4Games",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2026-01-07",
+  "topic": "Jo's Welcome Back Social",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2025-12-10",
+  "topic": "Launch Party",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2025-12-03",
+  "topic": "Demo Day",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2025-11-26",
+  "topic": "Pitch Fest",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2025-11-19",
+  "topic": "CHALLENGE: Mission Support - Demo Day Prep",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2025-11-12",
+  "topic": "Social Conundrums",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2025-11-12",
+  "topic": "Applied Academics",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2025-11-05",
+  "topic": "CHALLENGE: CALL to Action",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2025-10-29",
+  "topic": "Solve It: Emergency Operations Center",
+  "group": "",
+  "status": "Show"
+ },
+ {
+  "date": "2025-10-29",
+  "topic": "Creature Adventures",
+  "group": "",
+  "status": "Show"
+ },
+ {
   "date": "2025-10-22",
   "topic": "Deductive Reasoning Challenge",
   "group": "",
