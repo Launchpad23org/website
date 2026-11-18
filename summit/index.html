@@ -28,7 +28,11 @@ h1,h2,h3{color:var(--navy);line-height:1.2;margin:0}
 .brand b{color:var(--accent)}
 .hero{margin:24px 0 0;border-radius:18px;overflow:hidden;background:#eef0f3;box-shadow:0 6px 24px rgba(18,48,95,.10)}
 .hero img{display:block;width:100%;height:auto}
-.intro{background:#fff;border-radius:18px;padding:24px 28px;margin:-28px 24px 0;position:relative;box-shadow:0 6px 24px rgba(18,48,95,.10)}
+.titlebox{background:var(--navy);border-radius:18px;padding:22px 28px;margin:24px 0 0;text-align:center;box-shadow:0 6px 24px rgba(18,48,95,.12)}
+.titlebox h1{color:#fff}
+.intro{background:#fff;border-radius:18px;padding:20px 28px;margin:24px 0 0;box-shadow:0 6px 24px rgba(18,48,95,.08)}
+.intro p{margin:0 0 10px}
+.intro .saved:empty{display:none}
 .intro h1{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;letter-spacing:.01em}
 .intro p{margin:8px 0 0}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
@@ -116,13 +120,12 @@ details.deeper .in{padding-top:14px}
 .big{font-size:1.6rem;font-weight:800;color:var(--navy)}
 .pitchback{background:var(--warm);border-radius:12px;padding:10px 14px;margin:0 0 16px;font-size:.95rem}
 .privacy{font-size:.85rem;color:var(--muted);margin-top:12px}
-.intro a{font-weight:700}
 .jump{margin-top:14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-weight:700;color:var(--navy)}
 .jump select{border:2px solid var(--line);border-radius:999px;padding:8px 14px;background:#fff;font-weight:600;min-width:240px}
 footer{color:var(--muted);font-size:.85rem;padding:30px 0 40px;text-align:center}
 #print-view{display:none}
 @media (max-width:720px){
-  .intro{margin:-18px 10px 0;padding:18px}
+  .intro,.titlebox{padding:18px}
   .stage-body{padding:18px}
   .grid2,.grid3,.signs,.task .meta{grid-template-columns:1fr}
   .task .dates{grid-template-columns:1fr 1fr}
@@ -140,19 +143,25 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 40px;text-align:center
   #print-view td,#print-view th{border:0.5pt solid #bbb;padding:3pt 5pt;text-align:left;vertical-align:top}
   #print-view .pf{color:var(--red)}
 }
+/* Three type sizes only: page header, titles, text */
+:root{--h-page:clamp(1.8rem,4.5vw,2.6rem);--h-title:clamp(1.35rem,3vw,1.7rem)}
+#app *, .intro *, .titlebox *{font-size:1rem}
+.titlebox h1{font-size:var(--h-page)!important;font-weight:800;line-height:1.15}
+.stage h2,.stage .big{font-size:var(--h-title)!important}
+@media print{#print-view *{font-size:10.5pt}#print-view h1{font-size:20pt!important}#print-view h2{font-size:14pt!important}}
 </style>
 </head>
 <body>
 <header class="top"><div class="wrap"><a class="brand" href="../"><img src="../img/logo.svg" alt="" width="40" height="40"><span>Launchpad<b>23</b></span></a></div></header>
 <div class="wrap">
   <div class="hero"><img src="images/header.jpg" alt="A snowy mountain peak painted in ink and watercolor"></div>
+  <section class="titlebox"><h1>Summit: Plan Your Climb</h1></section>
   <section class="intro">
-    <h1>Summit: Plan Your Climb</h1>
     <p>Every big project is a journey. Plan yours from Base Camp to the Trip Home.</p>
-    <p>Your plan saves itself on this device as you type. You can <a href="#" id="print">print your responses</a>, <a href="#" id="dl">save a copy to work on later</a>, <a href="#" id="open">open a saved copy</a>, or <a href="#" id="reset">start over</a> at any time. <span class="saved" id="saved" aria-live="polite"></span></p>
+    <p class="saved" id="saved" aria-live="polite"></p>
+    <p>Your plan saves itself on this device as you type. You can <a href="#" id="print">print your responses</a>, <a href="#" id="dl">save a copy to work on later</a>, <a href="#" id="open">open a saved copy</a>, or <a href="#" id="reset">start over</a> at any time.</p>
     <input type="file" id="file" accept=".json,application/json" hidden>
-    <div class="jump"><label for="jump">Jump to a section:</label> <select id="jump"><option value="">Choose a stage…</option></select></div>
-    <p class="privacy">Nothing you write is sent anywhere. To move your plan to another computer, save a copy, then open it there.</p>
+    <div class="jump"><label for="jump">Jump to a stage:</label> <select id="jump"><option value="">Choose</option></select></div>
   </section>
   <main id="app"></main>
 </div>
@@ -283,7 +292,7 @@ const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&g
 let saveT=null;
 function save(){
   clearTimeout(saveT);
-  saveT=setTimeout(()=>{ try{ localStorage.setItem(KEY,JSON.stringify(S)); $("#saved").textContent="✓ Saved on this device"; }catch(e){ $("#saved").textContent="Couldn't save on this device: use Save a copy."; } },300);
+  saveT=setTimeout(()=>{ try{ localStorage.setItem(KEY,JSON.stringify(S)); }catch(e){ $("#saved").textContent="This device couldn’t save your plan. Save a copy to keep your work."; } },300);
 }
 const rowsOf=id=>Array.isArray(S[id])?S[id]:[];
 
@@ -449,7 +458,7 @@ function backRefs(){
 }
 function render(){
   $("#app").innerHTML=STAGES.map(stageHTML).join("");
-  $("#jump").innerHTML=`<option value="">Choose a stage…</option>`+STAGES.map(s=>`<option value="${s.id}">${s.num}. ${s.title}</option>`).join("");
+  $("#jump").innerHTML=`<option value="">Choose</option>`+STAGES.map(s=>`<option value="${s.id}">${s.num}. ${s.title}</option>`).join("");
   Object.keys(ROWDEFS).forEach(renderRows); tasksRender(); actualsRender(); hatWarn(); backRefs();
   document.querySelectorAll("textarea").forEach(autoGrow);
 }
@@ -519,9 +528,7 @@ function buildPrint(){
 }
 
 document.getElementById("yr").textContent=new Date().getFullYear();
-const had=Object.keys(S).length>0;
 render();
-if(had) $("#saved").textContent="✓ Your plan is saved on this device";
 </script>
 </body>
 </html>
