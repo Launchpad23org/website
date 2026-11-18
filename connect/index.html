@@ -468,7 +468,7 @@ function roundInfo(w){
 function roundFacts(w,ri,team){
   const [y,mo,d]=todayET(); const dayStart=fromET(y,mo,d,0,0,0);
   const from=ri.start?ri.start-60000:dayStart;
-  const rows=w.facts.map(f=>({f,t:parseET(f["Timestamp"])})).filter(o=>o.t&&o.t>=from&&norm(o.f["Team"])===norm(team)).sort((a,b)=>a.t-b.t);
+  const rows=w.facts.map(f=>({f,t:parseET(f["Timestamp"])})).filter(o=>o.t&&o.t>=from&&(ri.teams.length<2||norm(o.f["Team"])===norm(team))).sort((a,b)=>a.t-b.t);
   return w.x.map(x=>{
     const list=rows.filter(o=>norm(o.f["Topic"])===norm(x["Topic"])).map((o,i)=>({...o.f,_t:o.t,_late:ri.end&&o.t>ri.end+30000,_over:i>=ri.max}));
     return {slot:x["Slot"],topic:x["Topic"],list};
@@ -526,7 +526,7 @@ async function board(){
       body=`<div class="x-head"><div><h1 style="margin:0">10x10 Challenge</h1><p class="x-status" style="margin:4px 0 0">${status}</p></div>${ri.start?`<div class="x-clock" id="x-clock">${mmss(ri.end-now)}</div>`:`<div class="x-clock">${ri.mins}:00</div>`}</div>
       ${teamBtns}<p style="margin:12px 0 0"><b>${total}</b> of 100 facts${ri.teams.length>1?` for team ${esc(team)}`:""}.</p>${rules}
       <div class="x-grid">${topics.map(t=>{ const n=t.list.length, c=Math.min(10,n), full=n>=ri.max;
-        const add=running&&!full?`<a class="btn btn-main" target="_blank" rel="noopener" href="${esc(formLink(w.set["10x10 fact form"],{TOPIC:t.topic,TEAM:team}))}">Add a fact</a>`:"";
+        const add=running&&!full?`<a class="btn btn-main" target="_blank" rel="noopener" href="${esc((ri.teams.length>1?formLink(w.set["10x10 fact form"],{TOPIC:t.topic,TEAM:team}):formLink(String(w.set["10x10 fact form"]||"").replace(/&entry\.\d+=TEAM\b/,""),{TOPIC:t.topic})))}">Add a fact</a>`:"";
         return `<article class="x-card ${n>=10?"done":""} ${full?"full":""}"><p class="x-slot">${esc(t.slot)}</p><h3>${esc(t.topic)}</h3>
         <div><span class="x-count">${c} / 10</span>${n>10?` <span class="small">+ ${n-10} extra${n-10>1?"s":""}</span>`:""}${full?` <span class="small">· full</span>`:""}</div><div class="x-bar"><span style="width:${c*10}%"></span></div>
         ${n?`<ol class="x-facts">${t.list.map((f,i)=>`<li class="${i>=10?"extra":""}">${esc(f["Your fact"])}${f["First name (optional)"]?` <span class="who">(${esc(f["First name (optional)"])})</span>`:""}</li>`).join("")}</ol>`:""}${add}</article>`; }).join("")}</div>`;
