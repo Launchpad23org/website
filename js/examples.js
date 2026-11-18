@@ -4,9 +4,14 @@
 (function(){
   var SHEET_ID = '1UjEp8kkm1yx4QmyanMly9JxXLwUBOjD0axoSiqrAiAg';
   var TABS = { resources: 'Free Resources', topics: 'Weekly Topics' };
+  /* This year's topics come from the Wednesday Topics tab of the "Launchpad23 Weekly Pages" sheet,
+     the same rows that fill the This Week at Launchpad23 page. Every dated row up to today is archived here. */
+  var WEEKLY_PAGES_ID = '1k-s0e-_88iBPJo0j93sIPkA0DlT-gK7n6X1gj1JmMzA';
+  var WED_TAB = 'Wednesday Topics';
+  var WED_IMAGES = 'ghana/images/';
 
-  function sheetUrl(tab){
-    return 'https://docs.google.com/spreadsheets/d/' + SHEET_ID + '/gviz/tq?tqx=out:csv&headers=1&sheet=' + encodeURIComponent(tab);
+  function sheetUrl(tab, id){
+    return 'https://docs.google.com/spreadsheets/d/' + (id||SHEET_ID) + '/gviz/tq?tqx=out:csv&headers=1&sheet=' + encodeURIComponent(tab);
   }
 
   // Minimal CSV parser (handles quotes, commas and newlines inside quotes)
@@ -27,8 +32,8 @@
       .filter(function(o){ return Object.keys(o).some(function(k){ return o[k]; }); });
   }
 
-  function load(tab, fallback){
-    return fetch(sheetUrl(tab)).then(function(r){
+  function load(tab, fallback, id){
+    return fetch(sheetUrl(tab, id)).then(function(r){
       if (!r.ok) throw new Error('sheet ' + r.status);
       return r.text();
     }).then(function(t){
@@ -61,6 +66,9 @@
     rows.forEach(function(r){
       var status=get(r,['status','show']).toLowerCase();
       if (status==='hide' || status==='no' || status==='hidden') return;
+      // "Show on": Website (or blank), Launch page, or Both. Launch-page-only rows stay off this page.
+      var where=get(r,['show on']).toLowerCase();
+      if (where.indexOf('launch')>-1 && where.indexOf('both')<0) return;
       var title=get(r,['title']), sub=get(r,['subtitle','tagline']), link=get(r,['link','pdf','url']), img=get(r,['image','thumbnail']);
       if (!title) return;
       var soon = status.indexOf('soon')>-1;
@@ -91,28 +99,51 @@
   function launchYear(d){ var y=d.getFullYear(); var start = d.getMonth()>=7 ? y : y-1; return 'Launch Year ' + start + ' - ' + (start+1); }
   function fmt(d){ return d.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}); }
 
-  function renderTopics(rows){
-    var groups={}, order=[];
+  function dayKey(d){ return d.getFullYear()+'-'+('0'+(d.getMonth()+1)).slice(-2)+'-'+('0'+d.getDate()).slice(-2); }
+  // Links in the Wednesday sheet are written for the launch page (../summit/); make them work from here.
+  function siteLink(u){ u=(u||'').trim(); if(!u) return ''; if(/^https?:/.test(u)) return fixLink(u); return u.replace(/^(\.\.\/)+/,''); }
+  function wedImage(u){ u=(u||'').trim(); if(!u) return ''; if(/^https?:/.test(u)) return fixImage(u); return WED_IMAGES + u.replace(/^(\.\.\/)?ghana\/images\//,''); }
+
+  function renderTopics(rows, wedRows){
+    var groups={}, order=[], today=dayKey(new Date());
+    function add(g, d, item){
+      if(!groups[g]){ groups[g]={}; order.push(g); }
+      var key = d ? dayKey(d) : '~';
+      if(!groups[g][key]) groups[g][key]={date:d, items:[]};
+      var list=groups[g][key].items, name=item.title.toLowerCase();
+      for (var i=0;i<list.length;i++){ if(list[i].title.toLowerCase()===name){ if(!list[i].image) list[i]=item; return; } }
+      list.push(item);
+    }
     rows.forEach(function(r){
       var status=get(r,['status','show']).toLowerCase(); if (status==='hide'||status==='no') return;
       var topic=get(r,['topic','title']); if(!topic) return;
       var d=parseDate(get(r,['date']));
-      var g=get(r,['group','launch year']) || (d ? launchYear(d) : 'Other');
-      if(!groups[g]){ groups[g]={}; order.push(g); }
-      var key = d ? d.toISOString().slice(0,10) : '~';
-      if(!groups[g][key]) groups[g][key]={date:d, items:[]};
-      if (groups[g][key].items.indexOf(topic)<0) groups[g][key].items.push(topic);
+      add(get(r,['group','launch year']) || (d ? launchYear(d) : 'Other'), d, {title:topic});
     });
-    // Newest group first: launch years by start year, summer groups by year
+    (wedRows||[]).forEach(function(r){
+      if (get(r,['show']).toLowerCase()==='no') return;
+      var topic=get(r,['topic']); var d=parseDate(get(r,['date']));
+      if(!topic || !d || dayKey(d)>today) return;   // undated or future rows are not archived yet
+      add(launchYear(d), d, {title:topic, host:get(r,['host']), image:wedImage(get(r,['image (16:9)','image'])), link:siteLink(get(r,['button link (optional)','button link']))});
+    });
     function yearOf(g){ var m=g.match(/(\d{4})/); return m?+m[1]:0; }
-    // Same year: the launch year (starting that August) comes before that year's summer
+    // Newest first. Same year: the launch year (starting that August) comes before that year's summer
     order.sort(function(a,b){ return yearOf(b)-yearOf(a) || ((a.indexOf('Summer')>-1)-(b.indexOf('Summer')>-1)); });
     var tabs=document.getElementById('year-tabs'), list=document.getElementById('topic-list');
     tabs.innerHTML = order.map(function(g,i){ return '<button role="tab" aria-selected="'+(i===0)+'" data-g="'+esc(g)+'">'+esc(g)+'</button>'; }).join('');
+    function card(t){
+      var inner=(t.image?'<img src="'+esc(t.image)+'" alt="" loading="lazy">':'<div class="titlecard c1">'+esc(t.title)+'</div>')
+        +'<h3>'+esc(t.title)+'</h3>'+(t.host?'<p>Hosted by '+esc(t.host)+'</p>':'');
+      return t.link ? '<a class="topic-card" href="'+esc(t.link)+'"'+(/^https?:/.test(t.link)?' target="_blank" rel="noopener"':'')+'>'+inner+'</a>'
+                    : '<div class="topic-card">'+inner+'</div>';
+    }
     function show(g){
       var weeks=Object.keys(groups[g]).sort().reverse().map(function(k){ return groups[g][k]; });
       list.innerHTML = weeks.map(function(w){
-        return '<div class="topic-week"><time>'+(w.date?fmt(w.date):'')+'</time><ul>'+w.items.map(function(t){return '<li>'+esc(t)+'</li>';}).join('')+'</ul></div>';
+        var pics=w.items.some(function(t){ return t.image || t.host; });
+        var body = pics ? '<div class="topic-cards">'+w.items.map(card).join('')+'</div>'
+                        : '<ul>'+w.items.map(function(t){return '<li>'+esc(t.title)+'</li>';}).join('')+'</ul>';
+        return '<div class="topic-week'+(pics?' has-cards':'')+'"><time>'+(w.date?fmt(w.date):'')+'</time>'+body+'</div>';
       }).join('') || '<p>No topics listed yet.</p>';
       [].forEach.call(tabs.children,function(b){ b.setAttribute('aria-selected', b.getAttribute('data-g')===g); });
     }
@@ -121,5 +152,8 @@
   }
 
   load(TABS.resources,'data/free-resources.json').then(renderResources);
-  if (document.getElementById('topic-list')) load(TABS.topics,'data/weekly-topics.json').then(renderTopics);
+  if (document.getElementById('topic-list')) Promise.all([
+      load(TABS.topics,'data/weekly-topics.json'),
+      load(WED_TAB,'data/wednesday-topics.json',WEEKLY_PAGES_ID)
+    ]).then(function(r){ renderTopics(r[0], r[1]); });
 })();

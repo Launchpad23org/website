@@ -11,6 +11,8 @@ The Launchpad23 website, hosted free on GitHub Pages.
 
 ## The Examples page
 `4fun.html` reads the Google Sheet **"Launchpad23 Website — Examples & Topics"** (in the Launchpad23 › Website folder in Drive) on every visit. Edit the sheet to add or change free resources and weekly topics; the sheet's first tab explains how.
+- **Free Resources → "Show on"**: Website (or blank) shows the card here; Launch page shows it only in Tools & Games on the This Week at Launchpad23 page; Both shows it in both places.
+- **Weekly Topics archive**: from Launch Year 2026–27 on, the archive also reads the **Wednesday Topics** tab of the Weekly Pages sheet. Every row with a date up to today appears, grouped by week, with its picture and host; a row with a Button link becomes a clickable card. Older years still come from the Examples sheet's Weekly Topics tab (names only). Saved copies: `data/weekly-topics.json`, `data/wednesday-topics.json`.
 
 ## Unlisted pages
 `archive/` pages are kept for reference but are not linked from the menu and ask search engines not to index them.
@@ -20,6 +22,7 @@ The Launchpad23 website, hosted free on GitHub Pages.
 
 ## Wednesday page (This Week at Launchpad23)
 `connect/` shows, top to bottom: the title card, **Convene** (10x10 warm-up card and Announcements), **Consider** (this week's topics, 16:9 pictures), **Connect** (the clubs), and the **Launch Debrief** (one exit ticket button per topic, plus a final thought from Emerson). The 10x10 board is at `connect/#/10x10`.
+**Wednesday Topics keeps every week:** add next week's rows with their Date (don't delete old ones). The page shows only the rows with the latest date (plus any undated row); older rows feed the Examples page archive. Type No in Show to hide a row everywhere. **Tools & Games** shows Free Resources rows (Examples sheet) whose Show on is Launch page or Both.
 Everything comes from the sheet **"Launchpad23 Weekly Pages – Website Content"** (it used to be called the Ghana Program Page sheet; the page finds it by its ID, so the name can change). Wednesday tabs: Wednesday Settings, Announcements, Wednesday Topics, 10x10 This Week, 10x10 Topic Bank, 10x10 Log, 10x10 Facts. The sheet's time zone is Eastern.
 The two forms (10x10 fact form, exit ticket) were built once by an Apps Script in Drive › Launchpad23 › Wednesday Page: 10x10 and Exit Ticket. The page fills in the topic and team with pre-filled links, so the forms never need weekly edits. Exit ticket answers go to a separate private sheet in that folder. Original images live in its "Wednesday Page Images (upload here)" subfolder; web copies are in `ghana/images/`.
 
