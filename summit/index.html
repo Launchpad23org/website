@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SUMMIT: Plan Your Climb | Launchpad23</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="A project planner for curious kids: plan your climb from base camp to the trip home.">
+<link rel="icon" href="../img/favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1c4587; --navy-dark:#12305f; --slate:#647da5; --ink:#22262d; --text:#3a3d44; --muted:#6b7080;
+  --line:#e1e6ee; --soft:#f4f6fa; --warm:#fff7e8; --accent:#f2a33a; --red:#b3261e; --redbg:#fdecea; --green:#1d6b3f; --greenbg:#e5f4ea;
+  --font:Montserrat,system-ui,-apple-system,"Segoe UI",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--soft);color:var(--text);font-family:var(--font);font-size:17px;line-height:1.6}
+a{color:var(--navy)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.wrap{max-width:980px;margin:0 auto;padding:0 18px}
+h1,h2,h3{color:var(--navy);line-height:1.2;margin:0}
+.top{background:#fff;border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:10px;padding-top:10px;padding-bottom:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--navy);font-weight:700;font-size:1.25rem}
+.brand b{color:var(--accent)}
+.hero{margin:24px 0 0;border-radius:18px;overflow:hidden;background:#eef0f3;box-shadow:0 6px 24px rgba(18,48,95,.10)}
+.hero img{display:block;width:100%;height:auto}
+.intro{background:#fff;border-radius:18px;padding:24px 28px;margin:-28px 24px 0;position:relative;box-shadow:0 6px 24px rgba(18,48,95,.10)}
+.intro h1{font-size:clamp(1.7rem,4vw,2.4rem);font-weight:800;letter-spacing:.01em}
+.intro p{margin:8px 0 0}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font);font-weight:700;font-size:.95rem;border:2px solid var(--navy);border-radius:999px;padding:9px 18px;cursor:pointer;text-decoration:none;background:#fff;color:var(--navy)}
+.btn.main{background:var(--navy);color:#fff}
+.btn.small{padding:6px 12px;font-size:.85rem}
+.btn.ghost{border-color:var(--line);color:var(--muted)}
+.saved{font-size:.85rem;color:var(--green);font-weight:600}
+.exsel{display:flex;align-items:center;gap:8px;font-size:.9rem;font-weight:600;color:var(--muted)}
+select,input,textarea{font-family:var(--font);font-size:1rem;color:var(--ink)}
+.exsel select{border:2px solid var(--line);border-radius:999px;padding:7px 12px;background:#fff}
+.nav{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 0}
+.nav a{font-size:.85rem;font-weight:700;text-decoration:none;background:#fff;border:1px solid var(--line);border-radius:999px;padding:5px 12px;color:var(--navy)}
+.nav a .n{color:var(--accent);margin-right:4px}
+
+.stage{background:#fff;border-radius:18px;margin:30px 0;overflow:hidden;box-shadow:0 6px 24px rgba(18,48,95,.08)}
+.strip{display:block;width:100%;aspect-ratio:4/1;background:#dfe9f8}
+.strip svg,.strip img{display:block;width:100%;height:100%;object-fit:cover}
+.stage-body{padding:22px 28px 26px}
+.stage-num{font-weight:800;color:var(--accent);font-size:.9rem;letter-spacing:.08em;text-transform:uppercase}
+.stage h2{font-size:clamp(1.5rem,3.2vw,2rem);font-weight:800;margin:2px 0 6px}
+.stage .q{font-size:1.08rem;color:var(--ink);margin:0 0 14px}
+.quote{background:var(--warm);border-left:6px solid var(--accent);border-radius:0 12px 12px 0;padding:12px 18px;margin:0 0 18px}
+.quote .orig{color:var(--navy);font-style:italic;margin:0}
+.quote .tr{color:var(--muted);font-size:.9rem;margin:0}
+.quote .en{margin:4px 0 0;color:var(--ink)}
+.quote .by{font-size:.85rem;color:var(--muted);margin:6px 0 0}
+.lead{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 16px;font-size:.92rem;font-weight:600;color:var(--slate)}
+.lead input{flex:1;min-width:180px;border:1px dashed var(--line);border-radius:10px;padding:6px 10px;font-size:.92rem}
+.field{margin:0 0 18px}
+.field>label,.field .lab{display:block;font-weight:700;color:var(--ink);margin:0 0 2px}
+.help{display:block;font-size:.88rem;color:var(--muted);margin:0 0 6px}
+.field input[type=text],.field input[type=date],.field input[type=number],.field textarea,.field select{width:100%;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+.field textarea{min-height:76px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--slate);outline:none}
+::placeholder{color:#a3a8b4;font-style:italic}
+.count{font-size:.8rem;color:var(--muted);text-align:right;margin-top:2px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+details.deeper{border-top:2px solid var(--soft);margin-top:10px;padding-top:12px}
+details.deeper>summary{cursor:pointer;font-weight:800;color:var(--navy);list-style:none;display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:var(--soft)}
+details.deeper>summary::before{content:"＋";font-weight:800}
+details.deeper[open]>summary::before{content:"－"}
+details.deeper>summary::-webkit-details-marker{display:none}
+details.deeper .in{padding-top:14px}
+
+/* row tables */
+.rows{display:flex;flex-direction:column;gap:10px}
+.row{display:grid;gap:8px;background:var(--soft);border-radius:12px;padding:10px;position:relative}
+.row input,.row textarea,.row select{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:#fff;font-size:.95rem}
+.row textarea{min-height:40px;resize:vertical}
+.row .rl{display:block;font-size:.75rem;font-weight:700;color:var(--muted);margin:0 0 2px}
+.row .x{position:absolute;top:4px;right:6px;border:0;background:none;color:var(--muted);font-size:1.1rem;cursor:pointer;line-height:1}
+.addrow{align-self:flex-start;margin-top:4px}
+
+/* hats */
+.hats{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.hat{border:2px solid var(--line);border-radius:14px;padding:14px}
+.hat.empty{border-color:#f3c9c5}
+.hat h3{font-size:1.1rem}
+.hat .what{font-size:.92rem;margin:2px 0 4px}
+.hat .watch{font-size:.82rem;color:var(--muted);margin:0 0 8px}
+.hat input,.hat textarea{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 9px;margin-top:6px;font-size:.92rem}
+.hat textarea{min-height:52px;resize:vertical}
+
+/* flags and summaries */
+.flag{display:block;background:var(--redbg);color:var(--red);border-radius:8px;padding:6px 10px;font-size:.85rem;font-weight:600;margin-top:4px}
+.flag::before{content:"⚑ "}
+.ok{display:block;background:var(--greenbg);color:var(--green);border-radius:8px;padding:6px 10px;font-size:.88rem;font-weight:600}
+.note{background:var(--soft);border-radius:12px;padding:12px 16px;margin:0 0 16px;font-size:.93rem}
+.note b{color:var(--navy)}
+.summary{border-radius:12px;padding:12px 16px;margin:10px 0 16px;font-weight:600}
+.signs{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:0 0 16px}
+.signs div{border-radius:12px;padding:12px 14px;font-size:.92rem}
+.signs .hard{background:var(--greenbg)} .signs .wrong{background:var(--redbg)}
+.signs b{display:block;margin-bottom:4px}
+.signs ul{margin:0;padding-left:18px}
+.task .meta{display:grid;grid-template-columns:2fr 1.3fr;gap:8px}
+.task .dates{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.task .auto{color:var(--slate);font-style:italic}
+.task .num{font-weight:800;color:var(--navy);font-size:.8rem}
+.tt{width:100%;border-collapse:collapse;font-size:.92rem;margin:0 0 12px}
+.tt th,.tt td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line)}
+.tt th{font-size:.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.big{font-size:1.6rem;font-weight:800;color:var(--navy)}
+.pitchback{background:var(--warm);border-radius:12px;padding:10px 14px;margin:0 0 16px;font-size:.95rem}
+.privacy{font-size:.82rem;color:var(--muted);margin-top:10px}
+footer{color:var(--muted);font-size:.85rem;padding:30px 0 40px;text-align:center}
+#print-view{display:none}
+@media (max-width:720px){
+  .intro{margin:-18px 10px 0;padding:18px}
+  .stage-body{padding:18px}
+  .grid2,.grid3,.signs,.task .meta{grid-template-columns:1fr}
+  .task .dates{grid-template-columns:1fr 1fr}
+  .row{grid-template-columns:1fr!important}
+}
+@media print{
+  body{background:#fff;font-size:11pt}
+  .top,.hero,.intro,.nav,#app,footer{display:none!important}
+  #print-view{display:block}
+  #print-view h1{font-size:20pt;margin:0 0 4pt}
+  #print-view h2{font-size:14pt;margin:16pt 0 6pt;border-bottom:1.5pt solid var(--navy);padding-bottom:2pt;break-after:avoid}
+  #print-view .pq{font-weight:700;margin:8pt 0 1pt;break-after:avoid}
+  #print-view .pa{margin:0 0 4pt;white-space:pre-wrap}
+  #print-view table{width:100%;border-collapse:collapse;font-size:9.5pt;margin:4pt 0}
+  #print-view td,#print-view th{border:0.5pt solid #bbb;padding:3pt 5pt;text-align:left;vertical-align:top}
+  #print-view .pf{color:var(--red)}
+}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="brand" href="../"><img src="../img/logo.svg" alt="" width="40" height="40"><span>Launchpad<b>23</b></span></a></div></header>
+<div class="wrap">
+  <div class="hero"><img src="images/header.jpg" alt="A snowy mountain peak painted in ink and watercolor"></div>
+  <section class="intro">
+    <h1>SUMMIT: Plan Your Climb</h1>
+    <p>Every big project is a climb. Plan yours from Base Camp to the Trip Home. Start with the questions you see; open <b>Go deeper</b> when you're ready for more.</p>
+    <div class="toolbar">
+      <label class="exsel">Show example answers:
+        <select id="ex"><option value="">None</option><option value="lemon">Lemonade stand</option><option value="film">Short film</option></select>
+      </label>
+      <span class="saved" id="saved" aria-live="polite"></span>
+    </div>
+    <div class="toolbar">
+      <button class="btn main" id="print">Print or save as PDF</button>
+      <button class="btn" id="dl">Save a copy to keep working on</button>
+      <button class="btn" id="open">Open a saved copy</button>
+      <input type="file" id="file" accept=".json,application/json" hidden>
+      <button class="btn ghost" id="reset">Start over</button>
+    </div>
+    <p class="privacy">Your plan saves itself on this device as you type. Nothing you write is sent anywhere. To move it to another computer, use <b>Save a copy</b>, then <b>Open a saved copy</b> there.</p>
+    <nav class="nav" id="nav" aria-label="Stages"></nav>
+  </section>
+  <main id="app"></main>
+</div>
+<div id="print-view"></div>
+<footer>© <span id="yr">2026</span> Launchpad23, Inc.</footer>
+
+<script>
+/* ======================= Content ======================= */
+const HATS=[
+ {id:"guide",name:"Guide",what:"Keeps everyone pointed at the summit and keeps the team moving.",watch:"Watch for: getting bossy, or pushing so hard nobody else is heard."},
+ {id:"spark",name:"Spark",what:"Comes up with ideas, fresh angles, and new ways around problems.",watch:"Watch for: ideas that outrun the time you have, or losing interest in the details."},
+ {id:"planner",name:"Planner",what:"Owns the timeline, the tasks, and the deadlines.",watch:"Watch for: the plan becoming more important than the progress."},
+ {id:"maker",name:"Maker",what:"Does the core building or creating.",watch:"Watch for: disappearing into the work and forgetting to tell anyone how it's going."},
+ {id:"checker",name:"Checker",what:"Catches mistakes and asks, \"Is this good enough?\"",watch:"Watch for: slowing everything down, or being discouraging."},
+ {id:"connector",name:"Connector",what:"Finds help and resources, and handles the launch and the audience.",watch:"Watch for: promising more than the team can deliver."},
+ {id:"encourager",name:"Encourager",what:"Watches morale and makes sure everyone is heard.",watch:"Watch for: avoiding hard conversations to keep the peace."}
+];
+const T=(id,label,help,ex,o={})=>Object.assign({id,type:"text",label,help,ex},o);
+const A=(id,label,help,ex,o={})=>Object.assign({id,type:"area",label,help,ex},o);
+const R=(id,label,help,colsDef,ex,o={})=>Object.assign({id,type:"rows",label,help,colsDef,ex,cols:"1fr"},o);
+
+const STAGES=[
+{id:"base",num:1,title:"Base Camp",q:"Where are you going, and why?",
+ quote:{orig:"Hat man sein warum? des Lebens, so verträgt man sich fast mit jedem wie?",lang:"de",en:"If you have your own why of life, you can get along with almost any how.",by:"Friedrich Nietzsche, Twilight of the Idols (1889), original German"},
+ fields:[
+  T("name","Project name","Think of a name that sells the idea to yourself and others.",{lemon:"Sunny Cups",film:"The Last Library Card"}),
+  A("pitch","Elevator pitch","Explain your project in two or three sentences: short enough to say in a 30-second elevator ride.",{lemon:"A lemonade stand on our street on Saturday mornings in June, raising money for the animal shelter.",film:"A five-minute film about a girl who finds out her town's library is closing, shot over two weekends with friends."},{counter:true}),
+  A("purpose","Purpose","Why am I doing this? What about it will keep me going through the hard work that is sure to come?",{lemon:"I want to help the shelter and learn how a real business works. Thinking about the dogs will keep me going when it's hot and slow.",film:"I want to prove I can finish a film, not just start one. Showing it on the library's last day will keep me going."}),
+  A("summit","The summit","What does \"done\" look like if everything goes right?",{lemon:"Four Saturdays, $200 raised, and a sign people remember.",film:"A finished five-minute film with music and sound, shown to an audience at the library."}),
+  A("minsummit","The minimum summit","What is the smallest version that would still be worth finishing?",{lemon:"Two Saturdays and $50 for the shelter.",film:"A three-minute cut with no original music, shared with family."}),
+  {id:"deadlinegroup",type:"group",cols:3,fields:[
+    {id:"deadline",type:"date",label:"Deadline",help:"Your hard stop."},
+    {id:"deadlinekind",type:"select",label:"How firm is it?",help:"Can it move?",options:["","Hard stop: it can't move","Firm, but it could move","Flexible"]},
+    {id:"deadlinewho",type:"select",label:"Who set it?",help:"Outside or self-imposed?",options:["","Someone else (external)","Me (self-imposed)"]}]},
+  A("budget","Budget: the most I'm willing to give","Money, time, and energy. Be specific; you'll check against this later, at your turnaround point.",{lemon:"$20 from my savings, and no more than 4 Saturdays (about 3 hours each).",film:"$0 (we'll use phones we have), two filming weekends, and about 4 hours a week of editing until February."})
+ ],
+ deeper:[
+  A("audience","Who is it for?","Every project serves someone, even if it's only you. Who will use it, see it, or benefit?",{lemon:"Neighbors walking to the park, and the animals at the shelter.",film:"People in our town who love the library, and other kids who want to make films."}),
+  {id:"scopegroup",type:"group",cols:2,fields:[
+    A("scopein","In scope","What this project includes.",{lemon:"Lemonade, cups, a sign, a donation jar.",film:"Script, filming, editing, music, a screening."}),
+    A("scopeout","Not doing","What you are deliberately leaving out, so the project doesn't quietly grow.",{lemon:"No food, no deliveries, no second location.",film:"No special effects, no extra locations, no sequel (yet)."})]}
+ ]},
+{id:"team",num:2,title:"The Team",q:"Who is climbing with you, and who needs to say yes?",
+ quote:{en:"Alone we can do so little; together we can do so much.",by:"Helen Keller"},
+ fields:[
+  {id:"hats",type:"hats",label:"Every project needs every hat worn",help:"On a small project, one person may wear several hats, or all of them. That's fine, but any hat that isn't someone's strength (or that someone wears on top of others) needs a de-risking plan."},
+  R("members","Team members","Ideally, who would the team include? How will you recruit them?",[["name","Name"],["needed","Needed by (date or stage)"],["committed","Committed? / How I'll recruit them"],["strengths","Strengths"],["watch","Things to monitor"]],{lemon:["Sam (my brother)","First Saturday","Yes","Loud and friendly; great at waving people over","Gets bored after an hour"],film:["Priya","Filming weekend 1","Asking her at lunch on Monday","Steady hands; owns a tripod","Has soccer on Sundays"]},{cols:"1fr 1fr",min:1})
+ ],
+ deeper:[
+  {id:"specgroup",type:"group",cols:2,fields:[
+    A("specneed","Do you need a specialist?","Is there a skill your project needs that nobody on the team has? Would an expert make the project much better, even if you don't strictly need one?",{lemon:"Not strictly, but someone who has run a stand could help me price it.",film:"Yes: sound. Bad audio ruins films, and none of us knows how to record it well."}),
+    A("speccost","What would a specialist cost?","Money, time, favors, or giving up some control. Who could it be?",{lemon:"An hour of my neighbor's time, and a free lemonade.",film:"I'd edit our sound person's video in trade. Maybe Mr. Ortiz from the theater club."})]},
+  R("yes","Who needs to say yes?","Think through the logic of each person who could say no, instead of just trying to talk them into it.",[["who","Who needs to say yes?"],["worry","What will worry them?"],["address","How can I address that worry?"],["inspire","What will inspire them?"]],{lemon:["My parents","Safety; being near the street","Set up on our lawn, with Dad nearby","Seeing me plan the whole thing myself"],film:["The librarian","Noise, and blocking the aisles","Film before opening hours","A film that celebrates the library"]},{cols:"1fr 1fr",min:1,quote:{en:"Seek first to understand, then to be understood.",by:"Stephen R. Covey, The 7 Habits of Highly Effective People (1989)"}})
+ ]},
+{id:"route",num:3,title:"The Route",q:"What are the steps, and how long will they really take?",
+ quote:{en:"Plans are worthless, but planning is everything.",by:"Dwight D. Eisenhower (1957), quoting an old Army saying"},
+ fields:[
+  {id:"time",type:"time"},
+  R("first","First steps","What are the very first things I need to do to get going?",[["step","Step"]],{lemon:["Ask my parents"],film:["Finish the script"]},{min:3,cols:"1fr",quote:{orig:"千里之行，始于足下",lang:"zh",tr:"qiān lǐ zhī xíng, shǐ yú zú xià",en:"A journey of a thousand li starts beneath one's feet. (A li is a traditional Chinese measure of distance, about half a kilometer today.)",by:"Laozi, Tao Te Ching, chapter 64"}}),
+  {id:"tasks",type:"tasks",label:"Tasks",help:"Add each task with your best guess for its dates. The realistic finish fills in from your TIME, and you can change it. Red flags appear if a range is tighter than your TIME suggests, if it runs past your deadline, or if a task starts before the task it depends on is done."},
+  A("creation","Building the best version","How do I build the best version of this project possible, given the time and attention I want to spend on it?",{lemon:"Practice the recipe twice before the first Saturday, and make the sign big enough to read from the corner.",film:"Shoot the most important scene first, in case we run out of time."})
+ ],
+ deeper:[]},
+{id:"safety",num:4,title:"Safety Check",q:"What could go wrong, and when would you turn around?",
+ quote:{en:"Getting to the top is optional. Getting down is mandatory.",by:"Ed Viesturs, the first American to climb all fourteen 8,000-meter peaks without bottled oxygen"},
+ fields:[
+  {id:"qgroup",type:"group",cols:2,fields:[
+    A("qc","Quality control","How will I check the work before it launches? Who outside the team will look at it?",{lemon:"A taste test with three neighbors before the first Saturday.",film:"Show the rough cut to my English teacher."}),
+    A("qa","Quality assurance","What habits or checklists will help me get it right the first time?",{lemon:"Write the recipe on a card, and count change twice.",film:"Use a shot list, and check the sound after every take."})]},
+  R("premortem","Pre-mortem","Imagine it's your deadline and the project failed. What are the most likely reasons? Then: how can you lower each risk now?",[["why","Why it failed"],["lower","How I'll lower that risk now"]],{lemon:["It rained every Saturday","Pick a backup Sunday for each week"],film:["We lost the footage","Back up every night to two places"]},{min:3,cols:"1fr 1fr"}),
+  R("ifthen","If–then plans","Backup plans with a clear trigger, so you know exactly when to use them.",[["if","If…"],["then","…then I will"]],{lemon:["If we sell out before 11","Make a second batch at home"],film:["If an actor cancels","Rewrite the scene for one person"]},{min:2,cols:"1fr 1fr"}),
+  {id:"turn",type:"turn"}
+ ],
+ deeper:[
+  A("redteam","Red team","Who will try to poke holes in your plan, and when? (A \"murder board\" is a panel whose whole job is to try to shoot down your idea before the real thing, so the real thing survives.)",{lemon:"My aunt, who runs a bakery, the week before we open.",film:"Two friends who didn't help make it, watching the rough cut."})
+ ]},
+{id:"launch",num:5,title:"Summit Day",q:"How will you introduce your project to the world?",
+ quote:{en:"If you're not embarrassed by the first version of your product, you've launched too late.",by:"Reid Hoffman, co-founder of LinkedIn"},
+ fields:[
+  {id:"pitchback",type:"pitchback"},
+  A("launch","Your launch","How do I give my project the best possible introduction to the world?",{lemon:"Opening day with balloons and a free first cup for little kids.",film:"A screening at the library on its last day."}),
+  R("comms","Who needs to hear about it?","Your communication plan.",[["who","Who"],["how","How (where they'll see or hear it)"],["when","When"]],{lemon:["Neighbors","Flyers in mailboxes","The Wednesday before"],film:["Library visitors","A poster at the front desk","Two weeks before"]},{min:2,cols:"1fr 1fr 1fr"})
+ ],
+ deeper:[
+  R("launchlist","Launch-day checklist","Everything that has to be ready on the day.",[["item","Item"],["who","Who"]],{lemon:["Ice","Sam"],film:["Projector and cable","Me"]},{min:3,cols:"2fr 1fr"})
+ ]},
+{id:"flag",num:6,title:"Keep the Flag Flying",q:"How will you keep it going, and keep it fresh?",
+ quote:{en:"How we spend our days is, of course, how we spend our lives.",by:"Annie Dillard, The Writing Life (1989)"},
+ fields:[
+  A("momentum","Momentum","How do I keep momentum, and keep the project as fresh on day X as it was at launch?",{lemon:"Add a new flavor each week.",film:"Post one behind-the-scenes clip a week until the screening."}),
+  A("checkins","Check-ins","How often will I check how it's going, and with whom?",{lemon:"Every Friday with Mom, counting the jar.",film:"A Sunday-night call with the cast."})
+ ],
+ deeper:[
+  A("stale","Warning signs","What are the signs that it's getting stale, and what will refresh it?",{lemon:"Fewer than 10 customers in a morning. Try a new corner or a new sign.",film:"Nobody's replying in the group chat. Plan a pizza night for the cast."})
+ ]},
+{id:"descent",num:7,title:"Descent",q:"How will you finish faithfully and responsibly?",
+ quote:{en:"You cannot stay on the summit forever; you have to come down again. So why bother in the first place? Just this: what is above knows what is below, but what is below does not know what is above. One climbs, one sees. One descends, one sees no longer, but one has seen.",by:"René Daumal, Mount Analogue (1952), translated by Roger Shattuck"},
+ fields:[
+  A("wrapup","Wrapping up","What has to happen so the project ends well? Thank people, return what you borrowed, settle any money, save your work.",{lemon:"Deliver the money to the shelter with a photo, write thank-you notes, and return the folding table.",film:"Credits for everyone, return the borrowed microphone, and back up the files twice."}),
+  A("celebrate","Celebrate","How will you mark the end?",{lemon:"A pizza lunch with Sam.",film:"A cast party after the screening."})
+ ],
+ deeper:[
+  A("handoff","Hand-off","Does anything continue after you stop? Who takes it over, and what do they need from you?",{lemon:"My cousin wants to run the stand next summer; I'll give her my recipe card and my notes.",film:"Upload the film so the library can keep showing it."})
+ ]},
+{id:"home",num:8,title:"Trip Home",q:"What did you learn, and what will you do differently?",
+ quote:{orig:"Det er ganske sandt, hvad Philosophien siger, at Livet maa forstaaes baglænds. Men derover glemmer man den anden Sætning, at det maa leves forlænds.",lang:"da",en:"It is perfectly true, as the philosophers say, that life must be understood backwards. But they forget the other proposition, that it must be lived forwards.",by:"Søren Kierkegaard, journal (1843), original Danish"},
+ fields:[
+  {id:"aargroup",type:"group",cols:2,fields:[
+    A("aar1","What did I plan?","Look back at your summit and your route.",{}),
+    A("aar2","What actually happened?","Just the facts, good and bad.",{}),
+    A("aar3","Why the difference?","What helped, and what got in the way?",{}),
+    A("aar4","What will I do differently next time?","Pick one or two things you'll really do.",{})]},
+  {id:"actuals",type:"actuals"},
+  A("self","What did I learn about myself?","The value of a project is rarely in the things done, but in the learning and growth those things generated.",{lemon:"I'm braver talking to strangers than I thought.",film:"I'm good at keeping people going, and I need help with deadlines."})
+ ],
+ deeper:[
+  A("data","The numbers","What numbers can tell you how it went? What do they show?",{lemon:"$186 raised, about 140 cups sold. The hottest day was the best day.",film:"47 people came to the screening. Editing took twice as long as filming."})
+ ]}
+];
+
+/* ======================= State ======================= */
+const KEY="lp23-summit-plan-v1";
+let S={};
+try{ S=JSON.parse(localStorage.getItem(KEY)||"{}")||{}; }catch(e){ S={}; }
+let EX="";
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let saveT=null;
+function save(){
+  clearTimeout(saveT);
+  saveT=setTimeout(()=>{ try{ localStorage.setItem(KEY,JSON.stringify(S)); $("#saved").textContent="✓ Saved on this device"; }catch(e){ $("#saved").textContent="Couldn't save on this device: use Save a copy."; } },300);
+}
+const rowsOf=id=>Array.isArray(S[id])?S[id]:[];
+
+/* ======================= Dates ======================= */
+const DAY=86400000;
+const pd=s=>{ if(!s) return null; const [y,m,d]=s.split("-").map(Number); return Date.UTC(y,m-1,d); };
+const fd=t=>{ const d=new Date(t); return d.toISOString().slice(0,10); };
+const nice=s=>{ const t=pd(s); return t==null?"":new Date(t).toLocaleDateString(undefined,{month:"short",day:"numeric",year:"numeric",timeZone:"UTC"}); };
+const TIMEV=()=>{ const v=parseFloat(S.time); return v>=1?v:1.5; };
+function suggested(t){ const a=pd(t.start), b=pd(t.finish); if(a==null||b==null||b<a) return null; return fd(a+Math.ceil((b-a)/DAY*TIMEV())*DAY); }
+const realOf=t=>t.real||suggested(t)||t.finish||"";
+
+/* ======================= Strips (the same mountain, through one day) ======================= */
+function rng(seed){ let h=2166136261; for(const c of seed) h=Math.imul(h^c.charCodeAt(0),16777619); return ()=>{ h^=h<<13; h^=h>>>17; h^=h<<5; return ((h>>>0)%10000)/10000; }; }
+function ridge(r,base,amp,peakX,peakH,n=40){
+  const pts=[]; for(let i=0;i<=n;i++){ const x=i*800/n; const d=Math.abs(x-peakX)/800; const y=base-amp*(r()*0.6+0.2)-peakH*Math.max(0,1-d*3.2); pts.push([x,Math.max(8,y)]); }
+  return `M0,200 L${pts.map(p=>p.map(v=>v.toFixed(1)).join(",")).join(" L")} L800,200 Z`;
+}
+const SKIES={
+ base:{sky:["#f6c9a8","#fbe3c9","#e9eef6"],sun:{x:120,y:150,r:20,c:"#ffd9a0"},hills:["#c7b4c9","#8f7f9f","#5a5170"]},
+ team:{sky:["#cfe0f2","#f2e6cf","#eef3f8"],sun:{x:200,y:95,r:16,c:"#fff1c9"},hills:["#b9c9dd","#7f97b8","#465d82"]},
+ route:{sky:["#8fb8e3","#cfe2f5","#eef4fb"],sun:{x:300,y:55,r:15,c:"#fffbe6"},hills:["#a9bfd8","#6a88b0","#34507a"]},
+ safety:{sky:["#a7b3c2","#cfd6df","#e5e9ee"],clouds:true,hills:["#9aa6b5","#6d7a8c","#3e4a5c"]},
+ launch:{sky:["#3f7fd0","#8dbcef","#d9eafb"],sun:{x:400,y:28,r:16,c:"#ffffff"},flag:true,hills:["#9fb8d6","#5e7fac","#24406e"]},
+ flag:{sky:["#f0a85a","#f7cf8e","#fbe8c4"],sun:{x:640,y:120,r:22,c:"#ffe0a0"},flag:true,hills:["#d49a72","#9c6a55","#5b3f3a"]},
+ descent:{sky:["#3d3a6b","#a2667a","#f0a36b"],sun:{x:700,y:178,r:24,c:"#ffb27a"},hills:["#7d5b78","#4f3d5c","#2a2240"]},
+ home:{sky:["#0d1630","#1c2a52","#2c3b66"],stars:true,moon:{x:640,y:40},lights:true,hills:["#2e3a62","#1f2848","#121830"]}
+};
+function strip(id){
+  const k=SKIES[id], r=rng("lp23-summit");
+  const g=`g${id}`;
+  let s=`<svg viewBox="0 0 800 200" preserveAspectRatio="xMidYMid slice" role="img" aria-label="${esc(STAGES.find(x=>x.id===id).title)}"><defs><linearGradient id="${g}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${k.sky[0]}"/><stop offset=".6" stop-color="${k.sky[1]}"/><stop offset="1" stop-color="${k.sky[2]}"/></linearGradient></defs><rect width="800" height="200" fill="url(#${g})"/>`;
+  if(k.stars){ const rs=rng("stars"); for(let i=0;i<70;i++) s+=`<circle cx="${(rs()*800).toFixed(0)}" cy="${(rs()*110).toFixed(0)}" r="${(rs()*1.2+.3).toFixed(2)}" fill="#fff" opacity="${(rs()*.6+.3).toFixed(2)}"/>`; }
+  if(k.moon) s+=`<circle cx="${k.moon.x}" cy="${k.moon.y}" r="13" fill="#f4f1de"/><circle cx="${k.moon.x+6}" cy="${k.moon.y-4}" r="12" fill="${k.sky[0]}"/>`;
+  if(k.sun) s+=`<circle cx="${k.sun.x}" cy="${k.sun.y}" r="${k.sun.r*2.2}" fill="${k.sun.c}" opacity=".25"/><circle cx="${k.sun.x}" cy="${k.sun.y}" r="${k.sun.r}" fill="${k.sun.c}"/>`;
+  // three ridges: far, middle, and the main peak
+  const far=ridge(rng("far"),150,40,200,20), mid=ridge(rng("mid"),175,30,600,30);
+  const main=`M0,200 L0,170 L120,150 L210,160 L300,120 L360,96 L400,40 L430,70 L470,62 L540,112 L620,130 L700,150 L800,140 L800,200 Z`;
+  const snow=`M400,40 L380,70 L392,66 L400,78 L410,64 L422,72 L430,70 Z`;
+  s+=`<path d="${far}" fill="${k.hills[0]}" opacity=".8"/><path d="${mid}" fill="${k.hills[1]}"/><path d="${main}" fill="${k.hills[2]}"/><path d="${snow}" fill="#ffffff" opacity="${id==="home"?.35:.85}"/>`;
+  if(k.flag) s+=`<line x1="400" y1="40" x2="400" y2="16" stroke="#1c2433" stroke-width="2"/><path d="M400,16 L420,21 L400,26 Z" fill="#f2a33a"/>`;
+  if(k.clouds){ const rc=rng("clouds"); for(let i=0;i<7;i++){ const x=rc()*800,y=30+rc()*70,w=80+rc()*120; s+=`<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="${w.toFixed(0)}" ry="${(14+rc()*10).toFixed(0)}" fill="#fff" opacity="${(.35+rc()*.3).toFixed(2)}"/>`; } }
+  if(k.lights){ const rl=rng("lights"); s+=`<path d="M0,200 L0,185 Q200,176 400,184 T800,182 L800,200 Z" fill="#0b0f20"/>`; for(let i=0;i<16;i++){ const x=40+rl()*720,y=188+rl()*8; s+=`<rect x="${x.toFixed(0)}" y="${y.toFixed(0)}" width="3" height="3" fill="#ffd27a"/>`; } s+=`<path d="M560,186 l8,-7 l8,7 v8 h-16 Z" fill="#0b0f20"/><rect x="565" y="187" width="5" height="4" fill="#ffd27a"/>`; }
+  return s+`</svg>`;
+}
+
+/* ======================= Rendering ======================= */
+function quoteHTML(q){ if(!q) return ""; return `<figure class="quote">${q.orig?`<p class="orig" lang="${q.lang}">${esc(q.orig)}</p>${q.tr?`<p class="tr">${esc(q.tr)}</p>`:""}`:""}<p class="en">${q.orig?"":"“"}${esc(q.en)}${q.orig?"":"”"}</p><figcaption class="by">${esc(q.by)}</figcaption></figure>`; }
+function ph(f){ return (EX&&f.ex&&f.ex[EX])?f.ex[EX]:""; }
+function fieldHTML(f){
+  if(f.type==="group") return `<div class="grid${f.cols}">${f.fields.map(fieldHTML).join("")}</div>`;
+  if(f.type==="hats") return hatsHTML(f);
+  if(f.type==="tasks") return `<div class="field" id="tasks-wrap"></div>`;
+  if(f.type==="actuals") return `<div class="field" id="actuals-wrap"></div>`;
+  if(f.type==="turn") return turnHTML();
+  if(f.type==="time") return timeHTML();
+  if(f.type==="pitchback") return `<div class="pitchback" id="pitchback"></div>`;
+  if(f.type==="rows") return `<div class="field">${f.quote?quoteHTML(f.quote):""}<span class="lab">${esc(f.label)}</span><span class="help">${esc(f.help||"")}</span><div class="rows" id="rows-${f.id}"></div><button class="btn small addrow" data-add="${f.id}">+ Add a row</button></div>`;
+  const v=esc(S[f.id]||""), id=`f-${f.id}`, help=f.help?`<span class="help" id="${id}-h">${esc(f.help)}</span>`:"";
+  if(f.type==="area") return `<div class="field"><label for="${id}">${esc(f.label)}</label>${help}<textarea id="${id}" data-k="${f.id}" aria-describedby="${id}-h" placeholder="${esc(ph(f))}">${v}</textarea>${f.counter?`<div class="count" id="${id}-c"></div>`:""}</div>`;
+  if(f.type==="select") return `<div class="field"><label for="${id}">${esc(f.label)}</label>${help}<select id="${id}" data-k="${f.id}">${f.options.map(o=>`<option${o===S[f.id]?" selected":""} value="${esc(o)}">${esc(o||"Choose…")}</option>`).join("")}</select></div>`;
+  return `<div class="field"><label for="${id}">${esc(f.label)}</label>${help}<input type="${f.type}" id="${id}" data-k="${f.id}" value="${v}" placeholder="${esc(ph(f))}"></div>`;
+}
+function hatsHTML(f){
+  const H=S.hats||{};
+  return `<div class="field"><span class="lab">${esc(f.label)}</span><span class="help">${esc(f.help)}</span><div class="hats">${HATS.map(h=>{const v=H[h.id]||{};return `<div class="hat${v.who?"":" empty"}" data-hat="${h.id}"><h3>${h.name}</h3><p class="what">${h.what}</p><p class="watch">${h.watch}</p>
+  <input data-hat="${h.id}" data-hk="who" value="${esc(v.who)}" placeholder="Who's wearing this hat?" aria-label="${h.name}: who">
+  <textarea data-hat="${h.id}" data-hk="means" placeholder="In this project, this hat means…" aria-label="${h.name}: what it means here">${esc(v.means)}</textarea>
+  <textarea data-hat="${h.id}" data-hk="derisk" placeholder="Not their strength, or one of many hats? How will you de-risk it?" aria-label="${h.name}: de-risking plan">${esc(v.derisk)}</textarea></div>`;}).join("")}</div><div id="hatwarn"></div></div>`;
+}
+function timeHTML(){
+  const v=S.time||"1.5";
+  return `<div class="note"><b>Your TIME: Time Increase Multiplier Effect.</b> Almost everyone underestimates how long things take (psychologists call it the <i>planning fallacy</i>). Your TIME is how much longer things usually take you than you expect. Not sure? Start with ×1.5, then measure your real TIME in the Trip Home.
+  <div class="field" style="margin:10px 0 0;max-width:260px"><label for="f-time">My TIME is ×</label><input type="number" id="f-time" data-k="time" min="1" max="4" step="0.1" value="${esc(v)}"></div></div>`;
+}
+function turnHTML(){
+  return `<div class="field"><span class="lab" style="font-size:1.15rem;color:var(--navy)">Turnaround check</span>
+  <span class="help">Climbers decide, before they start, the time by which they'll turn back if they haven't reached the top. Decide your rules now, while you're calm, and check them on your turnaround date.</span>
+  <div class="grid2"><div class="field"><label for="f-turndate">My turnaround date</label><input type="date" id="f-turndate" data-k="turndate" value="${esc(S.turndate||"")}"></div>
+  <div class="field"><span class="lab">My limit, from Base Camp</span><div class="pitchback" id="limitback" style="margin:0"></div></div></div>
+  <p style="margin:0 0 8px;font-weight:700;color:var(--ink)">On that date, ask: is it hard, or is it wrong?</p>
+  <div class="signs"><div class="hard"><b>Signs it's hard (keep climbing)</b><ul><li>Progress is slow, but it's real.</li><li>The purpose still matters to you.</li><li>You're still within your Base Camp limit.</li></ul></div>
+  <div class="wrong"><b>Signs it's wrong (reroute or turn back)</b><ul><li>The purpose isn't true anymore.</li><li>It has cost more than your Base Camp limit.</li><li>Someone is getting hurt.</li><li>A better summit has appeared.</li></ul></div></div>
+  <div class="note" style="margin-bottom:12px">Never decide to turn back on your worst day. Sleep on it, or talk it through with a teammate first. Turning back well is a skill, not a failure.</div>
+  <div class="grid3">${[["push","I'll keep climbing if…",{lemon:"sales are slow but the shelter still needs the money.",film:"scenes are slow to shoot but the story still works."}],["reroute","I'll reroute if…",{lemon:"I've spent more than $30: I'll do two Saturdays instead of four.",film:"editing isn't done by Feb 15: I'll make the three-minute cut."}],["back","I'll turn back if…",{lemon:"my family needs me home on Saturdays.",film:"the library won't let us film: I'll pause and find a new story."}]].map(([k,l,ex])=>fieldHTML(A(k,l,"",ex))).join("")}</div></div>`;
+}
+function stageHTML(st){
+  const deeper=st.deeper&&st.deeper.length?`<details class="deeper"${S["open-"+st.id]?" open":""} data-open="${st.id}"><summary>Go deeper</summary><div class="in">${st.deeper.map(fieldHTML).join("")}</div></details>`:"";
+  return `<section class="stage" id="${st.id}"><div class="strip">${strip(st.id)}</div><div class="stage-body">
+  <div class="stage-num">Stage ${st.num} of 8</div><h2>${st.title}</h2><p class="q">${st.q}</p>${quoteHTML(st.quote)}
+  <div class="lead"><label for="f-lead-${st.id}">Who is leading this stage?</label><input id="f-lead-${st.id}" data-k="lead-${st.id}" value="${esc(S["lead-"+st.id]||"")}" placeholder="Name"></div>
+  ${st.fields.map(fieldHTML).join("")}${deeper}</div></section>`;
+}
+function allFields(){ const out=[]; const walk=f=>{ if(f.type==="group") f.fields.forEach(walk); else out.push(f); }; STAGES.forEach(s=>{ s.fields.forEach(walk); (s.deeper||[]).forEach(walk); }); return out; }
+const ROWDEFS=Object.fromEntries(allFields().filter(f=>f.type==="rows").map(f=>[f.id,f]));
+
+function renderRows(id){
+  const f=ROWDEFS[id], box=$("#rows-"+id); if(!box) return;
+  let rows=rowsOf(id); while(rows.length<(f.min||1)) rows.push({}); S[id]=rows;
+  box.innerHTML=rows.map((r,i)=>`<div class="row" style="grid-template-columns:${f.cols||"1fr"}">${colHTML(f,r,i)}${rows.length>(f.min||1)?`<button class="x" data-del="${id}" data-i="${i}" aria-label="Remove this row">×</button>`:""}</div>`).join("");
+}
+function colHTML(f,r,i){
+  return f.colsDef.map(([k,l],ci)=>`<div><span class="rl">${esc(l)}</span><textarea rows="1" data-row="${f.id}" data-i="${i}" data-c="${k}" placeholder="${i===0&&EX&&f.ex&&f.ex[EX]?esc(f.ex[EX][ci]||""):""}">${esc(r[k]||"")}</textarea></div>`).join("");
+}
+
+/* tasks */
+function tasksRender(){
+  const box=$("#tasks-wrap"); if(!box) return;
+  let ts=rowsOf("tasks"); if(!ts.length) ts=[{}]; S.tasks=ts;
+  const dl=pd(S.deadline);
+  const exT={lemon:[{name:"Make the sign",start:"",finish:""}],film:[{name:"Film the library scenes"}]};
+  box.innerHTML=`<span class="lab">Tasks</span><span class="help">Add each task with your best-guess dates. <b>Realistic finish</b> fills in from your TIME (×${TIMEV()}); change it if you like. Record the <b>actual finish</b> the day a task is done, so you can measure your real TIME later.</span>
+  <div class="rows">${ts.map((t,i)=>{
+    const sug=suggested(t), real=realOf(t), flags=[];
+    if(t.start&&t.finish&&pd(t.finish)<pd(t.start)) flags.push("The finish date is before the start date.");
+    if(t.real&&sug&&pd(t.real)<pd(sug)) flags.push(`This range is tighter than your TIME suggests. With ×${TIMEV()}, a realistic finish is ${nice(sug)}.`);
+    if(dl!=null&&real&&pd(real)>dl) flags.push(`This runs past your deadline (${nice(S.deadline)}).`);
+    if(t.after!==undefined&&t.after!==""&&ts[t.after]&&t.start){ const dep=ts[t.after], dr=realOf(dep); if(dr&&pd(t.start)<=pd(dr)) flags.push(`This starts before “${dep.name||"task "+(+t.after+1)}” is realistically finished (${nice(dr)}).`); }
+    const opts=ts.map((o,j)=>j<i?`<option value="${j}"${String(t.after)===String(j)?" selected":""}>${j+1}. ${esc(o.name||"(unnamed task)")}</option>`:"").join("");
+    return `<div class="row task"><span class="num">TASK ${i+1}</span>
+      <div class="meta"><div><span class="rl">Task</span><input data-task="${i}" data-c="name" value="${esc(t.name)}" placeholder="${i===0&&EX?esc(exT[EX][0].name):""}"></div>
+      <div><span class="rl">Can't start until…</span><select data-task="${i}" data-c="after"><option value="">Nothing; it can start anytime</option>${opts}</select></div></div>
+      <div class="dates"><div><span class="rl">Start</span><input type="date" data-task="${i}" data-c="start" value="${esc(t.start)}"></div>
+      <div><span class="rl">My best guess: finish</span><input type="date" data-task="${i}" data-c="finish" value="${esc(t.finish)}"></div>
+      <div><span class="rl">Realistic finish</span><input type="date" class="${t.real?"":"auto"}" data-task="${i}" data-c="real" value="${esc(t.real||sug||"")}" title="${t.real?"You set this":"Filled in from your TIME"}"></div>
+      <div><span class="rl">Actual finish (when done)</span><input type="date" data-task="${i}" data-c="actual" value="${esc(t.actual)}"></div></div>
+      <div class="meta"><div><span class="rl">Who</span><input data-task="${i}" data-c="who" value="${esc(t.who)}"></div><div><span class="rl">Notes</span><input data-task="${i}" data-c="notes" value="${esc(t.notes)}"></div></div>
+      ${flags.map(x=>`<span class="flag">${esc(x)}</span>`).join("")}
+      ${ts.length>1?`<button class="x" data-deltask="${i}" aria-label="Remove task ${i+1}">×</button>`:""}</div>`;}).join("")}</div>
+  <button class="btn small addrow" id="addtask">+ Add a task</button><div id="routesum"></div>`;
+  routeSummary();
+}
+function routeSummary(){
+  const box=$("#routesum"); if(!box) return; const ts=rowsOf("tasks");
+  let last=null,li=-1; ts.forEach((t,i)=>{ const r=realOf(t); if(r&&(last==null||pd(r)>last)){ last=pd(r); li=i; } });
+  if(last==null){ box.innerHTML=""; return; }
+  const chain=[]; let c=li, guard=0; while(c!==""&&c!==undefined&&ts[c]&&guard++<50){ chain.unshift(ts[c].name||`Task ${+c+1}`); c=ts[c].after; }
+  const dl=pd(S.deadline), late=dl!=null&&last>dl;
+  box.innerHTML=`<div class="summary ${late?"flag":"ok"}" style="margin-top:12px">Realistic finish for the whole project: ${nice(fd(last))}${S.deadline?`. Deadline: ${nice(S.deadline)}. ${late?"That's past your deadline. Look at your longest chain, your minimum summit, or your deadline.":"You're inside your deadline."}`:". Add a deadline in Base Camp to check it."}${chain.length>1?`<br>Your longest chain: ${chain.map(esc).join(" → ")}`:""}</div>`;
+}
+function actualsRender(){
+  const box=$("#actuals-wrap"); if(!box) return;
+  const ts=rowsOf("tasks").filter(t=>t.name||t.start);
+  let plan=0,act=0; const rows=ts.map(t=>{ const a=pd(t.start),f=pd(t.finish),x=pd(t.actual); let m="";
+    if(a!=null&&f!=null&&x!=null&&f>a){ const p=(f-a)/DAY, q=Math.max(0,(x-a)/DAY); plan+=p; act+=q; m="×"+(q/p).toFixed(1); }
+    return `<tr><td>${esc(t.name||"")}</td><td>${nice(t.start)}</td><td>${nice(t.finish)}</td><td>${t.actual?nice(t.actual):`<span style="color:var(--red)">Not recorded</span>`}</td><td>${m}</td></tr>`; }).join("");
+  const measured=plan?(act/plan):null;
+  box.innerHTML=`<span class="lab">My estimates vs. reality</span><span class="help">Compare your guesses from The Route with what actually happened. Missing a date? Add it in The Route (Actual finish).</span>
+  ${ts.length?`<table class="tt"><thead><tr><th>Task</th><th>Start</th><th>My guess</th><th>Actual</th><th>Took</th></tr></thead><tbody>${rows}</tbody></table>`:`<p class="help">No tasks yet.</p>`}
+  <div class="grid2"><div class="note" style="margin:0"><b>My measured TIME</b><div class="big">${measured?"×"+measured.toFixed(1):"–"}</div><span class="help" style="margin:0">I planned with ×${TIMEV()}.</span></div>
+  ${fieldHTML(A("nexttime","My TIME for next time, and why","What will you set your TIME to on your next project?",{lemon:"×1.8. Everything took longer when Sam got bored.",film:"×2. Editing always takes longer than I think."}))}</div>
+  ${fieldHTML(A("estimates","What surprised me about my estimates?","Which tasks took much longer (or shorter) than you guessed, and why?",{lemon:"The sign took three days, not one.",film:"Filming was faster than expected; sound fixes took forever."}))}`;
+}
+function hatWarn(){
+  const H=S.hats||{}; const empty=HATS.filter(h=>!(H[h.id]&&H[h.id].who)).map(h=>h.name);
+  const w=$("#hatwarn"); if(w) w.innerHTML=empty.length&&empty.length<HATS.length?`<span class="flag" style="margin-top:10px">Nobody is wearing: ${empty.join(", ")}.</span>`:"";
+  document.querySelectorAll(".hat[data-hat]").forEach(el=>el.classList.toggle("empty",!(H[el.dataset.hat]&&H[el.dataset.hat].who)));
+}
+function backRefs(){
+  const pb=$("#pitchback"); if(pb) pb.innerHTML=S.pitch?`<b>Your elevator pitch, from Base Camp:</b> ${esc(S.pitch)}`:`<b>Tip:</b> write your elevator pitch in Base Camp. You'll use it everywhere on Summit Day.`;
+  const lb=$("#limitback"); if(lb) lb.innerHTML=S.budget?esc(S.budget):`<span class="help" style="margin:0">Fill in your budget in Base Camp.</span>`;
+  const c=$("#f-pitch-c"); if(c){ const w=(S.pitch||"").trim().split(/\s+/).filter(Boolean).length; c.textContent=w?`${w} words${w>75?" — a 30-second pitch is usually about 75 words or fewer":""}`:""; }
+}
+function render(){
+  $("#app").innerHTML=STAGES.map(stageHTML).join("");
+  $("#nav").innerHTML=STAGES.map(s=>`<a href="#${s.id}"><span class="n">${s.num}</span>${s.title}</a>`).join("");
+  Object.keys(ROWDEFS).forEach(renderRows); tasksRender(); actualsRender(); hatWarn(); backRefs();
+  document.querySelectorAll("textarea").forEach(autoGrow);
+}
+function autoGrow(t){ t.style.height="auto"; t.style.height=Math.max(t.scrollHeight+2, t.closest(".row")?40:76)+"px"; }
+
+/* ======================= Events ======================= */
+document.addEventListener("input",e=>{
+  const el=e.target;
+  if(el.dataset.k){ S[el.dataset.k]=el.value; if(el.dataset.k==="time"){ tasksRender(); actualsRender(); } if(["pitch","budget"].includes(el.dataset.k)) backRefs(); if(el.dataset.k==="deadline") routeSummary(); }
+  else if(el.dataset.hat&&el.dataset.hk){ S.hats=S.hats||{}; S.hats[el.dataset.hat]=S.hats[el.dataset.hat]||{}; S.hats[el.dataset.hat][el.dataset.hk]=el.value; if(el.dataset.hk==="who") hatWarn(); }
+  else if(el.dataset.row){ const r=rowsOf(el.dataset.row); r[+el.dataset.i]=r[+el.dataset.i]||{}; r[+el.dataset.i][el.dataset.c]=el.value; S[el.dataset.row]=r; }
+  else if(el.dataset.task!==undefined&&el.tagName!=="SELECT"&&el.type!=="date"){ S.tasks[+el.dataset.task][el.dataset.c]=el.value; }
+  if(el.tagName==="TEXTAREA") autoGrow(el);
+  save();
+});
+document.addEventListener("change",e=>{
+  const el=e.target;
+  if(el.dataset.task!==undefined&&(el.tagName==="SELECT"||el.type==="date")){ const t=S.tasks[+el.dataset.task]; t[el.dataset.c]=el.value; if(el.dataset.c==="real"&&el.value===suggested(t)) delete t.real; tasksRender(); actualsRender(); save(); }
+  if(el.dataset.k==="deadline"){ tasksRender(); }
+  if(el.id==="ex"){ EX=el.value; render(); }
+});
+document.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  if(b.dataset.add){ const r=rowsOf(b.dataset.add); r.push({}); S[b.dataset.add]=r; renderRows(b.dataset.add); save(); }
+  else if(b.dataset.del){ const r=rowsOf(b.dataset.del); r.splice(+b.dataset.i,1); renderRows(b.dataset.del); save(); }
+  else if(b.id==="addtask"){ S.tasks.push({}); tasksRender(); save(); }
+  else if(b.dataset.deltask!==undefined){ const i=+b.dataset.deltask; S.tasks.splice(i,1); S.tasks.forEach(t=>{ if(t.after!==undefined&&t.after!==""){ const a=+t.after; if(a===i) t.after=""; else if(a>i) t.after=String(a-1); } }); tasksRender(); actualsRender(); save(); }
+});
+document.addEventListener("toggle",e=>{ const d=e.target; if(d.dataset&&d.dataset.open){ S["open-"+d.dataset.open]=d.open; save(); } },true);
+
+/* save / open / print / reset */
+$("#dl").onclick=()=>{
+  const name=(S.name||"my-project").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"my-project";
+  const blob=new Blob([JSON.stringify({summitPlan:1,saved:new Date().toISOString(),data:S},null,1)],{type:"application/json"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=`${name}-summit-plan.json`; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500);
+};
+$("#open").onclick=()=>$("#file").click();
+$("#file").onchange=async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  try{ const j=JSON.parse(await f.text()); if(!j||!j.data) throw 0; S=j.data; save(); render(); $("#saved").textContent="✓ Opened "+f.name; }
+  catch(err){ $("#saved").textContent="That file isn't a SUMMIT plan."; }
+  e.target.value="";
+};
+$("#reset").onclick=()=>{
+  const b=$("#reset");
+  if(b.dataset.sure){ S={}; save(); render(); b.textContent="Start over"; delete b.dataset.sure; $("#saved").textContent="Cleared."; window.scrollTo(0,0); }
+  else { b.dataset.sure="1"; b.textContent="Click again to erase everything"; setTimeout(()=>{ if(b.dataset.sure){ delete b.dataset.sure; b.textContent="Start over"; } },4000); }
+};
+$("#print").onclick=()=>{ buildPrint(); window.print(); };
+window.addEventListener("beforeprint",buildPrint);
+function buildPrint(){
+  const P=[]; const qa=(l,v)=>v&&String(v).trim()?`<p class="pq">${esc(l)}</p><p class="pa">${esc(v)}</p>`:"";
+  const tbl=(head,rows)=>rows.length?`<table><tr>${head.map(h=>`<th>${esc(h)}</th>`).join("")}</tr>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join("")}</tr>`).join("")}</table>`:"";
+  P.push(`<h1>${esc(S.name||"My SUMMIT plan")}</h1>${S.pitch?`<p class="pa"><i>${esc(S.pitch)}</i></p>`:""}`);
+  const walk=f=>{
+    if(f.type==="group"){ f.fields.forEach(walk); return; }
+    if(f.type==="rows"){ const rs=rowsOf(f.id).filter(r=>Object.values(r).some(v=>String(v).trim())); if(rs.length) P.push(`<p class="pq">${esc(f.label)}</p>`+tbl(f.colsDef.map(c=>c[1]),rs.map(r=>f.colsDef.map(([k])=>esc(r[k]||""))))); return; }
+    if(f.type==="hats"){ const H=S.hats||{}; const rs=HATS.filter(h=>H[h.id]&&(H[h.id].who||H[h.id].means||H[h.id].derisk)); if(rs.length) P.push(`<p class="pq">Hats</p>`+tbl(["Hat","Who","What it means here","De-risking"],rs.map(h=>[h.name,esc(H[h.id].who||""),esc(H[h.id].means||""),esc(H[h.id].derisk||"")]))); return; }
+    if(f.type==="tasks"){ const ts=rowsOf("tasks").filter(t=>t.name); P.push(qa("My TIME","×"+TIMEV())); if(ts.length) P.push(`<p class="pq">Tasks</p>`+tbl(["#","Task","After","Start","Best guess","Realistic","Actual","Who"],ts.map((t,i)=>[i+1,esc(t.name),t.after!==undefined&&t.after!==""?+t.after+1:"",nice(t.start),nice(t.finish),nice(realOf(t)),nice(t.actual),esc(t.who||"")]))); return; }
+    if(f.type==="turn"){ P.push(qa("Turnaround date",nice(S.turndate))+qa("I'll keep climbing if…",S.push)+qa("I'll reroute if…",S.reroute)+qa("I'll turn back if…",S.back)); return; }
+    if(f.type==="actuals"){ P.push(qa("My TIME for next time",S.nexttime)+qa("What surprised me about my estimates",S.estimates)); return; }
+    if(["time","pitchback"].includes(f.type)) return;
+    let v=S[f.id]; if(f.type==="date") v=nice(v); P.push(qa(f.label,v));
+  };
+  STAGES.forEach(st=>{ const before=P.length; P.push(`<h2>${st.num}. ${st.title}</h2>`+qa("Leading this stage",S["lead-"+st.id])); st.fields.forEach(walk); (st.deeper||[]).forEach(walk); if(P.length===before+1&&!S["lead-"+st.id]) P.push(`<p class="pa" style="color:#888">Not filled in yet.</p>`); });
+  $("#print-view").innerHTML=P.join("");
+}
+
+document.getElementById("yr").textContent=new Date().getFullYear();
+render();
+if(Object.keys(S).length) $("#saved").textContent="✓ Your plan is saved on this device";
+</script>
+</body>
+</html>

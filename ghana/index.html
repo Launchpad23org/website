@@ -402,7 +402,7 @@ function convenePanel(w){
 }
 function considerPanel(w){
   if(!w.topics.length) return "";
-  return `<section class="panel"><h2 class="sec">Consider</h2><div class="cs">${w.topics.map(t=>`<article class="cs-card">${t["Image (16:9)"]?`<div class="wide"><img src="${esc(imgSrc(t["Image (16:9)"]))}" alt=""></div>`:""}<div class="txt"><h3>${esc(t["Topic"])}</h3>${t["Host"]?`<p class="host">Hosted by ${esc(t["Host"])}</p>`:""}${paras(t["Description (blank line = new paragraph)"])}</div></article>`).join("")}</div></section>`;
+  return `<section class="panel"><h2 class="sec">Consider</h2><div class="cs">${w.topics.map(t=>`<article class="cs-card">${t["Image (16:9)"]?`<div class="wide"><img src="${esc(imgSrc(t["Image (16:9)"]))}" alt=""></div>`:""}<div class="txt"><h3>${esc(t["Topic"])}</h3>${t["Host"]?`<p class="host">Hosted by ${esc(t["Host"])}</p>`:""}${paras(t["Description (blank line = new paragraph)"])}${t["Button link (optional)"]?`<div class="btn-row" style="margin-top:6px"><a class="btn btn-main" href="${esc(t["Button link (optional)"])}" target="_blank" rel="noopener">${esc(t["Button text (optional)"]||"Open")}</a></div>`:""}</div></article>`).join("")}</div></section>`;
 }
 function debriefPanel(w){
   const exit=w.set["Exit ticket form"]; if(!exit) return "";
