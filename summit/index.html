@@ -257,10 +257,10 @@ const STAGES=[
 {id:"flag",num:6,title:"Keep the Flag Flying",q:"How will you keep it going, and keep it fresh?",
  quote:{en:"How we spend our days is, of course, how we spend our lives.",by:"Annie Dillard, *The Writing Life* (1989)"},
  fields:[
-  A("checkins","Check-ins","How will I check on how the project is going, with whom, and how often?",{lemon:"Every Friday with Mom, counting the jar.",film:"A Sunday-night call with the cast."})
+  A("checkins","Check-ins","How will I check on how the project is going, with whom, and how often?",{lemon:"Every Friday with Mom, counting the jar.",film:"A Sunday-night call with the cast."}),
+  A("stale","Warning signs","What are the signs that it's getting stale, and what will refresh it?",{lemon:"Fewer than 10 customers in a morning. Try a new corner or a new sign.",film:"Nobody's replying in the group chat. Plan a pizza night for the cast."})
  ],
  deeper:[
-  A("stale","Warning signs","What are the signs that it's getting stale, and what will refresh it?",{lemon:"Fewer than 10 customers in a morning. Try a new corner or a new sign.",film:"Nobody's replying in the group chat. Plan a pizza night for the cast."})
  ]},
 {id:"descent",num:7,title:"Descent",q:"How will you finish faithfully and responsibly?",
  quote:{en:"You cannot stay on the summit forever; you have to come down again. So why bother in the first place? Just this: what is above knows what is below, but what is below does not know what is above. One climbs, one sees. One descends, one sees no longer, but one has seen.",by:"René Daumal, *Mount Analogue* (1952), translated by Roger Shattuck"},
@@ -271,20 +271,14 @@ const STAGES=[
  deeper:[
   A("handoff","Hand-off","Does anything continue after you stop? Who takes it over, and what do they need from you?",{lemon:"My cousin wants to run the stand next summer; I'll give her my recipe card and my notes.",film:"Upload the film so the library can keep showing it."})
  ]},
-{id:"home",num:8,title:"Trip Home",q:"What did you learn, and what will you do differently?",
+{id:"home",num:8,title:"Trip Home",q:"What did you learn, and how did you grow?",
  quote:{orig:"Det er ganske sandt, hvad Philosophien siger, at Livet maa forstaaes baglænds. Men derover glemmer man den anden Sætning, at det maa leves forlænds.",lang:"da",en:"It is perfectly true, as the philosophers say, that life must be understood backwards. But they forget the other proposition, that it must be lived forwards.",by:"Søren Kierkegaard, journal (1843), original Danish"},
  fields:[
-  {id:"aargroup",type:"group",cols:1,fields:[
-    A("aar1","What did I plan?","Look back at your summit and your route.",{}),
-    A("aar2","What actually happened?","Just the facts, good and bad.",{}),
-    A("aar3","Why the difference?","What helped, and what got in the way?",{}),
-    A("aar4","What will I do differently next time?","Pick one or two things you'll really do.",{})]},
+  A("lessons","Lessons Learned","What did you learn? What will you do differently next time?",{}),
   {id:"actuals",type:"actuals"},
-  A("self","What did I learn about myself?","The value of a project is rarely in the things done, but in the learning and growth those things generated.",{lemon:"I'm braver talking to strangers than I thought.",film:"I'm good at keeping people going, and I need help with deadlines."})
+  A("growth","Growth Achieved","How did you grow on this journey?",{})
  ],
- deeper:[
-  A("data","The numbers","What numbers can tell you how it went? What do they show?",{lemon:"$186 raised, about 140 cups sold. The hottest day was the best day.",film:"47 people came to the screening. Editing took twice as long as filming."})
- ]}
+ deeper:[]}
 ];
 
 /* ======================= State ======================= */
@@ -453,11 +447,10 @@ function actualsRender(){
     if(a!=null&&f!=null&&x!=null&&f>a){ const p=(f-a)/DAY, q=Math.max(0,(x-a)/DAY); plan+=p; act+=q; m="×"+(q/p).toFixed(1); }
     return `<tr><td>${esc(t.name||"")}</td><td>${nice(t.finish)}</td><td>${t.actual?nice(t.actual):`<span style="color:var(--red)">Not recorded</span>`}</td><td>${m}</td></tr>`; }).join("");
   const measured=plan?(act/plan):null;
-  box.innerHTML=`<span class="lab">My estimates vs. reality</span><span class="help">Compare your guesses from The Route with what actually happened. Missing a date? Add it in The Route (Actual finish).</span>
-  ${ts.length?`<table class="tt"><thead><tr><th>Task</th><th>My best guess</th><th>Actual</th><th>Took</th></tr></thead><tbody>${rows}</tbody></table>`:`<p class="help">No tasks yet.</p>`}
-  <div class="grid2"><div class="note" style="margin:0"><b>My measured TIME</b><div class="big">${measured?"×"+measured.toFixed(1):"–"}</div><span class="help" style="margin:0">I planned with ×${TIMEV()}.</span></div>
-  ${fieldHTML(A("nexttime","My TIME for next time, and why","What will you set your TIME to on your next project?",{lemon:"×1.8. Everything took longer when Sam got bored.",film:"×2. Editing always takes longer than I think."}))}</div>
-  ${fieldHTML(A("estimates","What surprised me about my estimates?","Which tasks took much longer (or shorter) than you guessed, and why?",{lemon:"The sign took three days, not one.",film:"Filming was faster than expected; sound fixes took forever."}))}`;
+  box.innerHTML=`<span class="lab">My TIME Factor</span><span class="help">How long things really took, compared with your best guesses.</span>
+  ${ts.length&&measured?`<table class="tt"><thead><tr><th>Task</th><th>My best guess</th><th>Actual</th><th>Took</th></tr></thead><tbody>${rows}</tbody></table>
+  <div class="note" style="margin:0"><div class="big">×${measured.toFixed(1)}</div><span class="help" style="margin:0">I planned with ×${TIMEV()}. Use ×${measured.toFixed(1)} as your TIME factor on your next project.</span></div>`
+  :`<p class="help">Once you record actual finish dates in The Route, your real TIME factor appears here. (You planned with ×${TIMEV()}.)</p>`}`;
   titleCaseAll(box);
 }
 function hatWarn(){
@@ -537,7 +530,7 @@ function buildPrint(){
     if(f.type==="hats"||f.type==="subhead"){ if(f.type==="subhead") P.push(`<p class="pq" style="font-size:12pt">${esc(f.label)}</p>`); return; }
     if(f.type==="tasks"){ const all=rowsOf("tasks"); const ts=byDate(all.filter(t=>t.name)); P.push(qa("My TIME factor","×"+TIMEV())); if(ts.length) P.push(`<p class="pq">Tasks (in order of due date)</p>`+tbl(["Task","Can't start until","Due range","Actual finish","Who","Notes"],ts.map(t=>[esc(t.name),t.after!==undefined&&t.after!==""&&all[+t.after]?esc(all[+t.after].name||""):"",[nice(t.finish),nice(realOf(t))].filter(Boolean).join(" to "),nice(t.actual),esc(t.who||""),esc(t.notes||"")]))); return; }
     if(f.type==="turn"){ P.push(qa("I'll keep climbing if…",S.push)+qa("I'll reroute if…",S.reroute)+qa("I'll turn back if…",S.back)); return; }
-    if(f.type==="actuals"){ P.push(qa("My TIME for next time",S.nexttime)+qa("What surprised me about my estimates",S.estimates)); return; }
+    if(f.type==="actuals"){ let pl=0,ac=0; rowsOf("tasks").forEach(t=>{ const a=pd(baseOf(t)),f2=pd(t.finish),x=pd(t.actual); if(a!=null&&f2!=null&&x!=null&&f2>a){ pl+=(f2-a)/DAY; ac+=Math.max(0,(x-a)/DAY); } }); if(pl) P.push(qa("My measured TIME factor","×"+(ac/pl).toFixed(1)+" (planned with ×"+TIMEV()+")")); return; }
     if(["time","pitchback"].includes(f.type)) return;
     let v=S[f.id]; if(f.type==="date") v=nice(v); P.push(qa(f.label,v));
   };
