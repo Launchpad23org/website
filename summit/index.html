@@ -122,6 +122,9 @@ details.deeper .in{padding-top:14px}
 .task .meta{display:grid;grid-template-columns:2fr 1.3fr;gap:8px}
 .task .dates{display:grid;grid-template-columns:2fr 1fr;gap:8px;align-items:start}
 .task .pair{display:flex;align-items:center;gap:8px}
+.task .pair input{flex:1;min-width:0}
+.row>div,.task .meta>div,.task .dates>div{min-width:0}
+.row input,.row select,.row textarea{max-width:100%;min-width:0}
 .task .pair span{color:var(--muted)}
 .task .sub{display:block;color:var(--muted);font-style:italic;margin-top:2px}
 .rl .nb{font-weight:400}
@@ -147,7 +150,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 40px;text-align:center
 }
 @media print{
   body{background:#fff;font-size:11pt}
-  .top,.hero,.intro,#app,footer{display:none!important}
+  .top,.hero,.titlebox,.intro,#app,footer{display:none!important}
   #print-view{display:block}
   #print-view h1{font-size:20pt;margin:0 0 4pt}
   #print-view h2{font-size:14pt;margin:16pt 0 6pt;border-bottom:1.5pt solid var(--navy);padding-bottom:2pt;break-after:avoid}
@@ -528,14 +531,14 @@ function buildPrint(){
   const walk=f=>{
     if(f.type==="group"){ f.fields.forEach(walk); return; }
     if(f.type==="rows"){ const rs=rowsOf(f.id).filter(r=>Object.values(r).some(v=>String(v).trim())); if(rs.length) P.push(`<p class="pq">${esc(f.label)}</p>`+tbl(f.colsDef.map(c=>c[1].replace("|"," ")),rs.map(r=>f.colsDef.map(([k,l,t])=>t==="date"?nice(r[k]):esc(r[k]||""))))); return; }
-    if(f.type==="hats"||f.type==="subhead"){ if(f.type==="subhead") P.push(`<p class="pq" style="font-size:12pt">${esc(f.label)}</p>`); return; }
+    if(f.type==="hats"||f.type==="subhead"){ if(f.type==="subhead"&&(rowsOf("members").some(r=>Object.values(r).some(v=>String(v).trim()))||S.derisk)) P.push(`<p class="pq" style="font-size:12pt">${esc(f.label)}</p>`); return; }
     if(f.type==="tasks"){ const all=rowsOf("tasks"); const ts=byDate(all.filter(t=>t.name)); P.push(qa("My TIME factor","×"+TIMEV())); if(ts.length) P.push(`<p class="pq">Tasks (in order of due date)</p>`+tbl(["Task","Can't start until","Due range","Actual finish","Who","Notes"],ts.map(t=>[esc(t.name),t.after!==undefined&&t.after!==""&&all[+t.after]?esc(all[+t.after].name||""):"",[nice(t.finish),nice(realOf(t))].filter(Boolean).join(" to "),nice(t.actual),esc(t.who||""),esc(t.notes||"")]))); return; }
     if(f.type==="turn"){ P.push(qa("I'll keep climbing if…",S.push)+qa("I'll reroute if…",S.reroute)+qa("I'll turn back if…",S.back)); return; }
     if(f.type==="actuals"){ let pl=0,ac=0; rowsOf("tasks").forEach(t=>{ const a=pd(baseOf(t)),f2=pd(t.finish),x=pd(t.actual); if(a!=null&&f2!=null&&x!=null&&f2>a){ pl+=(f2-a)/DAY; ac+=Math.max(0,(x-a)/DAY); } }); if(pl) P.push(qa("My measured TIME factor","×"+(ac/pl).toFixed(1)+" (planned with ×"+TIMEV()+")")); return; }
     if(["time","pitchback"].includes(f.type)) return;
     let v=S[f.id]; if(f.type==="date") v=nice(v); P.push(qa(f.label,v));
   };
-  STAGES.forEach(st=>{ const before=P.length; P.push(`<h2>${STAGES.indexOf(st)+1}. ${st.title}</h2>`+qa("Leading this stage",S["lead-"+st.id])); st.fields.forEach(walk); (st.deeper||[]).forEach(walk); if(P.length===before+1&&!S["lead-"+st.id]) P.push(`<p class="pa" style="color:#888">Not filled in yet.</p>`); });
+  STAGES.forEach((st,si)=>{ const before=P.length; P.push(""); if(!st.noLead) P.push(qa("Leading this stage",S["lead-"+st.id])); st.fields.forEach(walk); (st.deeper||[]).forEach(walk); const body=P.splice(before).join(""); P.push(`<h2>${si+1}. ${st.title}</h2>`+(body.trim()?body:`<p class="pa" style="color:#888">Not filled in yet.</p>`)); });
   $("#print-view").innerHTML=P.join("");
 }
 
