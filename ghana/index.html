@@ -408,7 +408,7 @@ function debriefPanel(w){
   const exit=w.set["Exit ticket form"]; if(!exit) return "";
   const topics=w.topics.length?w.topics:[{"Topic":"Launchpad23"}];
   return `<section class="panel debrief"><h2 class="sec">Launch Debrief</h2><img class="db-img" src="${esc(imgSrc("debrief.jpg"))}" alt="The L23 Debrief">
-  <p>Before you go, tell us how today went. Click the topic you joined:</p><div class="btn-row" style="justify-content:center">${topics.map(t=>`<a class="btn btn-main" href="${esc(formLink(exit,{TOPIC:t["Topic"]}))}" target="_blank" rel="noopener">${esc(t["Topic"])}</a>`).join("")}</div></section>`;
+  <p>Before you go, tell us how today went. Click the topic you joined:</p><div class="btn-row" style="justify-content:center">${topics.map(t=>`<a class="btn btn-main" href="${esc(formLink(exit,{TOPIC:t["Topic"]}))}" target="_blank" rel="noopener">${esc(String(t["Topic"]).split(":")[0].trim())}${t["Host"]?` (${esc(t["Host"])})`:""}</a>`).join("")}</div></section>`;
 }
 async function home(){
   const d=await load();
