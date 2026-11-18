@@ -90,6 +90,7 @@ details.deeper .in{padding-top:14px}
 .row{display:grid;gap:8px;background:var(--soft);border-radius:12px;padding:10px;position:relative}
 .row input,.row textarea,.row select{width:100%;border:1px solid var(--line);border-radius:8px;padding:7px 9px;background:#fff;font-size:.95rem}
 .row textarea{min-height:40px;resize:vertical}
+.field .row input[type=date]{border:1px solid var(--line);border-radius:8px;padding:6px 9px}
 .row .rl{display:block;font-size:.75rem;font-weight:700;color:var(--muted);margin:0 0 2px}
 .row .x{position:absolute;top:4px;right:6px;border:0;background:none;color:var(--muted);font-size:1.1rem;cursor:pointer;line-height:1}
 .addrow{align-self:flex-start;margin-top:4px}
@@ -229,7 +230,6 @@ const STAGES=[
  quote:{en:"Plans are worthless, but planning is everything.",by:"Dwight D. Eisenhower (1957), quoting an old Army saying"},
  fields:[
   {id:"time",type:"time"},
-  R("first","First steps","What are the very first things I need to do to get going?",[["step","Step"]],{lemon:["Ask my parents"],film:["Finish the script"]},{min:3,cols:"1fr",quote:{orig:"千里之行，始于足下",lang:"zh",tr:"qiān lǐ zhī xíng, shǐ yú zú xià",en:"A journey of a thousand li starts beneath one's feet.",by:"Laozi, *Tao Te Ching*, chapter 64",note:"A li is a traditional Chinese measure of distance, about half a kilometer today."}}),
   {id:"tasks",type:"tasks",label:"Tasks",help:"Add each task with your best guess for its dates. The realistic finish fills in from your TIME, and you can change it. Red flags appear if a range is tighter than your TIME suggests, if it runs past your deadline, or if a task starts before the task it depends on is done."},
  ],
  deeper:[]},
@@ -249,10 +249,10 @@ const STAGES=[
  fields:[
   {id:"pitchback",type:"pitchback"},
   A("launch","Your launch","How do I give my project the best possible introduction to the world?",{lemon:"Opening day with balloons and a free first cup for little kids.",film:"A screening at the library on its last day."}),
-  R("comms","Who needs to hear about it?","Your communication plan.",[["who","Who"],["how","How (where they'll see or hear it)"],["when","When"]],{lemon:["Neighbors","Flyers in mailboxes","The Wednesday before"],film:["Library visitors","A poster at the front desk","Two weeks before"]},{min:2,cols:"1fr 1fr 1fr"})
+  R("comms","Who needs to hear about it?","Your communication plan.",[["who","Who"],["how","How|(where they'll see or hear it)"],["when","When","date"]],{lemon:["Neighbors","Flyers in mailboxes","The Wednesday before"],film:["Library visitors","A poster at the front desk","Two weeks before"]},{min:2,cols:"1fr 1fr 1fr"})
  ],
  deeper:[
-  R("launchlist","Launch-day checklist","Everything that has to be ready on the day.",[["item","Item"],["who","Who"]],{lemon:["Ice","Sam"],film:["Projector and cable","Me"]},{min:3,cols:"2fr 1fr"})
+  R("launchlist","Launch-day checklist","Everything that has to be ready on the day.",[["item","Item"],["who","Who is responsible?"]],{lemon:["Ice","Sam"],film:["Projector and cable","Me"]},{min:3,cols:"2fr 1fr"})
  ]},
 {id:"flag",num:6,title:"Keep the Flag Flying",q:"How will you keep it going, and keep it fresh?",
  quote:{en:"How we spend our days is, of course, how we spend our lives.",by:"Annie Dillard, *The Writing Life* (1989)"},
@@ -410,7 +410,8 @@ function renderRows(id){
 function colHTML(f,r,i){
   return f.colsDef.map(([k,l,t],ci)=>t==="hat"
    ?`<div><span class="rl">${esc(l)}</span><select data-row="${f.id}" data-i="${i}" data-c="${k}"><option value="">Choose</option>${HATS.map(h=>`<option${r[k]===h.name?" selected":""}>${h.name}</option>`).join("")}</select></div>`
-   :`<div><span class="rl">${esc(l)}</span><textarea rows="1" data-row="${f.id}" data-i="${i}" data-c="${k}" placeholder="${i===0&&EX&&f.ex&&f.ex[EX]?esc(f.ex[EX][ci]||""):""}">${esc(r[k]||"")}</textarea></div>`).join("")+(f.id==="members"&&i===0?"":"");
+   :t==="date"?`<div><span class="rl">${esc(l)}</span><input type="date" data-row="${f.id}" data-i="${i}" data-c="${k}" value="${esc(r[k]||"")}"></div>`
+   :`<div><span class="rl">${l.includes("|")?`${esc(l.split("|")[0])} <span class="nb">${esc(l.split("|")[1])}</span>`:esc(l)}</span><textarea rows="1" data-row="${f.id}" data-i="${i}" data-c="${k}" placeholder="${i===0&&EX&&f.ex&&f.ex[EX]?esc(f.ex[EX][ci]||""):""}">${esc(r[k]||"")}</textarea></div>`).join("")+(f.id==="members"&&i===0?"":"");
 }
 
 /* tasks */
@@ -468,7 +469,7 @@ function hatWarn(){
   w.innerHTML=used.size&&empty.length?`<span class="flag" style="margin-top:10px">No one has these as a primary hat: ${empty.join(", ")}. Someone will need to wear them too; plan for that under Hats at Risk.</span>`:"";
 }
 function backRefs(){
-  const pb=$("#pitchback"); if(pb) pb.innerHTML=S.pitch?`<b>Your elevator pitch, from Base Camp:</b> ${esc(S.pitch)}`:`<b>Tip:</b> write your elevator pitch in Base Camp. You'll use it everywhere on Summit Day.`;
+  const pb=$("#pitchback"); if(pb){ pb.hidden=!S.pitch; pb.innerHTML=S.pitch?`<b>Your elevator pitch, from Base Camp:</b> ${esc(S.pitch)}`:""; }
   const lb=$("#limitback"); if(lb) lb.innerHTML=S.budget?esc(S.budget):`<span class="help" style="margin:0">Fill in your budget in Base Camp.</span>`;
   const c=$("#f-pitch-c"); if(c){ const w=(S.pitch||"").trim().split(/\s+/).filter(Boolean).length; c.textContent=w?`${w} words${w>75?" — a 30-second pitch is usually about 75 words or fewer":""}`:""; }
 }
@@ -494,6 +495,7 @@ document.addEventListener("change",e=>{
   const el=e.target;
   if(el.dataset.task!==undefined&&(el.tagName==="SELECT"||el.type==="date")){ const t=S.tasks[+el.dataset.task]; t[el.dataset.c]=el.value; if(el.dataset.c==="finish"&&el.value&&!t.planned) t.planned=todayISO(); if(el.dataset.c==="real"&&el.value===suggested(t)) delete t.real; tasksRender(); actualsRender(); save(); }
   if(el.dataset.k==="deadline"){ tasksRender(); }
+  if(el.dataset.row&&el.type==="date"){ const r=rowsOf(el.dataset.row); r[+el.dataset.i]=r[+el.dataset.i]||{}; r[+el.dataset.i][el.dataset.c]=el.value; S[el.dataset.row]=r; save(); }
   if(el.dataset.row&&el.tagName==="SELECT"){ const r=rowsOf(el.dataset.row); r[+el.dataset.i]=r[+el.dataset.i]||{}; r[+el.dataset.i][el.dataset.c]=el.value; S[el.dataset.row]=r; hatWarn(); save(); }
   if(el.id==="jump"&&el.value){ document.getElementById(el.value).scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); el.value=""; }
 });
@@ -532,7 +534,7 @@ function buildPrint(){
   P.push(`<h1>${esc(S.name||"My Summit plan")}</h1>${S.pitch?`<p class="pa"><i>${esc(S.pitch)}</i></p>`:""}`);
   const walk=f=>{
     if(f.type==="group"){ f.fields.forEach(walk); return; }
-    if(f.type==="rows"){ const rs=rowsOf(f.id).filter(r=>Object.values(r).some(v=>String(v).trim())); if(rs.length) P.push(`<p class="pq">${esc(f.label)}</p>`+tbl(f.colsDef.map(c=>c[1]),rs.map(r=>f.colsDef.map(([k])=>esc(r[k]||""))))); return; }
+    if(f.type==="rows"){ const rs=rowsOf(f.id).filter(r=>Object.values(r).some(v=>String(v).trim())); if(rs.length) P.push(`<p class="pq">${esc(f.label)}</p>`+tbl(f.colsDef.map(c=>c[1].replace("|"," ")),rs.map(r=>f.colsDef.map(([k,l,t])=>t==="date"?nice(r[k]):esc(r[k]||""))))); return; }
     if(f.type==="hats"||f.type==="subhead"){ if(f.type==="subhead") P.push(`<p class="pq" style="font-size:12pt">${esc(f.label)}</p>`); return; }
     if(f.type==="tasks"){ const all=rowsOf("tasks"); const ts=byDate(all.filter(t=>t.name)); P.push(qa("My TIME factor","×"+TIMEV())); if(ts.length) P.push(`<p class="pq">Tasks (in order of due date)</p>`+tbl(["Task","Can't start until","Due range","Actual finish","Who","Notes"],ts.map(t=>[esc(t.name),t.after!==undefined&&t.after!==""&&all[+t.after]?esc(all[+t.after].name||""):"",[nice(t.finish),nice(realOf(t))].filter(Boolean).join(" to "),nice(t.actual),esc(t.who||""),esc(t.notes||"")]))); return; }
     if(f.type==="turn"){ P.push(qa("I'll keep climbing if…",S.push)+qa("I'll reroute if…",S.reroute)+qa("I'll turn back if…",S.back)); return; }
