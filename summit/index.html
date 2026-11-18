@@ -94,7 +94,9 @@ details.deeper .in{padding-top:14px}
 .addrow{align-self:flex-start;margin-top:4px}
 
 /* hats */
-.hats{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
+.hatlist{margin:4px 0 0;padding-left:22px}.hatlist li{padding:2px 0}
+.subhead{margin:30px 0 14px;padding-top:22px;border-top:2px solid var(--soft)}
+.subhead h3{color:var(--navy)}
 .hat{border:2px solid var(--line);border-radius:14px;padding:14px}
 .hat.empty{border-color:#f3c9c5}
 .hat h3{font-size:1.1rem}
@@ -152,7 +154,7 @@ footer{color:var(--muted);font-size:.85rem;padding:30px 0 40px;text-align:center
 :root{--h-page:clamp(1.8rem,4.5vw,2.6rem);--h-title:clamp(1.35rem,3vw,1.7rem)}
 #app *, .intro *, .titlebox *{font-size:1rem}
 .titlebox h1{font-size:var(--h-page)!important;font-weight:800;line-height:1.15}
-.stage h2,.stage .big,.intro h2,.titlebox p{font-size:var(--h-title)!important;font-weight:800}
+.stage h2,.stage .big,.intro h2,.titlebox p,.subhead h3{font-size:var(--h-title)!important;font-weight:800}
 @media print{#print-view *{font-size:10.5pt}#print-view h1{font-size:20pt!important}#print-view h2{font-size:14pt!important}}
 </style>
 </head>
@@ -189,7 +191,7 @@ const A=(id,label,help,ex,o={})=>Object.assign({id,type:"area",label,help,ex},o)
 const R=(id,label,help,colsDef,ex,o={})=>Object.assign({id,type:"rows",label,help,colsDef,ex,cols:"1fr"},o);
 
 const STAGES=[
-{id:"base",num:1,title:"Base Camp",q:"Where are you going, and why?",
+{id:"base",num:1,title:"Base Camp",q:"Where are you going, why, and who is coming with you?",
  quote:{orig:"Hat man sein warum? des Lebens, so verträgt man sich fast mit jedem wie?",lang:"de",en:"If you have your own why of life, you can get along with almost any how.",by:"Friedrich Nietzsche, *Twilight of the Idols* (1889), original German"},
  fields:[
   T("name","Project name","Think of a name that sells the idea to yourself and others.",{lemon:"Sunny Cups",film:"The Last Library Card"}),
@@ -202,6 +204,13 @@ const STAGES=[
     {id:"deadlinekind",type:"select",label:"Firmness",help:"Can it move?",options:["","Hard stop: it can't move","Firm, but it could move","Flexible"]},
     {id:"deadlinewho",type:"select",label:"Set By",help:"Someone else, or you?",options:["","Someone else (external)","Me (self-imposed)"]}]},
   A("budget","Budget: the most I'm willing to give","Money, time, and energy. Be specific; you'll check against this later, at your turnaround point.",{lemon:"$20 from my savings, and no more than 4 Saturdays (about 3 hours each).",film:"$0 (we'll use phones we have), two filming weekends, and about 4 hours a week of editing until February."})
+,
+  {id:"teamhead",type:"subhead",label:"The Team",quote:{en:"Alone we can do so little; together we can do so much.",by:"Helen Keller"}},
+  {id:"hats",type:"hats",label:"Every Project Needs Every Hat Worn"},
+  R("members","Team Members","Ideally, who would the team include? How will you recruit them?",[["name","Name"],["hat","Primary hat","hat"],["needed","Needed by (date or stage)"],["committed","Committed? / How I'll recruit them"],["strengths","Strengths"],["watch","Things to monitor"]],{lemon:["Sam (my brother)","","First Saturday","Yes","Loud and friendly; great at waving people over","Gets bored after an hour"],film:["Priya","","Filming weekend 1","Asking her at lunch on Monday","Steady hands; owns a tripod","Has soccer on Sundays"]},{cols:"1fr",min:1,add:"Add a team member"}),
+  A("derisk","Hats at Risk","Is any hat unclaimed, or worn by someone for whom it isn't a strength (or who is already wearing several)? How will you de-risk it?",{lemon:"I'm the Checker, but I rush. Mom will check my change-counting the first Saturday.",film:"I'm the Guide and the Maker, so a friend will watch every cut and tell me if we've drifted from the story."}),
+  A("ksa","Missing Knowledge, Skills, and Abilities","What does this project need that nobody on your team knows or can do yet? Think about tools or software, technical know-how, safety, money and budgeting, design, writing, people skills, and special equipment. For each one: will you learn it, borrow it (find an expert), or work around it? What would that cost in time, money, or favors?",{lemon:"Pricing: borrow it, by asking a neighbor who has run a stand (cost: an hour of her time and a free lemonade).",film:"Recording clean sound: learn it from a free video, and borrow a microphone from the theater club."}),
+  R("yes","Who Needs to Say Yes?","Every project needs permission from someone. Who serves as a gatekeeper for your project?",[["who","Gatekeeper"],["worry","What will worry them?"],["address","How can I address that worry?"],["inspire","What will inspire them?"]],{lemon:["My parents","Safety; being near the street","Set up on our lawn, with Dad nearby","Seeing me plan the whole thing myself"],film:["The librarian","Noise, and blocking the aisles","Film before opening hours","A film that celebrates the library"]},{cols:"1fr",min:1,add:"Add a gatekeeper"})
  ],
  deeper:[
   A("audience","Audience","Every project serves someone, even if it's only you. Who will use it, see it, or benefit?",{lemon:"Neighbors walking to the park, and the animals at the shelter.",film:"People in our town who love the library, and other kids who want to make films."}),
@@ -209,18 +218,6 @@ const STAGES=[
     A("scopein","In scope","What this project includes.",{lemon:"Lemonade, cups, a sign, a donation jar.",film:"Script, filming, editing, music, a screening."}),
     A("scopeout","Not doing","What you are deliberately leaving out.",{lemon:"No food, no deliveries, no second location.",film:"No special effects, no extra locations, no sequel (yet)."})]}
  ]},
-{id:"team",num:2,title:"The Team",q:"Who is climbing with you, and who needs to say yes?",
- quote:{en:"Alone we can do so little; together we can do so much.",by:"Helen Keller"},
- fields:[
-  {id:"hats",type:"hats",label:"Every project needs every hat worn",help:"On a small project, one person may wear several hats, or all of them. That's fine, but any hat that isn't someone's strength (or that someone wears on top of others) needs a de-risking plan."},
-  R("members","Team members","Ideally, who would the team include? How will you recruit them?",[["name","Name"],["needed","Needed by (date or stage)"],["committed","Committed? / How I'll recruit them"],["strengths","Strengths"],["watch","Things to monitor"]],{lemon:["Sam (my brother)","First Saturday","Yes","Loud and friendly; great at waving people over","Gets bored after an hour"],film:["Priya","Filming weekend 1","Asking her at lunch on Monday","Steady hands; owns a tripod","Has soccer on Sundays"]},{cols:"1fr 1fr",min:1})
-,
-  {id:"specgroup",type:"group",cols:1,fields:[
-    A("specneed","Specialist","Do you need one? Is there a skill your project needs that nobody on the team has? Would an expert make the project much better, even if you don't strictly need one?",{lemon:"Not strictly, but someone who has run a stand could help me price it.",film:"Yes: sound. Bad audio ruins films, and none of us knows how to record it well."}),
-    A("speccost","Specialist Cost","What would one cost? Money, time, favors, or giving up some control. Who could it be?",{lemon:"An hour of my neighbor's time, and a free lemonade.",film:"I'd edit our sound person's video in trade. Maybe Mr. Ortiz from the theater club."})]},
-  R("yes","Who needs to say yes?","Think through the logic of each person who could say no, instead of just trying to talk them into it.",[["who","Who needs to say yes?"],["worry","What will worry them?"],["address","How can I address that worry?"],["inspire","What will inspire them?"]],{lemon:["My parents","Safety; being near the street","Set up on our lawn, with Dad nearby","Seeing me plan the whole thing myself"],film:["The librarian","Noise, and blocking the aisles","Film before opening hours","A film that celebrates the library"]},{cols:"1fr 1fr",min:1,quote:{en:"Seek first to understand, then to be understood.",by:"Stephen R. Covey, *The 7 Habits of Highly Effective People* (1989)"}})
- ],
- deeper:[]},
 {id:"route",num:3,title:"The Route",q:"What are the steps, and how long will they really take?",
  quote:{en:"Plans are worthless, but planning is everything.",by:"Dwight D. Eisenhower (1957), quoting an old Army saying"},
  fields:[
@@ -355,23 +352,20 @@ function ph(f){ return (EX&&f.ex&&f.ex[EX])?f.ex[EX]:""; }
 function fieldHTML(f){
   if(f.type==="group") return `<div class="grid${f.cols}">${f.fields.map(fieldHTML).join("")}</div>`;
   if(f.type==="hats") return hatsHTML(f);
+  if(f.type==="subhead") return `<div class="subhead"><h3>${esc(f.label)}</h3></div>${quoteHTML(f.quote)}`;
   if(f.type==="tasks") return `<div class="field" id="tasks-wrap"></div>`;
   if(f.type==="actuals") return `<div class="field" id="actuals-wrap"></div>`;
   if(f.type==="turn") return turnHTML();
   if(f.type==="time") return timeHTML();
   if(f.type==="pitchback") return `<div class="pitchback" id="pitchback"></div>`;
-  if(f.type==="rows") return `<div class="field">${f.quote?quoteHTML(f.quote):""}<span class="lab">${esc(f.label)}</span><span class="help">${esc(f.help||"")}</span><div class="rows" id="rows-${f.id}"></div><button class="btn small addrow" data-add="${f.id}">+ Add a row</button></div>`;
+  if(f.type==="rows") return `<div class="field">${f.quote?quoteHTML(f.quote):""}<span class="lab">${esc(f.label)}</span><span class="help">${esc(f.help||"")}</span><div class="rows" id="rows-${f.id}"></div><button class="btn small addrow" data-add="${f.id}">+ ${esc(f.add||"Add a row")}</button></div>`;
   const v=esc(S[f.id]||""), id=`f-${f.id}`, help=f.help?`<span class="help" id="${id}-h">${esc(f.help)}</span>`:"";
   if(f.type==="area") return `<div class="field"><label for="${id}">${esc(f.label)}</label>${help}<textarea id="${id}" data-k="${f.id}" aria-describedby="${id}-h" placeholder="${esc(ph(f))}">${v}</textarea>${f.counter?`<div class="count" id="${id}-c"></div>`:""}</div>`;
   if(f.type==="select") return `<div class="field"><label for="${id}">${esc(f.label)}</label>${help}<select id="${id}" data-k="${f.id}">${f.options.map(o=>`<option${o===S[f.id]?" selected":""} value="${esc(o)}">${esc(o||"Choose…")}</option>`).join("")}</select></div>`;
   return `<div class="field"><label for="${id}">${esc(f.label)}</label>${help}<input type="${f.type}" id="${id}" data-k="${f.id}" value="${v}" placeholder="${esc(ph(f))}"></div>`;
 }
 function hatsHTML(f){
-  const H=S.hats||{};
-  return `<div class="field"><span class="lab">${esc(f.label)}</span><span class="help">${esc(f.help)}</span><div class="hats">${HATS.map(h=>{const v=H[h.id]||{};return `<div class="hat" data-hat="${h.id}"><h3>${h.name}</h3><p class="what">${h.what}</p><p class="watch">${h.watch}</p>
-  <input data-hat="${h.id}" data-hk="who" value="${esc(v.who)}" placeholder="Who's wearing this hat?" aria-label="${h.name}: who">
-  <textarea data-hat="${h.id}" data-hk="means" placeholder="In this project, this hat means…" aria-label="${h.name}: what it means here">${esc(v.means)}</textarea>
-  <textarea data-hat="${h.id}" data-hk="derisk" placeholder="Not their strength, or one of many hats? How will you de-risk it?" aria-label="${h.name}: de-risking plan">${esc(v.derisk)}</textarea></div>`;}).join("")}</div><div id="hatwarn"></div></div>`;
+  return `<div class="field"><span class="lab">${esc(f.label)}</span><ul class="hatlist">${HATS.map(h=>`<li><b>${h.name}:</b> ${h.what}</li>`).join("")}</ul></div>`;
 }
 function timeHTML(){
   const v=S.time||"1.5";
@@ -390,11 +384,11 @@ function turnHTML(){
   <div class="grid3">${[["push","I'll keep climbing if…",{lemon:"sales are slow but the shelter still needs the money.",film:"scenes are slow to shoot but the story still works."}],["reroute","I'll reroute if…",{lemon:"I've spent more than $30: I'll do two Saturdays instead of four.",film:"editing isn't done by Feb 15: I'll make the three-minute cut."}],["back","I'll turn back if…",{lemon:"my family needs me home on Saturdays.",film:"the library won't let us film: I'll pause and find a new story."}]].map(([k,l,ex])=>fieldHTML(A(k,l,"",ex))).join("")}</div></div>`;
 }
 function stageHTML(st){
-  const deeper=st.deeper&&st.deeper.length?`<details class="deeper"${S["open-"+st.id]?" open":""} data-open="${st.id}"><summary>Go deeper</summary><div class="in">${st.deeper.map(fieldHTML).join("")}</div></details>`:"";
+  const lead=`<div class="field"><label for="f-lead-${st.id}">Who Is Leading This Stage?</label><span class="help">Now that you've thought it through: who will lead ${esc(st.title)}?</span><input type="text" id="f-lead-${st.id}" data-k="lead-${st.id}" value="${esc(S["lead-"+st.id]||"")}"></div>`;
+  const deeper=`<details class="deeper"${S["open-"+st.id]?" open":""} data-open="${st.id}"><summary>Go deeper</summary><div class="in">${(st.deeper||[]).map(fieldHTML).join("")}${lead}</div></details>`;
   return `<section class="stage" id="${st.id}"><div class="strip">${strip(st.id)}</div><div class="stage-body">
   <h2>${st.title}</h2><p class="q">${st.q}</p>${quoteHTML(st.quote)}
-  ${st.fields.map(fieldHTML).join("")}${deeper}
-  <div class="field lead-end"><label for="f-lead-${st.id}">Who Is Leading This Stage?</label><span class="help">Now that you've thought it through: who will lead ${esc(st.title)}?</span><input type="text" id="f-lead-${st.id}" data-k="lead-${st.id}" value="${esc(S["lead-"+st.id]||"")}"></div></div></section>`;
+  ${st.fields.map(fieldHTML).join("")}${deeper}</div></section>`;
 }
 function allFields(){ const out=[]; const walk=f=>{ if(f.type==="group") f.fields.forEach(walk); else out.push(f); }; STAGES.forEach(s=>{ s.fields.forEach(walk); (s.deeper||[]).forEach(walk); }); return out; }
 const ROWDEFS=Object.fromEntries(allFields().filter(f=>f.type==="rows").map(f=>[f.id,f]));
@@ -403,10 +397,12 @@ function renderRows(id){
   const f=ROWDEFS[id], box=$("#rows-"+id); if(!box) return;
   let rows=rowsOf(id); while(rows.length<(f.min||1)) rows.push({}); S[id]=rows;
   box.innerHTML=rows.map((r,i)=>`<div class="row" style="grid-template-columns:${f.cols||"1fr"}">${colHTML(f,r,i)}${rows.length>(f.min||1)?`<button class="x" data-del="${id}" data-i="${i}" aria-label="Remove this row">×</button>`:""}</div>`).join("");
-  titleCaseAll(box);
+  titleCaseAll(box); if(id==="members") hatWarn();
 }
 function colHTML(f,r,i){
-  return f.colsDef.map(([k,l],ci)=>`<div><span class="rl">${esc(l)}</span><textarea rows="1" data-row="${f.id}" data-i="${i}" data-c="${k}" placeholder="${i===0&&EX&&f.ex&&f.ex[EX]?esc(f.ex[EX][ci]||""):""}">${esc(r[k]||"")}</textarea></div>`).join("");
+  return f.colsDef.map(([k,l,t],ci)=>t==="hat"
+   ?`<div><span class="rl">${esc(l)}</span><select data-row="${f.id}" data-i="${i}" data-c="${k}"><option value="">Choose</option>${HATS.map(h=>`<option${r[k]===h.name?" selected":""}>${h.name}</option>`).join("")}</select></div>`
+   :`<div><span class="rl">${esc(l)}</span><textarea rows="1" data-row="${f.id}" data-i="${i}" data-c="${k}" placeholder="${i===0&&EX&&f.ex&&f.ex[EX]?esc(f.ex[EX][ci]||""):""}">${esc(r[k]||"")}</textarea></div>`).join("")+(f.id==="members"&&i===0?"":"");
 }
 
 /* tasks */
@@ -459,9 +455,11 @@ function actualsRender(){
   titleCaseAll(box);
 }
 function hatWarn(){
-  const H=S.hats||{}; const empty=HATS.filter(h=>!(H[h.id]&&H[h.id].who)).map(h=>h.name);
-  const w=$("#hatwarn"); if(w) w.innerHTML=empty.length&&empty.length<HATS.length?`<span class="flag" style="margin-top:10px">Nobody is wearing: ${empty.join(", ")}.</span>`:"";
-  const any=empty.length<HATS.length; document.querySelectorAll(".hat[data-hat]").forEach(el=>el.classList.toggle("empty",any&&!(H[el.dataset.hat]&&H[el.dataset.hat].who)));
+  const used=new Set(rowsOf("members").map(r=>r.hat).filter(Boolean));
+  const empty=HATS.filter(h=>!used.has(h.name)).map(h=>h.name);
+  const box=$("#rows-members"); if(!box) return;
+  let w=$("#hatwarn"); if(!w){ w=document.createElement("div"); w.id="hatwarn"; const btn=box.nextElementSibling; box.parentNode.insertBefore(w,btn?btn.nextSibling:null); }
+  w.innerHTML=used.size&&empty.length?`<span class="flag" style="margin-top:10px">No one has these as a primary hat: ${empty.join(", ")}. Someone will need to wear them too; plan for that under Hats at Risk.</span>`:"";
 }
 function backRefs(){
   const pb=$("#pitchback"); if(pb) pb.innerHTML=S.pitch?`<b>Your elevator pitch, from Base Camp:</b> ${esc(S.pitch)}`:`<b>Tip:</b> write your elevator pitch in Base Camp. You'll use it everywhere on Summit Day.`;
@@ -481,8 +479,7 @@ function autoGrow(t){ t.style.height="auto"; t.style.height=Math.max(t.scrollHei
 document.addEventListener("input",e=>{
   const el=e.target;
   if(el.dataset.k){ S[el.dataset.k]=el.value; if(el.dataset.k==="time"){ tasksRender(); actualsRender(); } if(["pitch","budget"].includes(el.dataset.k)) backRefs(); if(el.dataset.k==="deadline") routeSummary(); }
-  else if(el.dataset.hat&&el.dataset.hk){ S.hats=S.hats||{}; S.hats[el.dataset.hat]=S.hats[el.dataset.hat]||{}; S.hats[el.dataset.hat][el.dataset.hk]=el.value; if(el.dataset.hk==="who") hatWarn(); }
-  else if(el.dataset.row){ const r=rowsOf(el.dataset.row); r[+el.dataset.i]=r[+el.dataset.i]||{}; r[+el.dataset.i][el.dataset.c]=el.value; S[el.dataset.row]=r; }
+  else if(el.dataset.row&&el.tagName!=="SELECT"){ const r=rowsOf(el.dataset.row); r[+el.dataset.i]=r[+el.dataset.i]||{}; r[+el.dataset.i][el.dataset.c]=el.value; S[el.dataset.row]=r; }
   else if(el.dataset.task!==undefined&&el.tagName!=="SELECT"&&el.type!=="date"){ S.tasks[+el.dataset.task][el.dataset.c]=el.value; }
   if(el.tagName==="TEXTAREA") autoGrow(el);
   save();
@@ -491,6 +488,7 @@ document.addEventListener("change",e=>{
   const el=e.target;
   if(el.dataset.task!==undefined&&(el.tagName==="SELECT"||el.type==="date")){ const t=S.tasks[+el.dataset.task]; t[el.dataset.c]=el.value; if(el.dataset.c==="real"&&el.value===suggested(t)) delete t.real; tasksRender(); actualsRender(); save(); }
   if(el.dataset.k==="deadline"){ tasksRender(); }
+  if(el.dataset.row&&el.tagName==="SELECT"){ const r=rowsOf(el.dataset.row); r[+el.dataset.i]=r[+el.dataset.i]||{}; r[+el.dataset.i][el.dataset.c]=el.value; S[el.dataset.row]=r; hatWarn(); save(); }
   if(el.id==="jump"&&el.value){ document.getElementById(el.value).scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth"}); el.value=""; }
 });
 document.addEventListener("click",e=>{
@@ -529,7 +527,7 @@ function buildPrint(){
   const walk=f=>{
     if(f.type==="group"){ f.fields.forEach(walk); return; }
     if(f.type==="rows"){ const rs=rowsOf(f.id).filter(r=>Object.values(r).some(v=>String(v).trim())); if(rs.length) P.push(`<p class="pq">${esc(f.label)}</p>`+tbl(f.colsDef.map(c=>c[1]),rs.map(r=>f.colsDef.map(([k])=>esc(r[k]||""))))); return; }
-    if(f.type==="hats"){ const H=S.hats||{}; const rs=HATS.filter(h=>H[h.id]&&(H[h.id].who||H[h.id].means||H[h.id].derisk)); if(rs.length) P.push(`<p class="pq">Hats</p>`+tbl(["Hat","Who","What it means here","De-risking"],rs.map(h=>[h.name,esc(H[h.id].who||""),esc(H[h.id].means||""),esc(H[h.id].derisk||"")]))); return; }
+    if(f.type==="hats"||f.type==="subhead"){ if(f.type==="subhead") P.push(`<p class="pq" style="font-size:12pt">${esc(f.label)}</p>`); return; }
     if(f.type==="tasks"){ const ts=rowsOf("tasks").filter(t=>t.name); P.push(qa("My TIME","×"+TIMEV())); if(ts.length) P.push(`<p class="pq">Tasks</p>`+tbl(["#","Task","After","Start","Best guess","Realistic","Actual","Who"],ts.map((t,i)=>[i+1,esc(t.name),t.after!==undefined&&t.after!==""?+t.after+1:"",nice(t.start),nice(t.finish),nice(realOf(t)),nice(t.actual),esc(t.who||"")]))); return; }
     if(f.type==="turn"){ P.push(qa("Turnaround date",nice(S.turndate))+qa("I'll keep climbing if…",S.push)+qa("I'll reroute if…",S.reroute)+qa("I'll turn back if…",S.back)); return; }
     if(f.type==="actuals"){ P.push(qa("My TIME for next time",S.nexttime)+qa("What surprised me about my estimates",S.estimates)); return; }
