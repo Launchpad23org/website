@@ -236,9 +236,7 @@ const STAGES=[
 {id:"safety",num:4,title:"Safety Check",q:"What could go wrong, and when would you turn around?",
  quote:{en:"Getting to the top is optional. Getting down is mandatory.",by:"Ed Viesturs, the first American to climb all fourteen 8,000-meter peaks without bottled oxygen"},
  fields:[
-  {id:"qgroup",type:"group",cols:1,fields:[
-    A("qc","Quality control","How will I check the work before it launches? Who outside the team will look at it?",{lemon:"A taste test with three neighbors before the first Saturday.",film:"Show the rough cut to my English teacher."}),
-    A("qa","Quality assurance","What habits or checklists will help me get it right the first time?",{lemon:"Write the recipe on a card, and count change twice.",film:"Use a shot list, and check the sound after every take."})]},
+  R("quality","Quality Control / Quality Assurance","What will you check before you launch? List each thing to check (quality control), and the habits or checklists that help you get it right the first time (quality assurance).",[["check","What to check"],["who","Who checks it"]],{lemon:["Taste test with three neighbors","Me and Mom"],film:["Sound is clear in every scene","My English teacher"]},{min:3,cols:"2fr 1fr",add:"Add a check"}),
   R("premortem","Pre-mortem","Imagine it's your deadline and the project failed. What are the most likely reasons? Then: how can you lower each risk now?",[["why","Why it failed"],["lower","How I'll lower that risk now"]],{lemon:["It rained every Saturday","Pick a backup Sunday for each week"],film:["We lost the footage","Back up every night to two places"]},{min:3,cols:"1fr 1fr"}),
   R("ifthen","If–then plans","Backup plans with a clear trigger, so you know exactly when to use them.",[["if","If…"],["then","…then I will"]],{lemon:["If we sell out before 11","Make a second batch at home"],film:["If an actor cancels","Rewrite the scene for one person"]},{min:2,cols:"1fr 1fr"}),
   {id:"turn",type:"turn"}
@@ -385,13 +383,12 @@ function timeHTML(){
 }
 function turnHTML(){
   return `<div class="field"><span class="lab" style="font-size:1.15rem;color:var(--navy)">Turnaround check</span>
-  <span class="help">Climbers decide, before they start, the time by which they'll turn back if they haven't reached the top. Decide your rules now, while you're calm, and check them on your turnaround date.</span>
-  <div class="grid2"><div class="field"><label for="f-turndate">My turnaround date</label><input type="date" id="f-turndate" data-k="turndate" value="${esc(S.turndate||"")}"></div>
-  <div class="field"><span class="lab">My limit, from Base Camp</span><div class="pitchback" id="limitback" style="margin:0"></div></div></div>
-  <p style="margin:0 0 8px;font-weight:700;color:var(--ink)">On that date, ask: is it hard, or is it wrong?</p>
+  <span class="help">Climbers decide, before they start, the time by which they'll turn back if they haven't reached the top. Decide your rules now, while you're calm, and check them whenever the climb gets hard.</span>
+  <div class="field"><span class="lab">My Limit, from Base Camp</span><div class="pitchback" id="limitback" style="margin:0"></div></div>
+  <p style="margin:0 0 8px;font-weight:700;color:var(--ink)">Ask: Is it hard, or is it wrong?</p>
   <div class="signs"><div class="hard"><b>Signs it's hard (keep climbing)</b><ul><li>Progress is slow, but it's real.</li><li>The purpose still matters to you.</li><li>You're still within your Base Camp limit.</li></ul></div>
   <div class="wrong"><b>Signs it's wrong (reroute or turn back)</b><ul><li>The purpose isn't true anymore.</li><li>It has cost more than your Base Camp limit.</li><li>Someone is getting hurt.</li><li>A better summit has appeared.</li></ul></div></div>
-  <div class="note" style="margin-bottom:12px">Never decide to turn back on your worst day. Sleep on it, or talk it through with a teammate first. Turning back well is a skill, not a failure.</div>
+
   <div class="grid3">${[["push","I'll keep climbing if…",{lemon:"sales are slow but the shelter still needs the money.",film:"scenes are slow to shoot but the story still works."}],["reroute","I'll reroute if…",{lemon:"I've spent more than $30: I'll do two Saturdays instead of four.",film:"editing isn't done by Feb 15: I'll make the three-minute cut."}],["back","I'll turn back if…",{lemon:"my family needs me home on Saturdays.",film:"the library won't let us film: I'll pause and find a new story."}]].map(([k,l,ex])=>fieldHTML(A(k,l,"",ex))).join("")}</div></div>`;
 }
 function stageHTML(st){
@@ -538,7 +535,7 @@ function buildPrint(){
     if(f.type==="rows"){ const rs=rowsOf(f.id).filter(r=>Object.values(r).some(v=>String(v).trim())); if(rs.length) P.push(`<p class="pq">${esc(f.label)}</p>`+tbl(f.colsDef.map(c=>c[1]),rs.map(r=>f.colsDef.map(([k])=>esc(r[k]||""))))); return; }
     if(f.type==="hats"||f.type==="subhead"){ if(f.type==="subhead") P.push(`<p class="pq" style="font-size:12pt">${esc(f.label)}</p>`); return; }
     if(f.type==="tasks"){ const all=rowsOf("tasks"); const ts=byDate(all.filter(t=>t.name)); P.push(qa("My TIME factor","×"+TIMEV())); if(ts.length) P.push(`<p class="pq">Tasks (in order of due date)</p>`+tbl(["Task","Can't start until","Due range","Actual finish","Who","Notes"],ts.map(t=>[esc(t.name),t.after!==undefined&&t.after!==""&&all[+t.after]?esc(all[+t.after].name||""):"",[nice(t.finish),nice(realOf(t))].filter(Boolean).join(" to "),nice(t.actual),esc(t.who||""),esc(t.notes||"")]))); return; }
-    if(f.type==="turn"){ P.push(qa("Turnaround date",nice(S.turndate))+qa("I'll keep climbing if…",S.push)+qa("I'll reroute if…",S.reroute)+qa("I'll turn back if…",S.back)); return; }
+    if(f.type==="turn"){ P.push(qa("I'll keep climbing if…",S.push)+qa("I'll reroute if…",S.reroute)+qa("I'll turn back if…",S.back)); return; }
     if(f.type==="actuals"){ P.push(qa("My TIME for next time",S.nexttime)+qa("What surprised me about my estimates",S.estimates)); return; }
     if(["time","pitchback"].includes(f.type)) return;
     let v=S[f.id]; if(f.type==="date") v=nice(v); P.push(qa(f.label,v));
