@@ -191,7 +191,7 @@ const A=(id,label,help,ex,o={})=>Object.assign({id,type:"area",label,help,ex},o)
 const R=(id,label,help,colsDef,ex,o={})=>Object.assign({id,type:"rows",label,help,colsDef,ex,cols:"1fr"},o);
 
 const STAGES=[
-{id:"base",num:1,title:"Base Camp",q:"Where are you going, why, and who is coming with you?",
+{id:"base",num:1,title:"Base Camp",q:"Where are you going, and why?",
  quote:{orig:"Hat man sein warum? des Lebens, so verträgt man sich fast mit jedem wie?",lang:"de",en:"If you have your own why of life, you can get along with almost any how.",by:"Friedrich Nietzsche, *Twilight of the Idols* (1889), original German"},
  fields:[
   T("name","Project name","Think of a name that sells the idea to yourself and others.",{lemon:"Sunny Cups",film:"The Last Library Card"}),
@@ -205,10 +205,6 @@ const STAGES=[
     {id:"deadlinewho",type:"select",label:"Set By",help:"Someone else, or you?",options:["","Someone else (external)","Me (self-imposed)"]}]},
   A("budget","Budget: the most I'm willing to give","Money, time, and energy. Be specific; you'll check against this later, at your turnaround point.",{lemon:"$20 from my savings, and no more than 4 Saturdays (about 3 hours each).",film:"$0 (we'll use phones we have), two filming weekends, and about 4 hours a week of editing until February."})
 ,
-  {id:"teamhead",type:"subhead",label:"The Team",quote:{en:"Alone we can do so little; together we can do so much.",by:"Helen Keller"}},
-  {id:"hats",type:"hats",label:"Every Project Needs Every Hat Worn"},
-  R("members","Team Members","Ideally, who would the team include? How will you recruit them?",[["name","Name"],["hat","Primary hat","hat"],["needed","Needed by (date or stage)"],["committed","Committed? / How I'll recruit them"],["strengths","Strengths"],["watch","Things to monitor"]],{lemon:["Sam (my brother)","","First Saturday","Yes","Loud and friendly; great at waving people over","Gets bored after an hour"],film:["Priya","","Filming weekend 1","Asking her at lunch on Monday","Steady hands; owns a tripod","Has soccer on Sundays"]},{cols:"1fr",min:1,add:"Add a team member"}),
-  A("derisk","Hats at Risk","Is any hat unclaimed, or worn by someone for whom it isn't a strength (or who is already wearing several)? How will you de-risk it?",{lemon:"I'm the Checker, but I rush. Mom will check my change-counting the first Saturday.",film:"I'm the Guide and the Maker, so a friend will watch every cut and tell me if we've drifted from the story."}),
   A("ksa","Missing Knowledge, Skills, and Abilities","What does this project need that nobody on your team knows or can do yet? Think about tools or software, technical know-how, safety, money and budgeting, design, writing, people skills, and special equipment. For each one: will you learn it, borrow it (find an expert), or work around it? What would that cost in time, money, or favors?",{lemon:"Pricing: borrow it, by asking a neighbor who has run a stand (cost: an hour of her time and a free lemonade).",film:"Recording clean sound: learn it from a free video, and borrow a microphone from the theater club."}),
   R("yes","Who Needs to Say Yes?","Every project needs permission from someone. Who serves as a gatekeeper for your project?",[["who","Gatekeeper"],["worry","What will worry them?"],["address","How can I address that worry?"],["inspire","What will inspire them?"]],{lemon:["My parents","Safety; being near the street","Set up on our lawn, with Dad nearby","Seeing me plan the whole thing myself"],film:["The librarian","Noise, and blocking the aisles","Film before opening hours","A film that celebrates the library"]},{cols:"1fr",min:1,add:"Add a gatekeeper"})
  ],
@@ -216,7 +212,11 @@ const STAGES=[
   A("audience","Audience","Every project serves someone, even if it's only you. Who will use it, see it, or benefit?",{lemon:"Neighbors walking to the park, and the animals at the shelter.",film:"People in our town who love the library, and other kids who want to make films."}),
   {id:"scopegroup",type:"group",cols:1,fields:[
     A("scopein","In scope","What this project includes.",{lemon:"Lemonade, cups, a sign, a donation jar.",film:"Script, filming, editing, music, a screening."}),
-    A("scopeout","Not doing","What you are deliberately leaving out.",{lemon:"No food, no deliveries, no second location.",film:"No special effects, no extra locations, no sequel (yet)."})]}
+    A("scopeout","Not doing","What you are deliberately leaving out.",{lemon:"No food, no deliveries, no second location.",film:"No special effects, no extra locations, no sequel (yet)."})]},
+  {id:"teamhead",type:"subhead",label:"The Team",quote:{en:"Alone we can do so little; together we can do so much.",by:"Helen Keller"}},
+  {id:"hats",type:"hats",label:"Every Project Needs Every Hat Worn"},
+  R("members","Team Members","Ideally, who would the team include? How will you recruit them?",[["name","Name"],["hat","Primary hat","hat"],["needed","Needed by (date or stage)"],["committed","Committed? / How I'll recruit them"],["strengths","Strengths"],["watch","Things to monitor"]],{lemon:["Sam (my brother)","","First Saturday","Yes","Loud and friendly; great at waving people over","Gets bored after an hour"],film:["Priya","","Filming weekend 1","Asking her at lunch on Monday","Steady hands; owns a tripod","Has soccer on Sundays"]},{cols:"1fr",min:1,add:"Add a team member"}),
+  A("derisk","Hats at Risk","Is any hat unclaimed, or worn by someone for whom it isn't a strength (or who is already wearing several)? How will you de-risk it?",{lemon:"I'm the Checker, but I rush. Mom will check my change-counting the first Saturday.",film:"I'm the Guide and the Maker, so a friend will watch every cut and tell me if we've drifted from the story."})
  ]},
 {id:"route",num:3,title:"The Route",q:"What are the steps, and how long will they really take?",
  quote:{en:"Plans are worthless, but planning is everything.",by:"Dwight D. Eisenhower (1957), quoting an old Army saying"},
