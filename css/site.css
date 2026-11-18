@@ -44,7 +44,7 @@ section{padding:64px 0}
 .header-inner{display:flex;align-items:center;justify-content:space-between;min-height:72px;gap:16px}
 .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--navy);font-weight:800;font-size:1.3rem}
 .brand img{width:46px;height:46px}
-.brand b{color:var(--blue)}
+.brand b{color:var(--accent)}
 .site-nav{display:flex;align-items:center;gap:22px}
 .site-nav>a,.more-btn{color:var(--ink);text-decoration:none;font-weight:600;font-size:.97rem;background:none;border:0;font-family:inherit;cursor:pointer;padding:6px 0}
 .site-nav>a:hover,.more-btn:hover{color:var(--blue)}
