@@ -190,7 +190,7 @@ const HATS=[
  {id:"planner",name:"Planner",what:"Owns the timeline, the tasks, and the deadlines.",watch:"Watch for: the plan becoming more important than the progress."},
  {id:"maker",name:"Maker",what:"Does the core building or creating.",watch:"Watch for: disappearing into the work and forgetting to tell anyone how it's going."},
  {id:"checker",name:"Checker",what:"Catches mistakes and asks, \"Is this good enough?\"",watch:"Watch for: slowing everything down, or being discouraging."},
- {id:"connector",name:"Connector",what:"Finds help and resources, and handles the launch and the audience.",watch:"Watch for: promising more than the team can deliver."},
+ {id:"connector",name:"Connector",what:"Finds help and resources, and gets the word out on Summit Day.",watch:"Watch for: promising more than the team can deliver."},
  {id:"encourager",name:"Encourager",what:"Watches morale and makes sure everyone is heard.",watch:"Watch for: avoiding hard conversations to keep the peace."}
 ];
 const T=(id,label,help,ex,o={})=>Object.assign({id,type:"text",label,help,ex},o);
@@ -236,7 +236,7 @@ const STAGES=[
 {id:"safety",num:4,title:"Safety Check",q:"What could go wrong, and when would you turn around?",
  quote:{en:"Getting to the top is optional. Getting down is mandatory.",by:"Ed Viesturs, the first American to climb all fourteen 8,000-meter peaks without bottled oxygen"},
  fields:[
-  R("quality","Quality Control / Quality Assurance","What will you check before you launch? List each thing to check (quality control), and the habits or checklists that help you get it right the first time (quality assurance).",[["check","What to check"],["who","Who checks it"]],{lemon:["Taste test with three neighbors","Me and Mom"],film:["Sound is clear in every scene","My English teacher"]},{min:3,cols:"2fr 1fr",add:"Add a check"}),
+  R("quality","Quality Control / Quality Assurance","What will you check before Summit Day? List each thing to check (quality control), and the habits or checklists that help you get it right the first time (quality assurance).",[["check","What to check"],["who","Who checks it"]],{lemon:["Taste test with three neighbors","Me and Mom"],film:["Sound is clear in every scene","My English teacher"]},{min:3,cols:"2fr 1fr",add:"Add a check"}),
  ],
  deeper:[
   R("premortem","Pre-mortem","Imagine it's your deadline and the project failed. What are the most likely reasons? Then: how can you lower each risk now?",[["why","Why it failed"],["lower","How I'll lower that risk now"]],{lemon:["It rained every Saturday","Pick a backup Sunday for each week"],film:["We lost the footage","Back up every night to two places"]},{min:3,cols:"1fr 1fr"}),
@@ -257,8 +257,7 @@ const STAGES=[
 {id:"flag",num:6,title:"Keep the Flag Flying",q:"How will you keep it going, and keep it fresh?",
  quote:{en:"How we spend our days is, of course, how we spend our lives.",by:"Annie Dillard, *The Writing Life* (1989)"},
  fields:[
-  A("momentum","Momentum","How do I keep momentum, and keep the project as fresh on day X as it was at launch?",{lemon:"Add a new flavor each week.",film:"Post one behind-the-scenes clip a week until the screening."}),
-  A("checkins","Check-ins","How often will I check how it's going, and with whom?",{lemon:"Every Friday with Mom, counting the jar.",film:"A Sunday-night call with the cast."})
+  A("checkins","Check-ins","How will I check on how the project is going, with whom, and how often?",{lemon:"Every Friday with Mom, counting the jar.",film:"A Sunday-night call with the cast."})
  ],
  deeper:[
   A("stale","Warning signs","What are the signs that it's getting stale, and what will refresh it?",{lemon:"Fewer than 10 customers in a morning. Try a new corner or a new sign.",film:"Nobody's replying in the group chat. Plan a pizza night for the cast."})
