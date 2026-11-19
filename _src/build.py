@@ -72,7 +72,7 @@ def bust(html):
             return m.group(0)
         v = hashlib.md5(f.read_bytes()).hexdigest()[:8]
         return f'{attr}="{path}?v={v}"'
-    return re.sub(r'(src|href)="((?:\.\./|\./|/)*(?:js|css)/[^"?]+\.(?:js|css))"', fix, html)
+    return re.sub(r'(src|href|poster)="((?:\.\./|\./|/)*(?:js|css|video)/[^"?]+\.(?:js|css|mp4|jpg))"', fix, html)
 
 
 def build_redirects():
