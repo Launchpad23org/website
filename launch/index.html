@@ -402,10 +402,11 @@ function fitTitle(){
 }
 addEventListener("resize",fitTitle);
 if(document.fonts) document.fonts.ready.then(fitTitle);
-/* ===== Wednesday page: Convene, Consider, Connect, Launch Debrief ===== */
+/* ===== Wednesday page: Convene (Mission Update, Announcements, 10x10), Consider, Launch Debrief, Connect, Tools & Games ===== */
 const EMERSON={text:"Finish every day and be done with it. For manners and for wise living it is a vice to remember. You have done what you could; some blunders and absurdities no doubt crept in; forget them as soon as you can. Tomorrow is a new day; you shall begin it well and serenely, and with too high a spirit to be cumbered with your old nonsense.",by:"Ralph Waldo Emerson, in a letter to his daughter Ellen, April 8, 1854"};
 const SQ={
  "10x10":`<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#1c4587"/><text x="50" y="58" text-anchor="middle" font-family="Montserrat,Arial" font-weight="800" font-size="30" fill="#fff">10x10</text><text x="50" y="76" text-anchor="middle" font-family="Montserrat,Arial" font-weight="600" font-size="9" fill="#f2a33a">WARM-UP</text></svg>`,
+ "mission":`<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#1c4587"/><circle cx="50" cy="50" r="30" fill="none" stroke="#f2a33a" stroke-width="5"/><circle cx="50" cy="50" r="17" fill="none" stroke="#fff" stroke-width="4"/><circle cx="50" cy="50" r="6" fill="#f2a33a"/><path d="M50 12v14M50 74v14M12 50h14M74 50h14" stroke="#fff" stroke-width="4" stroke-linecap="round"/></svg>`,
  "news":`<svg viewBox="0 0 100 100"><rect width="100" height="100" fill="#f2a33a"/><path d="M24 44h12l28-16v44L36 56H24z" fill="#1c4587"/><path d="M38 57l5 17h8l-4-15" fill="#1c4587"/><path d="M71 40c4 6 4 14 0 20M77 34c7 10 7 22 0 32" stroke="#1c4587" stroke-width="4" fill="none" stroke-linecap="round"/></svg>`
 };
 function paras(t){ return String(t||"").split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).map(p=>`<p>${esc(p)}</p>`).join(""); }
@@ -416,7 +417,9 @@ function convenePanel(w){
   const news=w.news.filter(r=>r["Announcement"]||r["Subject (shown in bold)"]);
   const tenx=on?`<article class="cv-card"><div class="sq">${sqPic(w.set["10x10 image"]||"10x10.jpg","10x10")}</div><div><h3>10x10 Flex</h3><p>Ten topics. Ten facts. ${mins} minute${mins==="One"?"":"s"}.</p><div class="btn-row"><a class="btn btn-main" href="#/10x10">Open the board</a></div></div></article>`:"";
   const ann=`<article class="cv-card"><div class="sq">${sqPic(w.set["Announcements image"]||"announcements.jpg","news")}</div><div><h3>Announcements</h3>${news.length?`<ul class="ann">${news.map(n=>{const t=(n["Subject (shown in bold)"]||"").trim().replace(/[.:]$/,"");return `<li>${t?`<b>${esc(t)}.</b> `:""}${linkify(n["Announcement"])}</li>`;}).join("")}</ul>`:`<p>No announcements this week.</p>`}</div></article>`;
-  return `<section class="panel"><h2 class="sec">Convene</h2><div class="cv">${ann}${tenx}</div></section>`;
+  const mf=w.set["Mission update form"];
+  const mission=mf?`<article class="cv-card"><div class="sq">${sqPic(w.set["Mission update image"]||"","mission")}</div><div><h3>Mission Update</h3><p>What did you work on? What's next? Post your update while we do announcements.</p><div class="btn-row"><a class="btn btn-main" href="${esc(mf)}" target="_blank" rel="noopener">Post my update</a></div></div></article>`:"";
+  return `<section class="panel"><h2 class="sec">Convene</h2><div class="cv">${mission}${ann}${tenx}</div></section>`;
 }
 function considerPanel(w){
   if(!w.topics.length) return "";
@@ -432,7 +435,7 @@ function debriefPanel(w){
   const exit=w.set["Exit ticket form"]; if(!exit) return "";
   const topics=w.topics.length?w.topics:[{"Topic":"Launchpad23"}];
   return `<section class="panel debrief"><h2 class="sec">Launch Debrief</h2><img class="db-img" src="${esc(imgSrc("debrief.jpg"))}" alt="The L23 Debrief">
-  <p>Before you go, tell us how today went. Click the topic you joined:</p><div class="btn-row" style="justify-content:center">${topics.map(t=>`<a class="btn btn-main" href="${esc(formLink(exit,{TOPIC:t["Topic"]}))}" target="_blank" rel="noopener">${esc(String(t["Topic"]).split(":")[0].trim())}${t["Host"]?` (${esc(t["Host"])})`:""}</a>`).join("")}</div></section>`;
+  <p>Before Connect, tell us how today went. Click the topic you joined:</p><div class="btn-row" style="justify-content:center">${topics.map(t=>`<a class="btn btn-main" href="${esc(formLink(exit,{TOPIC:t["Topic"]}))}" target="_blank" rel="noopener">${esc(String(t["Topic"]).split(":")[0].trim())}${t["Host"]?` (${esc(t["Host"])})`:""}</a>`).join("")}</div></section>`;
 }
 async function home(){
   const d=await load();
@@ -441,9 +444,9 @@ async function home(){
   const T=`<section class="title-card"><h1 class="week-title">This Week at Launchpad23</h1></section>`;
   let html=T;
   if(MODE==="connect"&&w){
-    html+=convenePanel(w)+considerPanel(w);
+    html+=convenePanel(w)+considerPanel(w)+debriefPanel(w);
     html+=mine.map(s=>sessionPanel(d,s,`<h2 class="sec">Connect</h2>`)).join("");
-    html+=toolsPanel(tools)+debriefPanel(w);
+    html+=toolsPanel(tools);
   } else {
     html+=mine.map(s=>sessionPanel(d,s,"")).join("")||`<section class="panel"><div class="msg">Nothing scheduled yet.</div></section>`;
   }
