@@ -226,6 +226,40 @@ html{font-size:var(--text)}
 h1,h2,h3,.topic,.qlist .n,.card-head h2,.panel > h2,.club h3{font-size:var(--title)!important}
 .passage,.small,.note,.by,.date,.langlabel,.readlabel,.defs li,.about,.about .note,.games .tab,.reel .lab,.reel .val,.prompt,.orig,.side,footer,details .inside,.btn,.sched,.notes,.qlist .who,.qlist .t,.games li{font-size:1rem!important}
 @media (max-width:700px){:root{--title:1.3rem;--text:17px}}
+
+/* Atomic Geography */
+.ag-wide{max-width:1240px}
+.ag-pic{border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#000}
+.ag-pic img{width:100%;height:100%;object-fit:cover}
+.ag-wait{text-align:center;padding:18px 0 4px}
+.ag-name{display:flex;flex-direction:column;gap:6px;font-weight:700;color:var(--navy);max-width:340px;margin:0 auto}
+.ag-name input,.ag-in input{font:inherit;font-weight:400;padding:8px 10px;border:1.5px solid var(--line);border-radius:8px;width:100%;color:var(--ink);background:#fff}
+.ag-name input:focus,.ag-in input:focus{outline:none;border-color:var(--navy);box-shadow:0 0 0 3px var(--sky)}
+.ag-needname{display:flex;align-items:flex-end;justify-content:center;gap:12px;flex-wrap:wrap;margin:18px 0}
+.ag-needname .ag-name{margin:0}
+.ag-me{display:flex;align-items:center;gap:20px}
+.ag-tot{font-weight:700;color:var(--slate);text-align:right;line-height:1.1}
+.ag-tot b{display:block;font-size:2.2rem;color:#2e9d5b}
+.ag-rules{margin-top:12px}
+.ag-layout{display:grid;grid-template-columns:1fr 250px;gap:20px;margin-top:16px;align-items:start}
+.ag-side{position:sticky;top:12px;border:2px solid var(--line);border-radius:14px;padding:14px;max-height:calc(100vh - 24px);overflow:auto;background:#fff}
+@media (max-width:860px){.ag-layout{grid-template-columns:1fr}.ag-side{position:static;order:-1;max-height:none}}
+.ag-board{list-style:none;margin:0;padding:0}
+.ag-board li{display:flex;align-items:center;gap:8px;padding:5px 6px;border-radius:8px}
+.ag-board li.me{background:var(--warm);font-weight:700}
+.ag-board .rk{width:1.6em;color:var(--muted);font-variant-numeric:tabular-nums}
+.ag-board .nm{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ag-board b{font-variant-numeric:tabular-nums;color:var(--navy)}
+.ag-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.ag-card{display:grid;grid-template-columns:58px 1fr 26px;gap:10px;align-items:center;border:2px solid var(--line);border-radius:12px;padding:10px;background:#fff}
+.ag-card.ok{border-color:#2e9d5b;background:#f1faf4}
+.ag-card.bad{border-color:#c0392b;background:#fdf2f1}
+.ag-sym{aspect-ratio:1;border-radius:8px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.6rem}
+.ag-in{display:flex;flex-direction:column;gap:6px}
+.ag-in input{padding:6px 8px;font-size:.95rem}
+.ag-in input:disabled{background:var(--soft);color:var(--text)}
+.ag-mark{font-weight:800;font-size:1.3rem;text-align:center}
+.ag-card.ok .ag-mark{color:#2e9d5b}.ag-card.bad .ag-mark{color:#c0392b}
 </style>
 </head>
 <body>
@@ -433,7 +467,10 @@ function convenePanel(w){
   const ann=`<article class="cv-card"><div class="sq">${sqPic(w.set["Announcements image"]||"announcements.jpg","news")}</div><div><h3>Announcements</h3>${news.length?`<ul class="ann">${news.map(n=>{const t=(n["Subject (shown in bold)"]||"").trim().replace(/[.:]$/,"");return `<li>${t?`<b>${esc(t)}.</b> `:""}${linkify(n["Announcement"])}</li>`;}).join("")}</ul>`:`<p>No announcements this week.</p>`}</div></article>`;
   const mf=w.set["Mission update form"];
   const mission=mf?`<article class="cv-card"><div class="sq">${sqPic(w.set["Mission update image"]||"","mission")}</div><div><h3>Mission Update</h3><p>What did you work on? What's next?</p><div class="btn-row"><a class="btn btn-main" href="${esc(mf)}" target="_blank" rel="noopener">Post my update</a></div></div></article>`:"";
-  return `<section class="panel tint t-convene"><h2 class="sec">Convene</h2><div class="cv">${ann}${mission}${tenx}</div></section>`;
+  const agOn=/^y/i.test(w.set["Show Atomic Geography"]||"");
+  const agm=parseInt(w.set["Atomic Geography minutes"])||10; const agMins=["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"][agm]||String(agm);
+  const atom=agOn?`<article class="cv-card"><div class="sq">${sqPic(w.set["Atomic Geography image"]||"atomic-geography.jpg","10x10")}</div><div><h3>Atomic Geography</h3><p>118 elements. One world. ${agMins} minute${agMins==="One"?"":"s"}.</p><div class="btn-row"><a class="btn btn-main" href="#/atomic">Play</a></div></div></article>`:"";
+  return `<section class="panel tint t-convene"><h2 class="sec">Convene</h2><div class="cv">${ann}${mission}${tenx}${atom}</div></section>`;
 }
 function considerPanel(w){
   if(!w.topics.length) return "";
@@ -559,6 +596,125 @@ async function board(){
   };
   await draw();
   xPoll=setInterval(()=>{ if(!document.getElementById("x-root")){ stopBoard(); return; } draw(); },10000);
+}
+
+/* ===== Atomic Geography ===== */
+const AG_KEY={"els":[["H",["hydrogen"]],["He",["helium"]],["Li",["lithium"]],["Be",["beryllium"]],["B",["boron"]],["C",["carbon"]],["N",["nitrogen"]],["O",["oxygen"]],["F",["fluorine"]],["Ne",["neon"]],["Na",["sodium"]],["Mg",["magnesium"]],["Al",["aluminum","aluminium"]],["Si",["silicon"]],["P",["phosphorus"]],["S",["sulfur","sulphur"]],["Cl",["chlorine"]],["Ar",["argon"]],["K",["potassium"]],["Ca",["calcium"]],["Sc",["scandium"]],["Ti",["titanium"]],["V",["vanadium"]],["Cr",["chromium"]],["Mn",["manganese"]],["Fe",["iron"]],["Co",["cobalt"]],["Ni",["nickel"]],["Cu",["copper"]],["Zn",["zinc"]],["Ga",["gallium"]],["Ge",["germanium"]],["As",["arsenic"]],["Se",["selenium"]],["Br",["bromine"]],["Kr",["krypton"]],["Rb",["rubidium"]],["Sr",["strontium"]],["Y",["yttrium"]],["Zr",["zirconium"]],["Nb",["niobium"]],["Mo",["molybdenum"]],["Tc",["technetium"]],["Ru",["ruthenium"]],["Rh",["rhodium"]],["Pd",["palladium"]],["Ag",["silver"]],["Cd",["cadmium"]],["In",["indium"]],["Sn",["tin"]],["Sb",["antimony"]],["Te",["tellurium"]],["I",["iodine"]],["Xe",["xenon"]],["Cs",["cesium","caesium"]],["Ba",["barium"]],["La",["lanthanum"]],["Ce",["cerium"]],["Pr",["praseodymium"]],["Nd",["neodymium"]],["Pm",["promethium"]],["Sm",["samarium"]],["Eu",["europium"]],["Gd",["gadolinium"]],["Tb",["terbium"]],["Dy",["dysprosium"]],["Ho",["holmium"]],["Er",["erbium"]],["Tm",["thulium"]],["Yb",["ytterbium"]],["Lu",["lutetium"]],["Hf",["hafnium"]],["Ta",["tantalum"]],["W",["tungsten"]],["Re",["rhenium"]],["Os",["osmium"]],["Ir",["iridium"]],["Pt",["platinum"]],["Au",["gold"]],["Hg",["mercury"]],["Tl",["thallium"]],["Pb",["lead"]],["Bi",["bismuth"]],["Po",["polonium"]],["At",["astatine"]],["Rn",["radon"]],["Fr",["francium"]],["Ra",["radium"]],["Ac",["actinium"]],["Th",["thorium"]],["Pa",["protactinium"]],["U",["uranium"]],["Np",["neptunium"]],["Pu",["plutonium"]],["Am",["americium"]],["Cm",["curium"]],["Bk",["berkelium"]],["Cf",["californium"]],["Es",["einsteinium"]],["Fm",["fermium"]],["Md",["mendelevium"]],["No",["nobelium"]],["Lr",["lawrencium"]],["Rf",["rutherfordium"]],["Db",["dubnium"]],["Sg",["seaborgium"]],["Bh",["bohrium"]],["Hs",["hassium"]],["Mt",["meitnerium"]],["Ds",["darmstadtium"]],["Rg",["roentgenium"]],["Cn",["copernicium"]],["Nh",["nihonium"]],["Fl",["flerovium"]],["Mc",["moscovium"]],["Lv",["livermorium"]],["Ts",["tennessine"]],["Og",["oganesson"]]],"places":{"afghanistan":[0],"kabul":[1],"albania":[2],"tirana":[3],"algeria":[4],"algiers":[5],"andorra":[6],"andorra la vella":[7],"angola":[8],"luanda":[9],"antigua and barbuda":[10],"saint johns":[11,11],"argentina":[12],"buenos aires":[13],"armenia":[14],"yerevan":[15],"australia":[16],"canberra":[17],"austria":[18],"vienna":[19],"azerbaijan":[20],"baku":[21],"bahamas":[22],"nassau":[23],"bahrain":[24],"manama":[25],"bangladesh":[26],"dhaka":[27],"barbados":[28],"bridgetown":[29],"belarus":[30],"minsk":[31],"belgium":[32],"brussels":[33],"belize":[34],"belmopan":[35],"benin":[36],"porto novo":[37],"cotonou":[38],"bhutan":[39],"thimphu":[40],"bolivia":[41],"sucre":[42],"la paz":[43],"bosnia and herzegovina":[44],"bosnia herzegovina":[44],"sarajevo":[45],"botswana":[46],"gaborone":[47],"brazil":[48],"brasilia":[49],"brunei":[50],"brunei darussalam":[50],"bandar seri begawan":[51],"bulgaria":[52],"sofia":[53],"burkina faso":[54],"ouagadougou":[55],"burundi":[56],"gitega":[57],"bujumbura":[58],"cabo verde":[59],"cape verde":[59],"praia":[60],"cambodia":[61],"phnom penh":[62],"cameroon":[63],"yaounde":[64],"canada":[65],"ottawa":[66],"central african republic":[67],"bangui":[68],"chad":[69],"ndjamena":[70],"chile":[71],"santiago":[72],"china":[73],"beijing":[74],"colombia":[75],"bogota":[76],"comoros":[77],"moroni":[78],"republic of the congo":[79],"republic of congo":[79],"congo":[79],"congo brazzaville":[79],"brazzaville":[80],"democratic republic of the congo":[81],"democratic republic of congo":[81],"dr congo":[81],"congo kinshasa":[81],"kinshasa":[82],"costa rica":[83],"san jose":[84],"cote divoire":[85],"ivory coast":[85],"yamoussoukro":[86],"abidjan":[87],"croatia":[88],"zagreb":[89],"cuba":[90],"havana":[91],"cyprus":[92],"nicosia":[93],"czechia":[94],"czech republic":[94],"prague":[95],"denmark":[96],"copenhagen":[97],"djibouti":[98,99],"djibouti city":[99],"dominica":[100],"roseau":[101],"dominican republic":[102],"santo domingo":[103],"ecuador":[104],"quito":[105],"egypt":[106],"cairo":[107],"el salvador":[108],"san salvador":[109],"equatorial guinea":[110],"ciudad de la paz":[111],"eritrea":[112],"asmara":[113],"estonia":[114],"tallinn":[115],"eswatini":[116],"mbabane":[117],"lobamba":[118],"ethiopia":[119],"addis ababa":[120],"fiji":[121],"suva":[122],"finland":[123],"helsinki":[124],"france":[125],"paris":[126],"gabon":[127],"libreville":[128],"gambia":[129],"banjul":[130],"georgia":[131],"tbilisi":[132],"germany":[133],"berlin":[134],"ghana":[135],"accra":[136],"greece":[137],"athens":[138],"grenada":[139],"saint georges":[140,140],"guatemala":[141],"guatemala city":[142],"guinea":[143],"conakry":[144],"guinea bissau":[145],"bissau":[146],"guyana":[147],"georgetown":[148],"haiti":[149],"port au prince":[150],"honduras":[151],"tegucigalpa":[152],"hungary":[153],"budapest":[154],"iceland":[155],"reykjavik":[156],"india":[157],"new delhi":[158],"indonesia":[159],"jakarta":[160],"iran":[161],"tehran":[162],"iraq":[163],"baghdad":[164],"ireland":[165],"dublin":[166],"israel":[167],"jerusalem":[168],"italy":[169],"rome":[170],"jamaica":[171],"kingston":[172],"japan":[173],"tokyo":[174],"jordan":[175],"amman":[176],"kazakhstan":[177],"astana":[178],"kenya":[179],"nairobi":[180],"kiribati":[181],"tarawa":[182],"south tarawa":[182],"kosovo":[183],"pristina":[184],"prishtina":[184],"kuwait":[185],"kuwait city":[186],"kyrgyzstan":[187],"bishkek":[188],"laos":[189],"vientiane":[190],"latvia":[191],"riga":[192],"lebanon":[193],"beirut":[194],"lesotho":[195],"maseru":[196],"liberia":[197],"monrovia":[198],"libya":[199],"tripoli":[200],"liechtenstein":[201],"vaduz":[202],"lithuania":[203],"vilnius":[204],"luxembourg":[205,206],"luxembourg city":[206],"madagascar":[207],"antananarivo":[208],"malawi":[209],"lilongwe":[210],"malaysia":[211],"kuala lumpur":[212],"putrajaya":[213],"maldives":[214],"male":[215],"mali":[216],"bamako":[217],"malta":[218],"valletta":[219],"marshall islands":[220],"majuro":[221],"mauritania":[222],"nouakchott":[223],"mauritius":[224],"port louis":[225],"mexico":[226],"mexico city":[227],"micronesia":[228],"federated states of micronesia":[228],"palikir":[229],"moldova":[230],"chisinau":[231],"monaco":[232,233],"mongolia":[234],"ulaanbaatar":[235],"ulan bator":[235],"montenegro":[236],"podgorica":[237],"morocco":[238],"rabat":[239],"mozambique":[240],"maputo":[241],"myanmar":[242],"naypyidaw":[243],"nay pyi taw":[243],"naypyitaw":[243],"namibia":[244],"windhoek":[245],"nauru":[246],"yaren":[247],"nepal":[248],"kathmandu":[249],"netherlands":[250],"amsterdam":[251],"hague":[252],"new zealand":[253],"wellington":[254],"nicaragua":[255],"managua":[256],"niger":[257],"niamey":[258],"nigeria":[259],"abuja":[260],"north korea":[261],"pyongyang":[262],"north macedonia":[263],"skopje":[264],"norway":[265],"oslo":[266],"oman":[267],"muscat":[268],"pakistan":[269],"islamabad":[270],"palau":[271],"ngerulmud":[272],"palestine":[273],"state of palestine":[273],"east jerusalem":[274],"ramallah":[275],"panama":[276],"panama city":[277],"papua new guinea":[278],"port moresby":[279],"paraguay":[280],"asuncion":[281],"peru":[282],"lima":[283],"philippines":[284],"manila":[285],"poland":[286],"warsaw":[287],"portugal":[288],"lisbon":[289],"qatar":[290],"doha":[291],"romania":[292],"bucharest":[293],"russia":[294],"moscow":[295],"rwanda":[296],"kigali":[297],"saint kitts and nevis":[298,298],"basseterre":[299],"saint lucia":[300,300],"castries":[301],"saint vincent and the grenadines":[302,302],"kingstown":[303],"samoa":[304],"apia":[305],"san marino":[306,307],"city of san marino":[307],"sao tome and principe":[308],"sao tome":[309],"saudi arabia":[310],"riyadh":[311],"senegal":[312],"dakar":[313],"serbia":[314],"belgrade":[315],"seychelles":[316],"victoria":[317],"sierra leone":[318],"freetown":[319],"singapore":[320,321],"slovakia":[322],"bratislava":[323],"slovenia":[324],"ljubljana":[325],"solomon islands":[326],"honiara":[327],"somalia":[328],"mogadishu":[329],"south africa":[330],"pretoria":[331],"cape town":[332],"bloemfontein":[333],"south korea":[334],"seoul":[335],"south sudan":[336],"juba":[337],"spain":[338],"madrid":[339],"sri lanka":[340],"sri jayawardenepura kotte":[341],"kotte":[341],"colombo":[342],"sudan":[343],"khartoum":[344],"suriname":[345],"paramaribo":[346],"sweden":[347],"stockholm":[348],"switzerland":[349],"bern":[350],"berne":[350],"syria":[351],"damascus":[352],"taiwan":[353],"taipei":[354],"tajikistan":[355],"dushanbe":[356],"tanzania":[357],"dodoma":[358],"thailand":[359],"bangkok":[360],"timor leste":[361],"east timor":[361],"dili":[362],"togo":[363],"lome":[364],"tonga":[365],"nukualofa":[366],"trinidad and tobago":[367],"port of spain":[368],"tunisia":[369],"tunis":[370],"turkey":[371],"turkiye":[371],"ankara":[372],"turkmenistan":[373],"ashgabat":[374],"tuvalu":[375],"funafuti":[376],"uganda":[377],"kampala":[378],"ukraine":[379],"kyiv":[380],"united arab emirates":[381],"abu dhabi":[382],"united kingdom":[383],"london":[384],"united states":[385],"united states of america":[385],"washington":[386],"washington dc":[386,386],"uruguay":[387],"montevideo":[388],"uzbekistan":[389],"tashkent":[390],"vanuatu":[391],"port vila":[392],"vatican city":[393,394],"holy see":[393],"vatican":[393],"venezuela":[395],"caracas":[396],"vietnam":[397],"viet nam":[397],"hanoi":[398],"yemen":[399],"sanaa":[400,400],"zambia":[401],"lusaka":[402],"zimbabwe":[403],"harare":[404]}};
+let agTimer=null, agPoll=null, agPostT=null, agState=null;
+function stopAtomic(){ clearInterval(agTimer); clearInterval(agPoll); clearTimeout(agPostT); agTimer=agPoll=agPostT=null; agState=null; }
+function agNorm(s){ return String(s||"").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/&/g," and ").replace(/['’‘`.]/g,"").replace(/[^a-z]+/g," ").trim().replace(/^the /,"").replace(/^st /,"saint "); }
+function agSettings(set){ const start=parseET(set["Atomic Geography round start"]); const mins=parseFloat(set["Atomic Geography minutes"])||10;
+  return {round:(set["Atomic Geography round start"]||"").trim(),start,end:start?start+mins*60000:null,mins,form:set["Atomic Geography score form"]||"",img:set["Atomic Geography image"]||"atomic-geography.jpg"}; }
+function agLoad(round){ try{ return JSON.parse(localStorage.getItem("lp23-atomic|"+round))||null; }catch(e){ return null; } }
+function agSave(){ if(!agState) return; try{ localStorage.setItem("lp23-atomic|"+agState.round,JSON.stringify({a:agState.a,c:agState.c,id:agState.id})); }catch(e){} }
+function agName(v){ try{ if(v!==undefined) localStorage.setItem("lp23-atomic-name",v); return localStorage.getItem("lp23-atomic-name")||""; }catch(e){ return v||""; } }
+/* Score every pair, top to bottom. A place can be used once; a name shared by a country and its capital (Monaco) can be used twice. */
+function agScore(a){
+  const used=new Set(); return a.map(([el,pl],i)=>{
+    const [sym,names]=AG_KEY.els[i]; const e=agNorm(el), p=agNorm(pl);
+    if(!e||!p) return null;
+    if(!names.includes(e)) return false;
+    const ids=AG_KEY.places[p]; if(!ids) return false;
+    const letters=p.replace(/ /g,""); if(![...sym.toLowerCase()].every(ch=>letters.includes(ch))) return false;
+    const id=ids.find(x=>!used.has(x)); if(id===undefined) return false;
+    used.add(id); return true; });
+}
+const AG_RULES=`<details class="ag-rules" open><summary>The rules</summary><div class="inside"><ul class="x-rules">
+<li>Each card shows an element's symbol. Type the <b>element's name</b>, and a <b>country or capital city</b> whose name contains the letters of the symbol. The letters can be anywhere in the name, in any order.</li>
+<li>You get a point only when both answers on a card are right.</li>
+<li>Spelling counts. Capital letters and accents don't.</li>
+<li>Use each country or capital only once. A country and its capital are different places, even when they share a name (Mexico and Mexico City count as two, and so do Monaco and Monaco).</li>
+<li>Allowed places: the countries of the United Nations, plus Vatican City, Palestine, Taiwan and Kosovo, and their capitals. Today's names only, and type the full name.</li>
+<li>When you leave a box, the card shows ✓ or ✗. It won't tell you why. You can change any answer until time runs out.</li>
+<li>Stuck? Leave the card blank and move on. Blanks cost nothing.</li></ul></div></details>`;
+function agPost(now){
+  clearTimeout(agPostT); const s=agState; if(!s||!s.form||!s.name) return;
+  const go=()=>{ const sc=s.score; if(sc===s.sent&&!now) return; s.sent=sc;
+    const u=formLink(s.form,{PLAYER:s.id,NAME:s.name,SCORE:String(sc),ROUND:s.round}).replace("/viewform?usp=pp_url&","/formResponse?")+"&submit=Submit";
+    fetch(u,{mode:"no-cors"}).catch(()=>{ s.sent=-1; }); };
+  if(now) go(); else agPostT=setTimeout(go,1200);
+}
+function agBoardHTML(rows){
+  if(!rows) return `<p class="small">Loading…</p>`;
+  if(!rows.length) return `<p class="small">No scores yet.</p>`;
+  let rank=0,prev=null; return `<ol class="ag-board">${rows.map((r,i)=>{ if(r.score!==prev){rank=i+1;prev=r.score;} return `<li class="${r.id===agState.id?"me":""}"><span class="rk">${rank}</span><span class="nm">${esc(r.name)}</span><b>${r.score}</b></li>`; }).join("")}</ol>`;
+}
+async function agFetchBoard(){
+  const s=agState; if(!s) return;
+  let rows; try{ rows=await freshTab("Atomic Geography Scores"); }catch(e){ return; }
+  if(agState!==s) return;
+  const best=new Map(); rows.forEach(r=>{ if(String(r["Round"]||"").trim()!==s.round) return; const id=r["Player"]; if(!id) return; best.set(id,{id,name:String(r["Name"]||"?").trim().slice(0,24),score:parseInt(r["Score"])||0}); });
+  if(s.name&&s.started) best.set(s.id,{id:s.id,name:s.name,score:s.score});
+  s.board=[...best.values()].sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name));
+  const el=document.getElementById("ag-board"); if(el) el.innerHTML=agBoardHTML(s.board);
+}
+function agMark(i){
+  const s=agState, card=document.querySelector(`.ag-card[data-i="${i}"]`); if(!card) return;
+  const r=s.res[i], show=s.c[i]&&r!==null;
+  card.classList.toggle("ok",show&&r===true); card.classList.toggle("bad",show&&r===false);
+  card.querySelector(".ag-mark").textContent=show?(r?"✓":"✗"):"";
+}
+function agRecalc(){
+  const s=agState; s.res=agScore(s.a);
+  s.score=s.res.reduce((n,r,i)=>n+(r===true&&s.c[i]?1:0),0);
+  s.res.forEach((r,i)=>agMark(i));
+  const sc=document.getElementById("ag-score"); if(sc) sc.textContent=s.score;
+  if(s.board){ const me=s.board.find(r=>r.id===s.id); if(me){ me.score=s.score; s.board.sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name)); } else if(s.name) s.board.push({id:s.id,name:s.name,score:s.score});
+    const el=document.getElementById("ag-board"); if(el) el.innerHTML=agBoardHTML(s.board); }
+  agSave(); agPost(false);
+}
+async function atomic(){
+  stopAtomic();
+  view(`<div class="wrap page"><section class="panel"><h1>Atomic Geography</h1><p>Loading…</p></section></div>`);
+  let lastKey="";
+  const draw=async()=>{
+    let set; try{ const rows=await freshTab("Wednesday Settings"); set={}; rows.forEach(r=>{ const k=r["Setting (don't change)"]; if(k) set[k]=(r["Value"]||"").trim(); }); }catch(e){ return; }
+    if(!document.getElementById("ag-root")&&lastKey) return;
+    const g=agSettings(set); const now=Date.now(); const phase=!g.start?"wait":now<g.end?"run":"over";
+    const key=g.round+"|"+g.mins+"|"+phase+"|"+g.form; if(key===lastKey) return; lastKey=key;
+    const pic=`<div class="ag-pic"><img src="${esc(imgSrc(g.img))}" alt="Atomic Geography"></div>`;
+    if(phase==="wait"){
+      agState=null;
+      app.innerHTML=`<div class="wrap page" id="ag-root"><section class="panel">${pic}<div class="ag-wait"><p class="x-status">Waiting for the round to start…</p>
+      <label class="ag-name">Your name for the scoreboard <input id="ag-name" maxlength="24" autocomplete="off" value="${esc(agName())}" placeholder="First name or nickname"></label></div></section><a href="#/">Back to this week</a></div>`;
+      const n=document.getElementById("ag-name"); n.oninput=()=>agName(n.value.trim());
+      return;
+    }
+    const saved=agLoad(g.round)||{};
+    if(!agState||agState.round!==g.round){
+      agState={round:g.round,form:g.form,id:saved.id||("p"+Date.now().toString(36)+Math.random().toString(36).slice(2,8)),
+        a:saved.a&&saved.a.length===118?saved.a:AG_KEY.els.map(()=>["",""]),c:saved.c&&saved.c.length===118?saved.c:AG_KEY.els.map(()=>false),
+        name:agName(),score:0,sent:null,board:null,started:false};
+    }
+    const s=agState; s.over=phase==="over"; s.end=g.end;
+    if(s.over) s.c=s.a.map(([e,p])=>!!(e.trim()&&p.trim()));
+    const nameBox=!s.name&&!s.over?`<div class="ag-needname"><label class="ag-name">Type your name to start <input id="ag-name" maxlength="24" autocomplete="off" placeholder="First name or nickname"></label><button class="btn btn-main" id="ag-go">Start</button></div>`:"";
+    const cards=s.name?`<div class="ag-grid">${AG_KEY.els.map(([sym],i)=>`<article class="ag-card" data-i="${i}"><div class="ag-sym"><span>${esc(sym)}</span></div><div class="ag-in">
+      <input data-k="0" aria-label="Element for ${esc(sym)}" placeholder="Element" autocomplete="off" spellcheck="false" value="${esc(s.a[i][0])}" ${s.over?"disabled":""}>
+      <input data-k="1" aria-label="Country or capital for ${esc(sym)}" placeholder="Country or capital" autocomplete="off" spellcheck="false" value="${esc(s.a[i][1])}" ${s.over?"disabled":""}></div><div class="ag-mark" aria-live="polite"></div></article>`).join("")}</div>`:"";
+    app.innerHTML=`<div class="wrap page ag-wide" id="ag-root"><section class="panel">
+      <div class="x-head"><div><h1 style="margin:0">Atomic Geography</h1><p class="x-status" style="margin:4px 0 0">${s.over?"Time's up!":"Time left"}</p></div><div class="ag-me">${s.name?`<div class="ag-tot"><b id="ag-score">0</b> correct</div>`:""}<div class="x-clock" id="ag-clock">${s.over?"0:00":mmss(g.end-now)}</div></div></div>
+      ${s.over?"":AG_RULES}${nameBox}
+      <div class="ag-layout"><div>${cards}</div><aside class="ag-side"><h2 class="sec" style="margin:0 0 8px">Scoreboard</h2><div id="ag-board">${agBoardHTML(s.board)}</div></aside></div>
+    </section><a href="#/">Back to this week</a></div>`;
+    const go=document.getElementById("ag-go");
+    if(go){ const n=document.getElementById("ag-name"); const start=()=>{ const v=n.value.trim(); if(!v){ n.focus(); return; } agName(v); s.name=v; lastKey=""; draw(); };
+      go.onclick=start; n.onkeydown=e=>{ if(e.key==="Enter") start(); }; n.focus(); }
+    document.querySelectorAll(".ag-card input").forEach(inp=>{
+      const i=+inp.closest(".ag-card").dataset.i, k=+inp.dataset.k;
+      inp.oninput=()=>{ s.a[i][k]=inp.value; if(s.c[i]){ s.c[i]=false; agRecalc(); } else agSave(); };
+      inp.onchange=()=>{ s.a[i][k]=inp.value; const [e,p]=s.a[i]; s.c[i]=!!(e.trim()&&p.trim()); agRecalc(); };
+      inp.onkeydown=e=>{ if(e.key==="Enter"){ e.preventDefault(); const all=[...document.querySelectorAll(".ag-card input")]; const nx=all[all.indexOf(inp)+1]; inp.dispatchEvent(new Event("change")); if(nx) nx.focus(); } };
+    });
+    agRecalc();
+    if(s.name){ s.started=true; agPost(true); }
+    agFetchBoard();
+    clearInterval(agTimer);
+    if(!s.over) agTimer=setInterval(()=>{ const c=document.getElementById("ag-clock"); if(!c){ clearInterval(agTimer); return; } const left=g.end-Date.now(); c.textContent=mmss(left); c.classList.toggle("low",left<60000);
+      if(left<=0){ clearInterval(agTimer); const f=document.activeElement; if(f&&f.closest&&f.closest(".ag-card")){ const i=+f.closest(".ag-card").dataset.i; s.a[i][+f.dataset.k]=f.value; } s.c=s.a.map(([e,p])=>!!(e.trim()&&p.trim())); agRecalc(); agPost(true); lastKey=""; draw(); } },500);
+  };
+  await draw();
+  agPoll=setInterval(()=>{ if(!document.getElementById("ag-root")){ stopAtomic(); return; } draw(); if(agState) agFetchBoard(); },8000);
 }
 
 /* ===== Quotes ===== */
@@ -708,9 +864,10 @@ async function archive(kind){
 /* ===== Routes ===== */
 async function route(){
   const h=location.hash.replace(/^#\/?/,""); const p=h.split("/");
-  stopBoard();
+  stopBoard(); stopAtomic();
   try{
     if(p[0]==="10x10") await board();
+    else if(p[0]==="atomic") await atomic();
     else if(p[0]==="quote") await quote(p[1],p[2]);
     else if(p[0]==="spin") await spin();
     else if(p[0]==="quotes") await list();
