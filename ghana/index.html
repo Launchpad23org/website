@@ -361,7 +361,7 @@ const ART={
 /* ===== Home ===== */
 function clubCard(d,c){
   const key=c["Club key (don't change)"]; const w=labelFor(d,key);
-  const pic=c["Image (square, 1:1)"]?`<img src="${esc(imgSrc(c["Image (square, 1:1)"]))}" alt="">`:(ART[key]||"");
+  const pic=(c["Image (16:9)"]||c["Image (square, 1:1)"])?`<img src="${esc(imgSrc((c["Image (16:9)"]||c["Image (square, 1:1)"])))}" alt="">`:(ART[key]||"");
   const extra=c["Extra text"]||"";
   let more="";
   if(key==="art-club") more=`<a class="go" href="#/art">Need an idea?</a>`;
