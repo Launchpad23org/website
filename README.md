@@ -32,3 +32,6 @@ The two forms (10x10 fact form, exit ticket) were built once by an Apps Script i
 
 ## Secret23
 `secret23.html` (built from `_src/pages/secret23.html`) with `js/secret23.js`. Twenty clue pictures in `img/secret23/`; one guess per clue, a missed clue stays locked until the player presses Reveal; progress saves in the player's browser. Answers are stored as SHA-256 hashes (with accepted alternative spellings) so they can't be read from the page code; the final answer is THE FUTURE NEEDS YOU NOW (row = fireflies, column = sky objects, in a 5x5 square with I/J together). The old static version stays at `archive/secret23`.
+
+## Atomic Geography (Convene warm-up)
+`launch/#/atomic`. Settings live in **Wednesday Settings** (Show Atomic Geography, minutes, round start, image, score form). The page checks answers itself (answer key embedded in `launch/index.html`; source list in `data/atomic-geography/`) and posts each student's score to the "Atomic Geography: score" Google Form, whose responses land in the **Atomic Geography Scores** tab; the scoreboard reads that tab. How to run it: the sheet's **Atomic Geography How to Run It** tab.

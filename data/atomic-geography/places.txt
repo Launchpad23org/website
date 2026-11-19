@@ -1,0 +1,198 @@
+# country | variants ; capital | variants ; capital2 ...
+Afghanistan ; Kabul
+Albania ; Tirana
+Algeria ; Algiers
+Andorra ; Andorra la Vella
+Angola ; Luanda
+Antigua and Barbuda ; Saint John's | St John's
+Argentina ; Buenos Aires
+Armenia ; Yerevan
+Australia ; Canberra
+Austria ; Vienna
+Azerbaijan ; Baku
+Bahamas ; Nassau
+Bahrain ; Manama
+Bangladesh ; Dhaka
+Barbados ; Bridgetown
+Belarus ; Minsk
+Belgium ; Brussels
+Belize ; Belmopan
+Benin ; Porto-Novo ; Cotonou
+Bhutan ; Thimphu
+Bolivia ; Sucre ; La Paz
+Bosnia and Herzegovina | Bosnia-Herzegovina ; Sarajevo
+Botswana ; Gaborone
+Brazil ; Brasilia
+Brunei | Brunei Darussalam ; Bandar Seri Begawan
+Bulgaria ; Sofia
+Burkina Faso ; Ouagadougou
+Burundi ; Gitega ; Bujumbura
+Cabo Verde | Cape Verde ; Praia
+Cambodia ; Phnom Penh
+Cameroon ; Yaounde
+Canada ; Ottawa
+Central African Republic ; Bangui
+Chad ; N'Djamena
+Chile ; Santiago
+China ; Beijing
+Colombia ; Bogota
+Comoros ; Moroni
+Republic of the Congo | Republic of Congo | Congo | Congo-Brazzaville ; Brazzaville
+Democratic Republic of the Congo | Democratic Republic of Congo | DR Congo | Congo-Kinshasa ; Kinshasa
+Costa Rica ; San Jose
+Cote d'Ivoire | Ivory Coast ; Yamoussoukro ; Abidjan
+Croatia ; Zagreb
+Cuba ; Havana
+Cyprus ; Nicosia
+Czechia | Czech Republic ; Prague
+Denmark ; Copenhagen
+Djibouti ; Djibouti | Djibouti City
+Dominica ; Roseau
+Dominican Republic ; Santo Domingo
+Ecuador ; Quito
+Egypt ; Cairo
+El Salvador ; San Salvador
+Equatorial Guinea ; Ciudad de la Paz
+Eritrea ; Asmara
+Estonia ; Tallinn
+Eswatini ; Mbabane ; Lobamba
+Ethiopia ; Addis Ababa
+Fiji ; Suva
+Finland ; Helsinki
+France ; Paris
+Gabon ; Libreville
+Gambia ; Banjul
+Georgia ; Tbilisi
+Germany ; Berlin
+Ghana ; Accra
+Greece ; Athens
+Grenada ; Saint George's | St George's
+Guatemala ; Guatemala City
+Guinea ; Conakry
+Guinea-Bissau ; Bissau
+Guyana ; Georgetown
+Haiti ; Port-au-Prince
+Honduras ; Tegucigalpa
+Hungary ; Budapest
+Iceland ; Reykjavik
+India ; New Delhi
+Indonesia ; Jakarta
+Iran ; Tehran
+Iraq ; Baghdad
+Ireland ; Dublin
+Israel ; Jerusalem
+Italy ; Rome
+Jamaica ; Kingston
+Japan ; Tokyo
+Jordan ; Amman
+Kazakhstan ; Astana
+Kenya ; Nairobi
+Kiribati ; Tarawa | South Tarawa
+Kosovo ; Pristina | Prishtina
+Kuwait ; Kuwait City
+Kyrgyzstan ; Bishkek
+Laos ; Vientiane
+Latvia ; Riga
+Lebanon ; Beirut
+Lesotho ; Maseru
+Liberia ; Monrovia
+Libya ; Tripoli
+Liechtenstein ; Vaduz
+Lithuania ; Vilnius
+Luxembourg ; Luxembourg | Luxembourg City
+Madagascar ; Antananarivo
+Malawi ; Lilongwe
+Malaysia ; Kuala Lumpur ; Putrajaya
+Maldives ; Male
+Mali ; Bamako
+Malta ; Valletta
+Marshall Islands ; Majuro
+Mauritania ; Nouakchott
+Mauritius ; Port Louis
+Mexico ; Mexico City
+Micronesia | Federated States of Micronesia ; Palikir
+Moldova ; Chisinau
+Monaco ; Monaco
+Mongolia ; Ulaanbaatar | Ulan Bator
+Montenegro ; Podgorica
+Morocco ; Rabat
+Mozambique ; Maputo
+Myanmar ; Naypyidaw | Nay Pyi Taw | Naypyitaw
+Namibia ; Windhoek
+Nauru ; Yaren
+Nepal ; Kathmandu
+Netherlands ; Amsterdam ; The Hague
+New Zealand ; Wellington
+Nicaragua ; Managua
+Niger ; Niamey
+Nigeria ; Abuja
+North Korea ; Pyongyang
+North Macedonia ; Skopje
+Norway ; Oslo
+Oman ; Muscat
+Pakistan ; Islamabad
+Palau ; Ngerulmud
+Palestine | State of Palestine ; East Jerusalem ; Ramallah
+Panama ; Panama City
+Papua New Guinea ; Port Moresby
+Paraguay ; Asuncion
+Peru ; Lima
+Philippines ; Manila
+Poland ; Warsaw
+Portugal ; Lisbon
+Qatar ; Doha
+Romania ; Bucharest
+Russia ; Moscow
+Rwanda ; Kigali
+Saint Kitts and Nevis | St Kitts and Nevis ; Basseterre
+Saint Lucia | St Lucia ; Castries
+Saint Vincent and the Grenadines | St Vincent and the Grenadines ; Kingstown
+Samoa ; Apia
+San Marino ; San Marino | City of San Marino
+Sao Tome and Principe ; Sao Tome
+Saudi Arabia ; Riyadh
+Senegal ; Dakar
+Serbia ; Belgrade
+Seychelles ; Victoria
+Sierra Leone ; Freetown
+Singapore ; Singapore
+Slovakia ; Bratislava
+Slovenia ; Ljubljana
+Solomon Islands ; Honiara
+Somalia ; Mogadishu
+South Africa ; Pretoria ; Cape Town ; Bloemfontein
+South Korea ; Seoul
+South Sudan ; Juba
+Spain ; Madrid
+Sri Lanka ; Sri Jayawardenepura Kotte | Kotte ; Colombo
+Sudan ; Khartoum
+Suriname ; Paramaribo
+Sweden ; Stockholm
+Switzerland ; Bern | Berne
+Syria ; Damascus
+Taiwan ; Taipei
+Tajikistan ; Dushanbe
+Tanzania ; Dodoma
+Thailand ; Bangkok
+Timor-Leste | East Timor ; Dili
+Togo ; Lome
+Tonga ; Nuku'alofa
+Trinidad and Tobago ; Port of Spain
+Tunisia ; Tunis
+Turkey | Turkiye ; Ankara
+Turkmenistan ; Ashgabat
+Tuvalu ; Funafuti
+Uganda ; Kampala
+Ukraine ; Kyiv
+United Arab Emirates ; Abu Dhabi
+United Kingdom ; London
+United States | United States of America ; Washington | Washington DC | Washington D.C.
+Uruguay ; Montevideo
+Uzbekistan ; Tashkent
+Vanuatu ; Port Vila
+Vatican City | Holy See | Vatican ; Vatican City
+Venezuela ; Caracas
+Vietnam | Viet Nam ; Hanoi
+Yemen ; Sanaa | Sana'a
+Zambia ; Lusaka
+Zimbabwe ; Harare
