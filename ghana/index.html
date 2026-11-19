@@ -233,8 +233,8 @@ h1,h2,h3,.topic,.qlist .n,.card-head h2,.panel > h2,.club h3{font-size:var(--tit
 /* ===== Settings ===== */
 const SHEET_ID = "1k-s0e-_88iBPJo0j93sIPkA0DlT-gK7n6X1gj1JmMzA";
 const IMAGE_FOLDER = "../ghana/images/";
-/* This file is used for two pages: /ghana/ (Tuesday public speaking) and /connect/ (Wednesday Connect). */
-const MODE = /\/connect\/?/.test(location.pathname) ? "connect" : "speaking";
+/* This file is used for two pages: /ghana/ (Tuesday public speaking) and /launch/ (Wednesday: This Week at Launchpad23). */
+const MODE = /\/(launch|connect)\/?/.test(location.pathname) ? "connect" : "speaking";
 if(MODE==="connect") document.title="This Week at Launchpad23";
 const STORE_KEY = "lp23-ghana-myquote";
 document.getElementById("yr").textContent = new Date().getFullYear();
