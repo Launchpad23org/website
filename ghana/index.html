@@ -433,7 +433,7 @@ function convenePanel(w){
   const ann=`<article class="cv-card"><div class="sq">${sqPic(w.set["Announcements image"]||"announcements.jpg","news")}</div><div><h3>Announcements</h3>${news.length?`<ul class="ann">${news.map(n=>{const t=(n["Subject (shown in bold)"]||"").trim().replace(/[.:]$/,"");return `<li>${t?`<b>${esc(t)}.</b> `:""}${linkify(n["Announcement"])}</li>`;}).join("")}</ul>`:`<p>No announcements this week.</p>`}</div></article>`;
   const mf=w.set["Mission update form"];
   const mission=mf?`<article class="cv-card"><div class="sq">${sqPic(w.set["Mission update image"]||"","mission")}</div><div><h3>Mission Update</h3><p>What did you work on? What's next?</p><div class="btn-row"><a class="btn btn-main" href="${esc(mf)}" target="_blank" rel="noopener">Post my update</a></div></div></article>`:"";
-  return `<section class="panel tint t-convene"><h2 class="sec">Convene</h2><div class="cv">${mission}${ann}${tenx}</div></section>`;
+  return `<section class="panel tint t-convene"><h2 class="sec">Convene</h2><div class="cv">${ann}${mission}${tenx}</div></section>`;
 }
 function considerPanel(w){
   if(!w.topics.length) return "";
