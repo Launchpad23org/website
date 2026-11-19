@@ -142,16 +142,16 @@ details .inside a{word-break:break-all}
 .title-card p{margin:0;color:#dfe9f8;font-weight:600}
 .sec{margin:0 0 16px}
 .cv{display:grid;gap:18px}
-.cv-card{display:grid;grid-template-columns:300px 1fr;gap:20px;align-items:start;border:1px solid var(--line);border-radius:14px;padding:16px}
+.cv-card{display:grid;grid-template-columns:min(300px,32%) 1fr;gap:20px;align-items:start;border:1px solid var(--line);border-radius:14px;padding:16px}
 .cv-card .sq{aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--soft)}
 .cv-card .sq img,.cv-card .sq svg{width:100%;height:100%;object-fit:cover;display:block}
 .cv-card h3{margin:2px 0 8px}.cv-card p{margin:0}
 .cv-card .btn-row{margin-top:12px}
 .ann{margin:0;padding-left:20px}.ann li{padding:3px 0}
 .cs{display:grid;gap:18px}
-.cs-card{border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;grid-template-columns:360px 1fr;gap:20px;align-items:start}
+.cs-card{border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;grid-template-columns:min(300px,32%) 1fr;gap:20px;align-items:start}
 .cs-card .txt{display:flex;flex-direction:column;gap:8px}
-@media (max-width:760px){.cs-card{grid-template-columns:1fr;gap:12px}}
+@media (max-width:700px){.cs-card{grid-template-columns:1fr;gap:12px}}
 .cs-card .wide{aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--soft)}
 .cs-card .wide img{width:100%;height:100%;object-fit:cover}
 .cs-card h3{margin:2px 0 0}.cs-card p{margin:0}
@@ -416,7 +416,7 @@ function convenePanel(w){
   const tenx=on?`<article class="cv-card"><div class="sq">${sqPic(w.set["10x10 image"]||"10x10.jpg","10x10")}</div><div><h3>10x10 Flex</h3><p>Ten topics. Ten facts. ${mins} minute${mins==="One"?"":"s"}.</p><div class="btn-row"><a class="btn btn-main" href="#/10x10">Open the board</a></div></div></article>`:"";
   const ann=`<article class="cv-card"><div class="sq">${sqPic(w.set["Announcements image"]||"announcements.jpg","news")}</div><div><h3>Announcements</h3>${news.length?`<ul class="ann">${news.map(n=>{const t=(n["Subject (shown in bold)"]||"").trim().replace(/[.:]$/,"");return `<li>${t?`<b>${esc(t)}.</b> `:""}${linkify(n["Announcement"])}</li>`;}).join("")}</ul>`:`<p>No announcements this week.</p>`}</div></article>`;
   const mf=w.set["Mission update form"];
-  const mission=mf?`<article class="cv-card"><div class="sq">${sqPic(w.set["Mission update image"]||"","mission")}</div><div><h3>Mission Update</h3><p>What did you work on? What's next? Post your update while we do announcements.</p><div class="btn-row"><a class="btn btn-main" href="${esc(mf)}" target="_blank" rel="noopener">Post my update</a></div></div></article>`:"";
+  const mission=mf?`<article class="cv-card"><div class="sq">${sqPic(w.set["Mission update image"]||"","mission")}</div><div><h3>Mission Update</h3><p>What did you work on? What's next?</p><div class="btn-row"><a class="btn btn-main" href="${esc(mf)}" target="_blank" rel="noopener">Post my update</a></div></div></article>`:"";
   return `<section class="panel"><h2 class="sec">Convene</h2><div class="cv">${mission}${ann}${tenx}</div></section>`;
 }
 function considerPanel(w){
@@ -432,7 +432,7 @@ function toolsPanel(tools){
 function debriefPanel(w){
   const exit=w.set["Exit ticket form"]; if(!exit) return "";
   const topics=w.topics.length?w.topics:[{"Topic":"Launchpad23"}];
-  return `<section class="panel"><h2 class="sec">Launch Debrief</h2><div class="cs"><article class="cs-card"><div class="wide"><img src="${esc(imgSrc(w.set["Debrief image"]||"debrief.jpg"))}" alt="The L23 Debrief"></div><div class="txt"><h3>How did today go?</h3><p>Before Connect, tell us about your topic. Click the one you joined:</p><div class="btn-row" style="margin-top:6px">${topics.map(t=>`<a class="btn btn-main" href="${esc(formLink(exit,{TOPIC:t["Topic"]}))}" target="_blank" rel="noopener">${esc(String(t["Topic"]).split(":")[0].trim())}${t["Host"]?` (${esc(t["Host"])})`:""}</a>`).join("")}</div></div></article></div></section>`;
+  return `<section class="panel"><h2 class="sec">Launch Debrief</h2><div class="cs"><article class="cs-card"><div class="wide"><img src="${esc(imgSrc(w.set["Debrief image"]||"debrief.jpg"))}" alt="The L23 Debrief"></div><div class="txt"><h3>How did today go?</h3><p>Click the topic you joined:</p><div class="btn-row" style="margin-top:6px">${topics.map(t=>`<a class="btn btn-main" href="${esc(formLink(exit,{TOPIC:t["Topic"]}))}" target="_blank" rel="noopener">${esc(String(t["Topic"]).split(":")[0].trim())}${t["Host"]?` (${esc(t["Host"])})`:""}</a>`).join("")}</div></div></article></div></section>`;
 }
 async function home(){
   const d=await load();
