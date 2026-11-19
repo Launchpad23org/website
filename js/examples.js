@@ -65,6 +65,11 @@
   // with a blurred copy of itself filling the sides, so nothing is cropped.
   function frame(img){ var u=esc(fixImage(img)); return '<div class="frame"><img class="bg" src="'+u+'" alt="" aria-hidden="true" loading="lazy"><img class="fg" src="'+u+'" alt="" loading="lazy"></div>'; }
   function renderResources(rows){
+    // "Position": a number pins a card to that spot (1 = first); blank = row order after the pinned ones.
+    rows=rows.map(function(r,i){ return [r,i]; }).sort(function(x,y){
+      var a=parseFloat(get(x[0],['position'])), b=parseFloat(get(y[0],['position']));
+      a=isNaN(a)?Infinity:a; b=isNaN(b)?Infinity:b; return (a-b)||(x[1]-y[1]);
+    }).map(function(x){ return x[0]; });
     var grids={tools:document.getElementById('tool-grid'), archive:document.getElementById('resource-grid')}, html={tools:'',archive:''}, n=0;
     rows.forEach(function(r){
       var status=get(r,['status','show']).toLowerCase();

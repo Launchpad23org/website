@@ -298,8 +298,10 @@ const EXAMPLES_SHEET_ID="1UjEp8kkm1yx4QmyanMly9JxXLwUBOjD0axoSiqrAiAg";
 async function loadTools(){
   const url=`https://docs.google.com/spreadsheets/d/${EXAMPLES_SHEET_ID}/gviz/tq?tqx=out:csv&headers=1&sheet=${encodeURIComponent("Free Resources")}&_=${Date.now()}`;
   const r=await fetch(url,{cache:"no-store"}); if(!r.ok) throw new Error("tools");
+  const pos=t=>{ const n=parseFloat(t["Position"]); return isNaN(n)?Infinity:n; };
   return parseCSV(await r.text()).filter(t=>{ const on=(t["Show on"]||"").toLowerCase(), st=(t["Status"]||"").toLowerCase();
-    return t["Title"]&&(on.includes("launch")||on.includes("both"))&&!/^(hide|hidden|no)$/.test(st); });
+    return t["Title"]&&(on.includes("launch")||on.includes("both"))&&!/^(hide|hidden|no)$/.test(st); })
+    .map((t,i)=>[t,i]).sort((x,y)=>(pos(x[0])-pos(y[0]))||(x[1]-y[1])).map(x=>x[0]);
 }
 function siteUrl(u){ u=String(u||"").trim(); if(!u) return ""; if(/^https?:\/\//.test(u)){ const m=u.match(/drive\.google\.com\/file\/d\/([^/]+)/); return m?`https://drive.google.com/file/d/${m[1]}/view`:u; } return u.startsWith("../")?u:"../"+u.replace(/^\//,""); }
 function siteImg(u){ u=String(u||"").trim(); const m=u.match(/drive\.google\.com\/file\/d\/([^/]+)/); return m?`https://drive.google.com/thumbnail?id=${m[1]}&sz=w900`:siteUrl(u); }
