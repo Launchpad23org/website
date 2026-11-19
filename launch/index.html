@@ -140,7 +140,11 @@ details .inside a{word-break:break-all}
 .tint{background:var(--tint);color:#fff}
 .tint > h2.sec,.tint > p{color:#fff}
 .tint .cv-card,.tint .cs-card,.tint .club,.tint .launch{background:#fff;color:#414141;border-color:transparent;box-shadow:0 2px 10px rgba(0,0,0,.18)}
-.t-convene{--tint:#0E6B70}.t-consider{--tint:#1C4587}.t-debrief{--tint:#6A3D78}.t-connect{--tint:#2D6A4F}.t-tools{--tint:#A9501E}
+/* Seasons: set "Season" in Wednesday Settings (Fall, Winter, Spring, Summer; blank = by date) */
+.season-fall{background:#FAF3E8}.season-fall .t-convene{--tint:#8A6212}.season-fall .t-consider{--tint:#9C2F22}.season-fall .t-debrief{--tint:#7A4A26}.season-fall .t-connect{--tint:#5E6B2B}.season-fall .t-tools{--tint:#B0571B}
+.season-winter{background:#F1F5FB}.season-winter .t-convene{--tint:#0F2C5C}.season-winter .t-consider{--tint:#1C4587}.season-winter .t-debrief{--tint:#24589E}.season-winter .t-connect{--tint:#2C6AB0}.season-winter .t-tools{--tint:#3A77B8}
+.season-spring{background:#F2F8F0}.season-spring .t-convene{--tint:#2E7D4F}.season-spring .t-consider{--tint:#8E4585}.season-spring .t-debrief{--tint:#2F6DA8}.season-spring .t-connect{--tint:#B0466A}.season-spring .t-tools{--tint:#5F7A1E}
+.season-summer{background:#FFF8EC}.season-summer .t-convene{--tint:#0B7285}.season-summer .t-consider{--tint:#C2410C}.season-summer .t-debrief{--tint:#1D6FA5}.season-summer .t-connect{--tint:#9A5B07}.season-summer .t-tools{--tint:#B4235A}
 .title-card{background:var(--navy);color:#fff;border-radius:16px;padding:24px 28px;margin:0 0 28px;text-align:center;container-type:inline-size;box-shadow:0 6px 24px rgba(18,48,95,.12)}
 .title-card .week-title{color:#fff;margin:0}
 .title-card p{margin:0;color:#dfe9f8;font-weight:600}
@@ -392,6 +396,12 @@ function sessionPanel(d,s,top="",cls=""){
   }
   return `<section class="panel${cls}">${body}</section>`;
 }
+function setSeason(v){
+  const all=["winter","spring","summer","fall"];
+  let s=String(v||"").trim().toLowerCase(); if(s==="autumn") s="fall";
+  if(!all.includes(s)){ const m=new Date().getMonth(); s=m<2||m===11?"winter":m<5?"spring":m<8?"summer":"fall"; }
+  all.forEach(x=>document.body.classList.toggle("season-"+x,x===s));
+}
 function fitTitle(){
   document.querySelectorAll(".week-title").forEach(h=>{
     h.style.removeProperty("font-size");
@@ -445,6 +455,7 @@ async function home(){
   const T=`<section class="title-card"><h1 class="week-title">This Week at Launchpad23</h1></section>`;
   let html=T;
   if(MODE==="connect"&&w){
+    setSeason(w.set["Season"]);
     html+=convenePanel(w)+considerPanel(w)+debriefPanel(w);
     html+=mine.map(s=>sessionPanel(d,s,`<h2 class="sec">Connect</h2>`," tint t-connect")).join("");
     html+=toolsPanel(tools);
