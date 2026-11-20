@@ -363,7 +363,11 @@ function stored(){try{return localStorage.getItem(STORE_KEY)}catch(e){return nul
 
 /* ===== Helpers ===== */
 const esc=s=>String(s||"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-const linkify=s=>esc(s).replace(/(https?:\/\/[^\s)]+)/g,'<a href="$1" target="_blank" rel="noopener">$1</a>');
+/* Links in sheet text: [words](https://...) links the words; a typed-out https://... address links itself (trailing punctuation left outside the link). */
+const linkify=s=>{const a=(u,t)=>`<a href="${esc(u)}" target="_blank" rel="noopener">${t}</a>`,keep=[];
+  let t=String(s||"").replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,(m,w,u)=>{keep.push(a(u,esc(w)));return "\u0000"+(keep.length-1)+"\u0000";});
+  t=esc(t).replace(/https?:\/\/[^\s<\u0000]*[^\s<\u0000.,;:!?)'"]/g,u=>a(u.replace(/&amp;/g,"&"),u));
+  return t.replace(/\u0000(\d+)\u0000/g,(m,i)=>keep[+i]);};
 const lines=s=>(s||"").split("\n").map(x=>x.trim()).filter(Boolean);
 /* Wrap a passage in big quotation marks; quotes already inside become single quotes. */
 function quoted(t){ let open=true; const inner=String(t||"").replace(/"/g,()=>{const c=open?"\u2018":"\u2019";open=!open;return c;}); return `<span class="qm qo" aria-hidden="true">\u201C</span>${esc(inner)}<span class="qm qc" aria-hidden="true">\u201D</span>`; }
