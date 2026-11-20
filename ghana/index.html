@@ -148,6 +148,9 @@ details .inside a{word-break:break-all}
 .title-card{background:var(--navy);color:#fff;border-radius:16px;padding:24px 28px;margin:0 0 28px;text-align:center;container-type:inline-size;box-shadow:0 6px 24px rgba(18,48,95,.12)}
 .title-card .week-title{color:#fff;margin:0}
 .title-card p{margin:0;color:#dfe9f8;font-weight:600}
+.week-banner{margin:0 0 28px}
+.week-banner img{width:100%;height:auto;aspect-ratio:3/1;border-radius:16px;box-shadow:0 6px 24px rgba(18,48,95,.12);background:#1b140c}
+
 .sec{margin:0 0 16px}
 .cv{display:grid;gap:18px}
 .cv-card{display:grid;grid-template-columns:min(300px,32%) 1fr;gap:20px;align-items:start;border:1px solid var(--line);border-radius:14px;padding:16px}
@@ -494,6 +497,7 @@ async function home(){
   const T=`<section class="title-card"><h1 class="week-title">This Week at Launchpad23</h1></section>`;
   let html=T;
   if(MODE==="connect"&&w){
+    html=`<section class="week-banner"><img src="${esc(imgSrc(w.set["Banner image"]||"this-week-banner.jpg"))}" alt="This Week at Launchpad23" width="1920" height="640"></section>`;
     setSeason(w.set["Season"]);
     html+=convenePanel(w)+considerPanel(w)+debriefPanel(w);
     html+=mine.map(s=>sessionPanel(d,s,`<h2 class="sec">Connect</h2>`," tint t-connect")).join("");
