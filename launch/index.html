@@ -159,6 +159,9 @@ details .inside a{word-break:break-all}
 .cv-card h3{margin:2px 0 8px}.cv-card p{margin:0}
 .cv-card .btn-row{margin-top:12px}
 .ann{margin:0;padding-left:20px}.ann li{padding:3px 0}
+.great p{margin:0 0 10px}.great p:last-child{margin-bottom:0}
+.great blockquote{margin:4px 0 12px;padding:8px 14px;border-left:4px solid var(--tint,#1C4587);background:#f7f4ee;border-radius:0 8px 8px 0;font-weight:600}
+.great blockquote span{display:block}.great blockquote .by{font-weight:400;font-size:.92em;margin-top:4px}
 .cs{display:grid;gap:18px}
 .cs-card{border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;grid-template-columns:min(300px,32%) 1fr;gap:20px;align-items:start}
 .cs-card .txt{display:flex;flex-direction:column;gap:8px}
@@ -320,9 +323,9 @@ async function freshTab(name){
   return parseCSV(await r.text());
 }
 async function loadWed(){
-  const [s,topics,x,facts,news]=await Promise.all(["Wednesday Settings","Wednesday Topics","10x10 This Week","10x10 Facts","Announcements"].map(n=>freshTab(n).catch(()=>[])));
+  const [s,topics,x,facts,news,great]=await Promise.all(["Wednesday Settings","Wednesday Topics","10x10 This Week","10x10 Facts","Announcements","Cadet Greatness"].map(n=>freshTab(n).catch(()=>[])));
   const set={}; s.forEach(r=>{ const k=r["Setting (don't change)"]; if(k) set[k]=(r["Value"]||"").trim(); });
-  return {set,topics:thisWeek(topics.filter(t=>t["Topic"]&&shown(t))),x:x.filter(t=>t["Topic"]),facts,news:news.filter(shown)};
+  return {set,topics:thisWeek(topics.filter(t=>t["Topic"]&&shown(t))),x:x.filter(t=>t["Topic"]),facts,news:news.filter(shown),great:great.filter(g=>g["Text (blank line = new paragraph)"]&&shown(g))};
 }
 /* Wednesday Topics keeps every week (the Examples page archives the old ones).
    This page shows only the rows with the latest date, plus any row with no date. */
@@ -472,12 +475,18 @@ function convenePanel(w){
   const news=w.news.filter(r=>r["Announcement"]||r["Subject (shown in bold)"]);
   const tenx=on?`<article class="cv-card"><div class="sq">${sqPic(w.set["10x10 image"]||"10x10.jpg","10x10")}</div><div><h3>10x10 Flex</h3><p>Ten topics. Ten facts. ${mins} minute${mins==="One"?"":"s"}.</p><div class="btn-row"><a class="btn btn-main" href="#/10x10">Open the board</a></div></div></article>`:"";
   const ann=`<article class="cv-card"><div class="sq">${sqPic(w.set["Announcements image"]||"announcements.jpg","news")}</div><div><h3>Announcements</h3>${news.length?`<ul class="ann">${news.map(n=>{const t=(n["Subject (shown in bold)"]||"").trim().replace(/[.:]$/,"");return `<li>${t?`<b>${esc(t)}.</b> `:""}${linkify(n["Announcement"])}</li>`;}).join("")}</ul>`:`<p>No announcements this week.</p>`}</div></article>`;
+  const greatHTML=t=>String(t).replace(/\r/g,"").split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).map(p=>{
+    const ls=p.split("\n").map(l=>l.trim()).filter(Boolean);
+    const fmt=l=>linkify(l).replace(/\*([^*]+)\*/g,"<em>$1</em>");
+    if(/^["\u201C\u00AB*]/.test(ls[0])) return `<blockquote>${ls.map(l=>`<span${/^[\u2014\u2013-]/.test(l)?' class="by"':""}>${fmt(l)}</span>`).join("")}</blockquote>`;
+    return `<p>${ls.map(fmt).join("<br>")}</p>`; }).join("");
+  const great=w.great.length?`<article class="cv-card"><div class="sq">${sqPic(w.set["Cadet Greatness image"]||"cadet-greatness.jpg","news")}</div><div class="great"><h3>Cadet Greatness</h3>${w.great.map(g=>greatHTML(g["Text (blank line = new paragraph)"])).join("")}</div></article>`:"";
   const mf=w.set["Mission update form"];
   const mission=mf?`<article class="cv-card"><div class="sq">${sqPic(w.set["Mission update image"]||"","mission")}</div><div><h3>Mission Update</h3><p>What did you work on? What's next?</p><div class="btn-row"><a class="btn btn-main" href="${esc(mf)}" target="_blank" rel="noopener">Post my update</a></div></div></article>`:"";
   const agOn=/^y/i.test(w.set["Show Atomic Geography"]||"");
   const agm=parseInt(w.set["Atomic Geography minutes"])||10; const agMins=["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"][agm]||String(agm);
   const atom=agOn?`<article class="cv-card"><div class="sq">${sqPic(w.set["Atomic Geography image"]||"atomic-geography.jpg","10x10")}</div><div><h3>Atomic Geography</h3><p>118 elements. One world. ${agMins} minute${agMins==="One"?"":"s"}.</p><div class="btn-row"><a class="btn btn-main" href="#/atomic">Play</a></div></div></article>`:"";
-  return `<section class="panel tint t-convene"><h2 class="sec">Convene</h2><div class="cv">${ann}${mission}${tenx}${atom}</div></section>`;
+  return `<section class="panel tint t-convene"><h2 class="sec">Convene</h2><div class="cv">${ann}${great}${mission}${tenx}${atom}</div></section>`;
 }
 function considerPanel(w){
   if(!w.topics.length) return "";
