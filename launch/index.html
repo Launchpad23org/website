@@ -955,6 +955,9 @@ function tueHome(t,d){
   const res=`<section class="panel tint t-res"><h2 class="sec">${STAR}Tools and Resources</h2><div class="cs">${tools.map(([art,h,p,href,btn,extra])=>`<article class="cs-card"><div class="wide">${art.startsWith("img:")?`<img src="${esc(art.slice(4))}" alt="">`:TOOL_ART[art]}</div><div class="txt"><h3>${h}</h3><p>${p}</p>${extra?`<p>${extra}</p>`:""}<div class="btn-row" style="margin-top:6px"><a class="btn btn-main" href="${href}">${btn}</a></div></div></article>`).join("")}</div></section>`;
   return banner+warm+practice+res;
 }
+/* "Back" from the warm-up spinner: to the page the visitor came from (Launch page, Examples page), else this page's home. */
+function backHref(){ try{ const r=document.referrer&&new URL(document.referrer);
+  if(r&&r.origin===location.origin&&r.pathname!==location.pathname) return r.pathname+r.search+r.hash; }catch(e){} return "#/"; }
 async function warmups(){
   const t=await loadTue(); const list=t.warmups;
   if(!list.length){ view(`<div class="wrap page"><div class="msg">No warm-ups yet.</div></div>`); return; }
@@ -964,7 +967,7 @@ async function warmups(){
   <div class="wu-stage"><img id="wu-img" src="${esc(imgSrc(WU_FALLBACK))}" data-fallback="${esc(imgSrc(WU_FALLBACK))}" alt=""></div><div class="wu-name" id="wu-name" aria-live="polite"></div>
   <button class="btn btn-main" id="wu-go">Spin</button></div><div id="wu-out"></div>
   <section class="panel"><h2>All warm-ups</h2><div class="wu-list">${list.map(w=>`<details><summary>${esc(w["Name"])}</summary><div class="inside rich">${rich(w["How to do it"])}</div></details>`).join("")}</div></section>
-  <a href="#/">Back to this week</a></div>`);
+  <a href="${esc(backHref())}">Back</a></div>`);
   const img=document.getElementById("wu-img"), name=document.getElementById("wu-name"), btn=document.getElementById("wu-go");
   const show=w=>{ img.src=pic(w); name.textContent=w["Name"]; };
   btn.onclick=async()=>{
