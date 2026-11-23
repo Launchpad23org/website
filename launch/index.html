@@ -286,10 +286,10 @@ body.ghana{--navy:#006B3F;--navy-dark:#004d2d;--accent:#FCD116;background:#FBF8F
 .rich ul{margin:0 0 12px;padding-left:22px}
 .rich p.drill{margin-left:28px;font-size:1.08em;line-height:1.8}
 @media (max-width:700px){.rich p.drill{margin-left:16px}}.rich li{padding:2px 0}
-.ace{margin-top:16px;padding:14px 18px;border-left:6px solid #FCD116;background:#FFF8D6;border-radius:0 12px 12px 0}
+.ace{margin:0 0 16px;padding:14px 18px;border-left:6px solid #FCD116;background:#FFF8D6;border-radius:0 12px 12px 0}
 .ace h4{margin:0 0 6px;color:#111;font-size:var(--text)}
 .ace p{margin:0}
-.launch .wide svg{width:100%;height:100%;display:block}
+.launch .wide svg,.cs-card .wide svg{width:100%;height:100%;display:block}
 .wu-stage{max-width:560px;margin:18px auto;aspect-ratio:16/9;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 4px 16px rgba(0,0,0,.12);border:6px solid var(--accent)}
 .wu-stage img{width:100%;height:100%;object-fit:cover;display:block}
 .wu-name{font-weight:800;font-size:var(--title);color:var(--navy);min-height:1.4em;margin:6px 0 14px}
@@ -945,14 +945,14 @@ function tueHome(t,d){
   const warm=`<section class="panel tint t-warm"><h2 class="sec">Warm-up</h2><div class="cs"><article class="cs-card"><div class="wide"><img src="${esc(imgSrc(wimg))}" data-fallback="${esc(imgSrc(WU_FALLBACK))}" alt=""></div><div class="txt rich"><h3>${esc(s["Warm-up title"]||"This week's warm-up")}</h3>${rich(s["Warm-up text"])}</div></article></div></section>`;
   const ace=(s["Reminder title"]||s["Reminder text"])?`<div class="ace rich">${s["Reminder title"]?`<h4>${esc(s["Reminder title"])}</h4>`:""}${rich(s["Reminder text"])}</div>`:"";
   const pimg=s["Practice image"];
-  const practice=`<section class="panel tint t-practice"><h2 class="sec">Practice</h2><div class="cs"><article class="cs-card${pimg?"":" solo"}">${pimg?`<div class="wide"><img src="${esc(imgSrc(pimg))}" alt=""></div>`:""}<div class="txt rich">${s["Practice title"]?`<h3>${esc(s["Practice title"])}</h3>`:""}${rich(s["Practice text"])}${ace}</div></article></div></section>`;
+  const practice=`<section class="panel tint t-practice"><h2 class="sec">Practice</h2><div class="cs"><article class="cs-card${pimg?"":" solo"}">${pimg?`<div class="wide"><img src="${esc(imgSrc(pimg))}" alt=""></div>`:""}<div class="txt rich">${s["Practice title"]?`<h3>${esc(s["Practice title"])}</h3>`:""}${ace}${rich(s["Practice text"])}</div></article></div></section>`;
   const mine=stored(); const mq=mine&&d.quotes.find(q=>q["Number"]===mine);
   const tools=[
     ["spin","Quote Spinner","Spin for a quotation to practice. Choose short, medium, or long.","#/spin","Spin",mq?`Your last quote: <a href="#/quote/${esc(mq["Number"])}">number ${esc(mq["Number"])}, ${esc(mq["Title"])}</a>`:""],
     ["list","All Quotes","Every quotation, numbered, with the story behind it.","#/quotes","See all quotes",""],
-    ["warm","Warm-up Spinner","Tongue twisters and voice warm-ups to practice any time.","#/warmups","Spin a warm-up",""],
+    ["img:"+WU_FALLBACK,"Warm-up Spinner","Tongue twisters and voice warm-ups to practice any time.","#/warmups","Spin a warm-up",""],
     ["debate","The Big Think","Debate topics, with a spinner and a timer for arguing both sides.","#/debate","Find a topic",""]];
-  const res=`<section class="panel tint t-res"><h2 class="sec">${STAR}Tools and Resources</h2><div class="launches">${tools.map(([art,h,p,href,btn,extra])=>`<article class="launch"><div class="wide">${TOOL_ART[art]}</div><h3>${h}</h3><p>${p}</p>${extra?`<p class="small">${extra}</p>`:""}<div class="btn-row"><a class="btn btn-main" href="${href}">${btn}</a></div></article>`).join("")}</div></section>`;
+  const res=`<section class="panel tint t-res"><h2 class="sec">${STAR}Tools and Resources</h2><div class="cs">${tools.map(([art,h,p,href,btn,extra])=>`<article class="cs-card"><div class="wide">${art.startsWith("img:")?`<img src="${esc(imgSrc(art.slice(4)))}" alt="">`:TOOL_ART[art]}</div><div class="txt"><h3>${h}</h3><p>${p}</p>${extra?`<p class="small">${extra}</p>`:""}<div class="btn-row" style="margin-top:6px"><a class="btn btn-main" href="${href}">${btn}</a></div></div></article>`).join("")}</div></section>`;
   return banner+warm+practice+res;
 }
 async function warmups(){
