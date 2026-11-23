@@ -950,7 +950,7 @@ function tueHome(t,d){
   const tools=[
     ["img:"+imgSrc(WU_FALLBACK),"Warm-up Spinner","Tongue twisters and voice warm-ups to practice any time.","#/warmups","Spin a warm-up",""],
     ["img:"+imgSrc("quote-spinner-speaker.jpg"),"Quote Spinner","Spin for a quotation to practice. Choose short, medium, or long.","#/spin","Spin",mq?`Your last quote: <a href="#/quote/${esc(mq["Number"])}">number ${esc(mq["Number"])}, ${esc(mq["Title"])}</a>`:""],
-    ["img:"+imgSrc("practice-quotations.jpg"),"All Quotes","Every quotation, numbered, with the story behind it.","#/quotes","See all quotes",""],
+    ["img:"+imgSrc("practice-quotations.jpg"),"Practice Quotations Master List","Every quotation, numbered, with the story behind it.","#/quotes","See all quotes",""],
     ["img:../img/challenges/great-debate.webp","The Great Debate","Debate topics, with a spinner and a timer for arguing both sides.","#/debate","Find a topic",""]];
   const res=`<section class="panel tint t-res"><h2 class="sec">${STAR}Tools and Resources</h2><div class="cs">${tools.map(([art,h,p,href,btn,extra])=>`<article class="cs-card"><div class="wide">${art.startsWith("img:")?`<img src="${esc(art.slice(4))}" alt="">`:TOOL_ART[art]}</div><div class="txt"><h3>${h}</h3><p>${p}</p>${extra?`<p>${extra}</p>`:""}<div class="btn-row" style="margin-top:6px"><a class="btn btn-main" href="${href}">${btn}</a></div></div></article>`).join("")}</div></section>`;
   return banner+warm+practice+res;
