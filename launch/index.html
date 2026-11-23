@@ -469,7 +469,7 @@ function sessionPanel(d,s,top="",cls=""){
   if(notes.length) body+=`<div class="notes"><p><b>Note${notes.length>1?"s":""}:</b></p><ul style="margin:6px 0 0;padding-left:20px">${notes.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`;
   if(type==="public-speaking"){
     const mine=stored(); const mq=mine&&d.quotes.find(q=>q["Number"]===mine);
-    body+=`<div class="btn-row"><a class="btn btn-main" href="#/spin">Spin for your quote</a><a class="btn btn-line" href="#/quotes">See all quotes</a></div>`
+    body+=`<div class="btn-row"><a class="btn btn-main" href="#/spin">Spin for your quote</a><a class="btn btn-line" href="#/quotes">See the master list</a></div>`
         +(mq?`<p class="small" style="margin-top:14px">Your last quote: <a href="#/quote/${esc(mq["Number"])}">number ${esc(mq["Number"])}, ${esc(mq["Title"])}</a></p>`:"");
   }
   if(type==="connect"){
@@ -790,8 +790,8 @@ function cardHTML(q,version){
 }
 async function quote(n,version){
   const d=await load(); const q=d.quotes.find(x=>x["Number"]===n);
-  if(!q){ view(`<div class="wrap page"><div class="msg">There is no quote number ${esc(n)} yet. <a href="#/quotes">See all quotes</a>.</div></div>`); return; }
-  view(`<div class="wrap page">${cardHTML(q,version)}<div class="btn-row" style="max-width:820px;margin:0 auto"><a class="btn btn-main" href="#/spin">Spin again</a><a class="btn btn-line" href="#/quotes">See all quotes</a></div></div>`);
+  if(!q){ view(`<div class="wrap page"><div class="msg">There is no quote number ${esc(n)} yet. <a href="#/quotes">See the master list</a>.</div></div>`); return; }
+  view(`<div class="wrap page">${cardHTML(q,version)}<div class="btn-row" style="max-width:820px;margin:0 auto"><a class="btn btn-main" href="#/spin">Spin again</a><a class="btn btn-line" href="#/quotes">See the master list</a></div></div>`);
 }
 let spinLen="any";
 async function spin(){
@@ -801,7 +801,7 @@ async function spin(){
   view(`<div class="wrap page"><div class="panel spin-hero"><h1>Spin for your quote</h1><p>Choose a length, then spin. Don't like your quote? Spin again.</p>
   <div class="lengths" role="group" aria-label="Length">${opts.map(([k,l,h])=>`<button data-len="${k}" aria-pressed="${k===spinLen}">${l}<small>${h}</small></button>`).join("")}</div>
   <div class="dial" id="dial" aria-live="polite"><div class="tick"></div><div class="face" id="face"></div><span id="dialnum">?</span></div>
-  <button class="btn btn-main" id="go">Spin</button><p style="margin:14px 0 0"><a href="#/quotes">See all quotes</a></p></div><div id="result"></div></div>`);
+  <button class="btn btn-main" id="go">Spin</button><p style="margin:14px 0 0"><a href="#/quotes">See the master list</a></p></div><div id="result"></div></div>`);
   const btn=document.getElementById("go"), num=document.getElementById("dialnum"), face=document.getElementById("face"), dial=document.getElementById("dial");
   document.querySelectorAll(".lengths button").forEach(b=>b.onclick=()=>{spinLen=b.dataset.len;document.querySelectorAll(".lengths button").forEach(x=>x.setAttribute("aria-pressed",x===b));});
   // Load the pictures now, so they can flash past while spinning.
@@ -822,7 +822,7 @@ async function spin(){
 }
 async function list(){
   const d=await load();
-  view(`<div class="wrap page"><h1>All quotes</h1><p>Every quote has a number. Find yours, or pick any one to practice.</p>
+  view(`<div class="wrap page"><h1>Practice Quotations Master List</h1><p>Every quotation has a number. Find yours, or pick any one to practice.</p>
   <div class="panel"><ul class="qlist">${d.quotes.map(q=>`<li><div class="n">${esc(q["Number"])}</div><div><div class="t">${esc(q["Passage"])}</div><div class="who">${esc(q["Speaker"])}${q["Year"]?`, ${esc(q["Year"])}`:""}</div><a href="#/quote/${esc(q["Number"])}">More information</a></div></li>`).join("")}</ul></div></div>`);
 }
 
@@ -950,7 +950,7 @@ function tueHome(t,d){
   const tools=[
     ["img:"+imgSrc(WU_FALLBACK),"Warm-up Spinner","Tongue twisters and voice warm-ups to practice any time.","#/warmups","Spin a warm-up",""],
     ["img:"+imgSrc("quote-spinner-speaker.jpg"),"Quote Spinner","Spin for a quotation to practice. Choose short, medium, or long.","#/spin","Spin",mq?`Your last quote: <a href="#/quote/${esc(mq["Number"])}">number ${esc(mq["Number"])}, ${esc(mq["Title"])}</a>`:""],
-    ["img:"+imgSrc("practice-quotations.jpg"),"Practice Quotations Master List","Every quotation, numbered, with the story behind it.","#/quotes","See all quotes",""],
+    ["img:"+imgSrc("practice-quotations.jpg"),"Practice Quotations Master List","Every quotation, numbered, with the story behind it.","#/quotes","See the master list",""],
     ["img:../img/challenges/great-debate.webp","The Great Debate","Debate topics, with a spinner and a timer for arguing both sides.","#/debate","Find a topic",""]];
   const res=`<section class="panel tint t-res"><h2 class="sec">${STAR}Tools and Resources</h2><div class="cs">${tools.map(([art,h,p,href,btn,extra])=>`<article class="cs-card"><div class="wide">${art.startsWith("img:")?`<img src="${esc(art.slice(4))}" alt="">`:TOOL_ART[art]}</div><div class="txt"><h3>${h}</h3><p>${p}</p>${extra?`<p>${extra}</p>`:""}<div class="btn-row" style="margin-top:6px"><a class="btn btn-main" href="${href}">${btn}</a></div></div></article>`).join("")}</div></section>`;
   return banner+warm+practice+res;
