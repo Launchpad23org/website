@@ -283,7 +283,9 @@ body.ghana{--navy:#006B3F;--navy-dark:#004d2d;--accent:#FCD116;background:#FBF8F
 .sec .star{display:inline-block;width:.8em;height:.8em;margin-right:.35em;vertical-align:-.04em}
 .cs-card.solo{grid-template-columns:1fr}
 .rich p{margin:0 0 12px}.rich p:last-child{margin-bottom:0}
-.rich ul{margin:0 0 12px;padding-left:22px}.rich li{padding:2px 0}
+.rich ul{margin:0 0 12px;padding-left:22px}
+.rich p.drill{margin-left:28px;font-size:1.08em;line-height:1.8}
+@media (max-width:700px){.rich p.drill{margin-left:16px}}.rich li{padding:2px 0}
 .ace{margin-top:16px;padding:14px 18px;border-left:6px solid #FCD116;background:#FFF8D6;border-radius:0 12px 12px 0}
 .ace h4{margin:0 0 6px;color:#111;font-size:var(--text)}
 .ace p{margin:0}
@@ -920,7 +922,8 @@ function rich(t){
   return String(t||"").replace(/\r/g,"").split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).map(p=>{
     const ls=p.split("\n").map(l=>l.trim()).filter(Boolean);
     if(ls.every(l=>/^[*•-]\s+/.test(l))) return `<ul>${ls.map(l=>`<li>${fmt(l.replace(/^[*•-]\s+/,""))}</li>`).join("")}</ul>`;
-    return `<p>${ls.map(fmt).join("<br>")}</p>`; }).join("");
+    const drill=ls.every(l=>/^\*\*[^*]+\*\*$/.test(l)); /* a paragraph of all-bold lines = practice lines, shown indented */
+    return `<p${drill?' class="drill"':""}>${ls.map(fmt).join("<br>")}</p>`; }).join("");
 }
 async function loadTue(){
   const [s,w]=await Promise.all([freshTab("Tuesday Settings").catch(()=>[]),freshTab("Warm-ups").catch(()=>[])]);
