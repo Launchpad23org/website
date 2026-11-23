@@ -916,14 +916,14 @@ async function archive(kind){
 
 
 /* ===== Tuesday page (public speaking): Warm-up, Practice, Tools and Resources ===== */
-/* Sheet text: blank line = new paragraph; **words** = bold; a line starting with * = bullet; [words](https://...) = link. */
+/* Sheet text: blank line = new paragraph; **words** = bold; a line starting with * = bullet; a line starting with > = indented; [words](https://...) = link. */
 function rich(t){
   const fmt=l=>linkify(l).replace(/\*\*([^*]+)\*\*/g,"<b>$1</b>");
   return String(t||"").replace(/\r/g,"").split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean).map(p=>{
     const ls=p.split("\n").map(l=>l.trim()).filter(Boolean);
     if(ls.every(l=>/^[*•-]\s+/.test(l))) return `<ul>${ls.map(l=>`<li>${fmt(l.replace(/^[*•-]\s+/,""))}</li>`).join("")}</ul>`;
-    const drill=ls.every(l=>/^\*\*[^*]+\*\*$/.test(l)); /* a paragraph of all-bold lines = practice lines, shown indented */
-    return `<p${drill?' class="drill"':""}>${ls.map(fmt).join("<br>")}</p>`; }).join("");
+    if(ls.every(l=>/^>/.test(l))) return `<p class="drill">${ls.map(l=>fmt(l.replace(/^>\s*/,""))).join("<br>")}</p>`; /* lines starting with > are indented */
+    return `<p>${ls.map(fmt).join("<br>")}</p>`; }).join("");
 }
 async function loadTue(){
   const [s,w]=await Promise.all([freshTab("Tuesday Settings").catch(()=>[]),freshTab("Warm-ups").catch(()=>[])]);
