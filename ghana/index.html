@@ -300,7 +300,7 @@ body.ghana{--navy:#006B3F;--navy-dark:#004d2d;--accent:#FCD116;background:#FBF8F
 
 /* Fix the English Language: the Lab (#/lab) */
 .lb-wide{max-width:1180px}
-.lb-pic{border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#1c1c1c;max-height:340px;width:100%}
+.lb-pic{border-radius:12px;overflow:hidden;aspect-ratio:3/1;background:#1c1c1c;width:100%}
 .lb-pic img{width:100%;height:100%;object-fit:cover}
 .lb-banner{background:var(--accent);color:#1b1b1b;font-weight:800;border-radius:12px;padding:14px 18px;margin:16px 0;font-size:1.15rem!important;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
 .lb-banner .btn{background:#fff;color:#1d6b3f;padding:8px 18px}
@@ -368,6 +368,7 @@ body.ghana{--navy:#006B3F;--navy-dark:#004d2d;--accent:#FCD116;background:#FBF8F
 @media (max-width:700px){.lb-list{grid-template-columns:1fr}}
 .lb-spec .btn[hidden]{display:none}
 .lb-spec[hidden]{display:none}
+.lb-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 </style>
 </head>
 <body>
@@ -1120,6 +1121,7 @@ function lbAlienHTML(){ return `<section class="lb-alien"><h2>INCOMING TRANSMISS
   <p>Your mission: <b>fix English</b>. Every fix you send is a <b>patch</b>. Our tester, Cousin Claude, will try to break each one. Patches that survive go into the official record.</p>
   <p>There are more problems than any lab can fix. That's the point. Good luck, Earthlings.</p></section>`; }
 function lbStepsHTML(open){ return `<details${open?" open":""}><summary>How the lab works</summary><div class="inside"><ol class="lb-steps">
+  <li>Choose one <b>lab scribe</b>: the only person in your lab who sends patches. Everyone else helps decide what to send.</li>
   <li>Pick a specimen (a broken bit of English). They run roughly from easiest (#1) to hardest, but start anywhere.</li>
   <li>Write a <b>patch</b>: your new rule, plus a sentence that uses it.</li>
   <li>Send it. Patch as many specimens as you can, and patch the same one again whenever you have a better idea.</li>
@@ -1232,10 +1234,10 @@ function lbResultsBody(){
 /* ---- drawing ---- */
 const LB_STAGE_NAME={briefing:"Mission briefing",lab:"The lab is open",trial:"Clinical trial",results:"Results"};
 function lbFull(){
-  const L=lbS.live, img=L.set["Lab image"]||"english.jpg";
+  const L=lbS.live, img=L.set["Lab image"]||"lab-banner.jpg";
   const body=L.stage==="lab"?lbLabBody():L.stage==="trial"?lbTrialBody():L.stage==="results"?lbResultsBody():lbBriefingBody();
   app.innerHTML=`<div class="wrap page lb-wide" id="lb-root"><section class="panel"><div class="lb-pic"><img src="${esc(imgSrc(img))}" alt="Fix the English Language"></div>
-    <div class="x-head" style="margin-top:14px"><div><h1 style="margin:0">Fix the English Language</h1><p class="x-status" style="margin:4px 0 0">${LB_STAGE_NAME[L.stage]}</p></div></div>
+    <div class="x-head" style="margin-top:14px"><div><h1 class="lb-sr">Fix the English Language</h1><p class="x-status" style="margin:0">${LB_STAGE_NAME[L.stage]}</p></div></div>
     <div id="lb-banner">${lbBannerHTML()}</div>${L.stage==="trial"?"":lbWhoHTML()}<div id="lb-body">${body}</div></section><a href="#/">Back to this week</a></div>`;
   lbS.sig=lbSig(); lbApplyFilter(); lbBind();
 }
