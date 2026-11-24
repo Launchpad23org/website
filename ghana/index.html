@@ -302,7 +302,13 @@ body.ghana{--navy:#006B3F;--navy-dark:#004d2d;--accent:#FCD116;background:#FBF8F
 .lb-wide{max-width:1180px}
 .lb-pic{border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#1c1c1c;max-height:340px;width:100%}
 .lb-pic img{width:100%;height:100%;object-fit:cover}
-.lb-banner{background:var(--accent);color:#1b1b1b;font-weight:800;border-radius:12px;padding:14px 18px;margin:16px 0;font-size:1.15rem!important;display:flex;gap:10px;align-items:center}
+.lb-banner{background:var(--accent);color:#1b1b1b;font-weight:800;border-radius:12px;padding:14px 18px;margin:16px 0;font-size:1.15rem!important;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.lb-banner .btn{background:#fff;color:#1d6b3f;padding:8px 18px}
+.lb-new{background:var(--accent);color:#1b1b1b;border-radius:999px;padding:0 8px;margin-right:6px;font-size:.8rem}
+.lb-wait{margin:6px 0 0;font-weight:700;color:var(--slate)}
+.lb-buckets{padding-left:18px;border-left:3px solid var(--sky);margin-left:6px}
+.lb-buckets>details>summary{font-weight:700;color:var(--slate)}
+.lb-guide>summary{font-size:1.1rem}
 .lb-banner.mine{background:#2e9d5b;color:#fff;animation:lbPulse 1.4s ease-in-out 3}
 @keyframes lbPulse{50%{transform:scale(1.02)}}
 .lb-who{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 4px}
@@ -361,6 +367,7 @@ body.ghana{--navy:#006B3F;--navy-dark:#004d2d;--accent:#FCD116;background:#FBF8F
 .lb-notebook li{padding:6px 0;border-bottom:1px solid var(--line)}
 @media (max-width:700px){.lb-list{grid-template-columns:1fr}}
 .lb-spec .btn[hidden]{display:none}
+.lb-spec[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -1102,8 +1109,8 @@ function lbDraft(k,v){ const d=lbGet(LB_DRAFT_KEY,{}); if(v===undefined) return 
 function lbBucketTag(b){ return b?`<button class="lb-bucket" data-bucket="${esc(b)}" title="Open the field guide">${esc(b)}</button>`:""; }
 function lbGuideHTML(open){
   const g=lbS.stat.guide; if(!g.length) return "";
-  return `<details class="lb-guide" id="lb-guide"${open?" open":""}><summary>Field guide: the ${g.length} kinds of English problems</summary><div class="inside">${g.map(b=>`<details data-guide="${esc(b["Bucket"])}"><summary>${esc(b["Bucket"])}</summary><div class="inside">
-    ${b["Big words"]?`<p class="lb-terms">Big words: ${esc(b["Big words"])}</p>`:""}<p>${esc(b["What's going on"]||"")}</p>${b["How other languages do it"]?`<h4>How other languages do it</h4><p>${esc(b["How other languages do it"])}</p>`:""}</div></details>`).join("")}</div></details>`;
+  return `<details class="lb-guide" id="lb-guide"${open?" open":""}><summary>Field guide: the ${g.length} kinds of English problems</summary><div class="inside lb-buckets">${g.map(b=>`<details data-guide="${esc(b["Bucket"])}"><summary>${esc(b["Bucket"])}</summary><div class="inside">
+    ${(b["Vocabulary"]||b["Big words"])?`<p class="lb-terms">Vocabulary: ${esc(b["Vocabulary"]||b["Big words"])}</p>`:""}<p>${esc(b["What's going on"]||"")}</p>${b["How other languages do it"]?`<h4>How other languages do it</h4><p>${esc(b["How other languages do it"])}</p>`:""}</div></details>`).join("")}</div></details>`;
 }
 function lbFixersHTML(open){ return `<details${open?" open":""}><summary>People who already tried to fix language</summary><div class="inside"><ul class="lb-fixers">${LB_FIXERS.map(f=>`<li><b><a href="${f[3]}" target="_blank" rel="noopener">${esc(f[0])}</a></b> (${esc(f[1])}). ${esc(f[2])}</li>`).join("")}</ul></div></details>`; }
 function lbTestsHTML(open){ return `<details${open?" open":""}><summary>What Cousin Claude tests for</summary><div class="inside"><p>Every patch gets a lab report: <b>PASS</b>, or <b>BUG FOUND</b> with a sentence that breaks it. The bugs:</p><ul class="x-rules">${LB_TESTS.map(t=>`<li><b>${esc(t[0])}:</b> ${esc(t[1])}</li>`).join("")}</ul></div></details>`; }
@@ -1123,17 +1130,26 @@ function lbStepsHTML(open){ return `<details${open?" open":""}><summary>How the 
 function lbWhoHTML(){
   const {labs}=lbS.live, me=lbS.lab;
   if(!labs.length) return `<p class="small">The labs haven't been set up yet.</p>`;
-  if(me&&labs.includes(me)&&!lbS.switching) return `<div class="lb-who">You're in <span class="chip">${esc(me)}</span><button class="btn btn-line" id="lb-switch" style="padding:6px 14px">Switch lab</button></div>`;
+  if(me&&labs.includes(me)&&!lbS.switching) return `<div class="lb-who">You're in <span class="chip">${esc(me)}</span><button class="btn btn-line" id="lb-switch" style="padding:6px 14px">Switch lab</button></div>${lbS.live.stage==="briefing"?`<p class="lb-wait">You're all set. The specimens open for patching when your host starts the lab.</p>`:""}`;
   return `<p style="margin:14px 0 0"><b>Which lab are you in?</b></p><div class="lb-picker">${labs.map(l=>`<button data-lab="${esc(l)}" aria-pressed="${l===me}">${esc(l)}</button>`).join("")}</div>`;
 }
 function lbBannerHTML(){ const a=lbS.live.set["Lab announcement"]||""; if(!a) return ""; const mine=lbS.lab&&a.toLowerCase().includes(lbS.lab.toLowerCase());
-  return `<div class="lb-banner${mine?" mine":""}" role="status">📣 ${esc(a)}</div>`; }
+  const btn=mine&&lbS.live.stage==="lab"?`<button class="btn" id="lb-see">See my lab reports${lbNewCount()?` (${lbNewCount()} new)`:""}</button>`:"";
+  return `<div class="lb-banner${mine?" mine":""}" role="status"><span>📣 ${esc(a)}</span>${btn}</div>`; }
+/* Lab reports this cadet hasn't opened yet (remembered per browser). */
+const LB_SEEN_KEY="lp23-lab-seen";
+function lbTestedRefs(){ return lbS.live.rows.filter(r=>r.Lab===lbS.lab&&lbVerdict(r)&&!lbKind(r).startsWith("trial")).map(r=>(r["Ref"]||"").trim()).filter(Boolean); }
+function lbNewCount(){ if(!lbS.lab) return 0; const seen=new Set(lbGet(LB_SEEN_KEY,[])); return lbTestedRefs().filter(r=>!seen.has(r)).length; }
+function lbSeeReports(){ const seen=new Set(lbGet(LB_SEEN_KEY,[])); const all=lbTestedRefs(); lbS.fresh=new Set(all.filter(r=>!seen.has(r))); all.forEach(r=>seen.add(r)); lbPut(LB_SEEN_KEY,[...seen]);
+  lbS.filter="reports"; document.querySelectorAll("[data-filter]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.filter==="reports")); lbUpdate(true);
+  const l=document.getElementById("lb-spec-head"); if(l) l.scrollIntoView({behavior:"smooth",block:"start"}); }
 function lbTallyHTML(){ const {labs}=lbS.live; return labs.map(l=>{ const n=lbVers(l).size+lbFinds(l).length; return `<div class="${l===lbS.lab?"me":""}">${esc(l)} — <b>${n}</b> patched</div>`; }).join(""); }
 
 /* A specimen card's history: every version this lab sent, with its lab report. */
 function lbHistHTML(key,vers,pend){
   const rep=r=>{ const v=lbVerdict(r); if(!v) return `<p class="small">Waiting for testing</p>`;
-    return `<div class="lb-report ${v}"><b>${v==="pass"?"✓ PASS":"✗ BUG FOUND"+(r["Bug type"]?": "+esc(r["Bug type"]):"")}</b>${esc(r["Lab report"]||"")}</div>`; };
+    const isNew=lbS.fresh&&lbS.fresh.has((r["Ref"]||"").trim());
+    return `<div class="lb-report ${v}"><b>${isNew?`<span class="lb-new">NEW</span>`:""}${v==="pass"?"✓ PASS":"✗ BUG FOUND"+(r["Bug type"]?": "+esc(r["Bug type"]):"")}</b>${esc(r["Lab report"]||"")}</div>`; };
   let h=vers.map((r,i)=>`<div class="lb-ver"><p><span class="lb-vtag">v${i+1}</span>${esc(r["Patch"]||"")}</p>${r["Example"]?`<p class="ex">${esc(r["Example"])}</p>`:""}${rep(r)}</div>`).join("");
   h+=pend.map(p=>`<div class="lb-ver"><p><span class="lb-vtag">v${vers.length+1}</span>${esc(p.patch)}</p>${p.example?`<p class="ex">${esc(p.example)}</p>`:""}<p class="lb-pending">${Date.now()-p.t<60000?"Sending…":"Still on its way. If it doesn't show up soon, send it again."}</p></div>`).join("");
   return h;
@@ -1151,15 +1167,15 @@ function lbSpecCard(s){ const c=lbCardState(s.n);
 function lbFindsHTML(){ const fs=lbFinds(lbS.lab), pend=lbPending().filter(p=>p.lab===lbS.lab&&p.kind==="New specimen");
   return fs.map(r=>{ const v=lbVerdict(r); return `<div class="lb-ver"><p><b>${esc(r["Specimen"])}</b></p><p>${esc(r["Patch"]||"")}</p>${r["Example"]?`<p class="ex">${esc(r["Example"])}</p>`:""}${v?`<div class="lb-report ${v}"><b>${v==="pass"?"✓ PASS":"✗ BUG FOUND"+(r["Bug type"]?": "+esc(r["Bug type"]):"")}</b>${esc(r["Lab report"]||"")}</div>`:`<p class="small">Waiting for testing</p>`}</div>`; }).join("")
    +pend.map(p=>`<div class="lb-ver"><p><b>${esc(p.spec)}</b></p><p>${esc(p.patch)}</p><p class="lb-pending">Sending…</p></div>`).join(""); }
-function lbFilterOK(n){ const f=lbS.filter; if(f==="all") return true; const c=lbCardState(n); if(f==="todo") return !c.count; if(f==="bugs") return c.cls==="bug"; if(f==="pass") return c.cls==="pass"; return true; }
+function lbFilterOK(n){ const f=lbS.filter; if(f==="all") return true; const c=lbCardState(n); if(f==="todo") return !c.count; if(f==="bugs") return c.cls==="bug"; if(f==="pass") return c.cls==="pass"; if(f==="reports") return c.vers.some(r=>lbVerdict(r)); return true; }
 
 /* ---- stage bodies ---- */
 function lbLabBody(){
   if(!lbS.lab||!lbS.live.labs.includes(lbS.lab)) return `<p>Pick your lab above to start patching.</p>${lbStepsHTML(true)}${lbGuideHTML(false)}`;
-  const f=[["all","All specimens"],["todo","Not patched yet"],["bugs","Bugs to fix"],["pass","Passed"]];
+  const f=[["all","All specimens"],["reports","My lab reports"],["todo","Not patched yet"],["bugs","Bugs to fix"],["pass","Passed"]];
   return `${lbStepsHTML(false)}${lbTestsHTML(false)}${lbGuideHTML(false)}${lbFixersHTML(false)}
    <h2 class="sec" style="margin:20px 0 4px">Scoreboard</h2><div class="lb-tally" id="lb-tally">${lbTallyHTML()}</div>
-   <h2 class="sec" style="margin:20px 0 4px">Specimens</h2><div class="lb-filter">${f.map(x=>`<button data-filter="${x[0]}" aria-pressed="${lbS.filter===x[0]}">${x[1]}</button>`).join("")}</div>
+   <h2 class="sec" id="lb-spec-head" style="margin:20px 0 4px">Specimens</h2><div class="lb-filter">${f.map(x=>`<button data-filter="${x[0]}" aria-pressed="${lbS.filter===x[0]}">${x[1]}</button>`).join("")}</div>
    <div class="lb-list" id="lb-list">${lbS.stat.specs.map(lbSpecCard).join("")}</div>
    <article class="lb-spec" id="lb-new" style="margin-top:18px"><p class="lb-num">New specimen</p><h3>Discovered an English problem that isn't on the list?</h3><p class="lb-what">Describe the problem, then patch it.</p>
     <div class="lb-hist" id="lb-finds">${lbFindsHTML()}</div><button class="btn btn-main" data-open="new">Report a new specimen</button>
@@ -1226,14 +1242,14 @@ function lbFull(){
 /* What the current view depends on; when it changes for a stage without typing boxes, redraw everything. */
 function lbSig(){ const L=lbS.live; return [L.stage,L.labs.join(","),lbS.lab,lbS.switching,lbS.trialLab,L.stage==="results"?JSON.stringify(L.rows):"",L.stage==="briefing"?"":"",L.stage==="trial"?L.trial.map(t=>t.lab+t.n+t.t).join("|"):""].join("§"); }
 function lbApplyFilter(){ document.querySelectorAll("#lb-list .lb-spec").forEach(c=>{ c.hidden=!lbFilterOK(c.dataset.n); }); }
-function lbUpdate(){
+function lbUpdate(force){
   if(!document.getElementById("lb-root")) return;
   if(lbSig()!==lbS.sig){ const typing=document.activeElement&&document.activeElement.tagName==="TEXTAREA"; if(!typing||lbS.live.stage!==lbS.lastStage){ lbS.lastStage=lbS.live.stage; lbFull(); return; } }
   const b=document.getElementById("lb-banner"); if(b){ const h=lbBannerHTML(); if(b.innerHTML!==h) b.innerHTML=h; }
   if(lbS.live.stage==="lab"){
     const t=document.getElementById("lb-tally"); if(t) t.innerHTML=lbTallyHTML();
     document.querySelectorAll("#lb-list .lb-spec").forEach(card=>{ const n=card.dataset.n, c=lbCardState(n);
-      const h=lbHistHTML(n,c.vers,c.pend), box=card.querySelector(".lb-hist"); if(box.innerHTML!==h) box.innerHTML=h;
+      const h=lbHistHTML(n,c.vers,c.pend), box=card.querySelector(".lb-hist"); if(force||box.innerHTML!==h) box.innerHTML=h;
       card.className="lb-spec "+c.cls; const btn=card.querySelector("[data-open]"); if(btn) btn.textContent=c.count?`Send version ${c.count+1}`:"Patch it"; });
     const f=document.getElementById("lb-finds"); if(f){ const h=lbFindsHTML(); if(f.innerHTML!==h) f.innerHTML=h; }
     lbApplyFilter();
@@ -1245,6 +1261,7 @@ function lbBind(){
   root.addEventListener("click",e=>{
     const t=e.target.closest("button"); if(!t) return;
     if(t.dataset.lab!==undefined){ lbS.lab=t.dataset.lab; lbPut(LB_LAB_KEY,lbS.lab); lbS.switching=false; lbFull(); return; }
+    if(t.id==="lb-see"){ lbSeeReports(); return; }
     if(t.id==="lb-switch"){ lbS.switching=true; lbFull(); return; }
     if(t.dataset.trial!==undefined){ lbS.trialLab=t.dataset.trial; lbPut(LB_TRIAL_KEY,lbS.trialLab); lbFull(); return; }
     if(t.dataset.filter){ lbS.filter=t.dataset.filter; root.querySelectorAll("[data-filter]").forEach(b=>b.setAttribute("aria-pressed",b===t)); lbApplyFilter(); return; }
