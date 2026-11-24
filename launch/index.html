@@ -1110,7 +1110,7 @@ function lbDraft(k,v){ const d=lbGet(LB_DRAFT_KEY,{}); if(v===undefined) return 
 function lbBucketTag(b){ return b?`<button class="lb-bucket" data-bucket="${esc(b)}" title="Open the field guide">${esc(b)}</button>`:""; }
 function lbGuideHTML(open){
   const g=lbS.stat.guide; if(!g.length) return "";
-  return `<details class="lb-guide" id="lb-guide"${open?" open":""}><summary>Field guide: the ${g.length} kinds of English problems</summary><div class="inside lb-buckets">${g.map(b=>`<details data-guide="${esc(b["Bucket"])}"><summary>${esc(b["Bucket"])}</summary><div class="inside">
+  return `<details class="lb-guide" id="lb-guide"${open?" open":""}><summary>Field guide: ${["","one kind","two kinds","three kinds","four kinds","five kinds","six kinds","seven kinds","eight kinds","nine kinds","ten kinds","eleven kinds","twelve kinds"][g.length]||g.length+" kinds"} of English problems</summary><div class="inside lb-buckets">${g.map(b=>`<details data-guide="${esc(b["Bucket"])}"><summary>${esc(b["Bucket"])}</summary><div class="inside">
     ${(b["Vocabulary"]||b["Big words"])?`<p class="lb-terms">Vocabulary: ${esc(b["Vocabulary"]||b["Big words"])}</p>`:""}<p>${esc(b["What's going on"]||"")}</p>${b["How other languages do it"]?`<h4>How other languages do it</h4><p>${esc(b["How other languages do it"])}</p>`:""}</div></details>`).join("")}</div></details>`;
 }
 function lbFixersHTML(open){ return `<details${open?" open":""}><summary>People who already tried to fix language</summary><div class="inside"><ul class="lb-fixers">${LB_FIXERS.map(f=>`<li><b><a href="${f[3]}" target="_blank" rel="noopener">${esc(f[0])}</a></b> (${esc(f[1])}). ${esc(f[2])}</li>`).join("")}</ul></div></details>`; }
