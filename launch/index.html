@@ -297,6 +297,69 @@ body.ghana{--navy:#006B3F;--navy-dark:#004d2d;--accent:#FCD116;background:#FBF8F
 .wu-list summary{cursor:pointer;font-weight:700;color:var(--navy)}
 .wu-list .inside{padding-top:8px}
 .tag{display:inline-block;font-size:.8em;font-weight:700;background:#FFF1B3;color:#5b4a00;border-radius:999px;padding:1px 10px;margin-left:6px;vertical-align:1px}
+
+/* Fix the English Language: the Lab (#/lab) */
+.lb-wide{max-width:1180px}
+.lb-pic{border-radius:12px;overflow:hidden;aspect-ratio:16/9;background:#1c1c1c;max-height:340px;width:100%}
+.lb-pic img{width:100%;height:100%;object-fit:cover}
+.lb-banner{background:var(--accent);color:#1b1b1b;font-weight:800;border-radius:12px;padding:14px 18px;margin:16px 0;font-size:1.15rem!important;display:flex;gap:10px;align-items:center}
+.lb-banner.mine{background:#2e9d5b;color:#fff;animation:lbPulse 1.4s ease-in-out 3}
+@keyframes lbPulse{50%{transform:scale(1.02)}}
+.lb-who{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:14px 0 4px}
+.lb-who .chip{background:var(--navy);color:#fff;border-radius:999px;padding:6px 16px;font-weight:800}
+.lb-picker{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.lb-picker button,.lb-filter button{font-family:var(--font);font-weight:700;border:2px solid var(--navy);background:#fff;color:var(--navy);border-radius:999px;padding:7px 16px;cursor:pointer;font-size:1rem}
+.lb-picker button[aria-pressed="true"],.lb-filter button[aria-pressed="true"]{background:var(--navy);color:#fff}
+.lb-tally{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0}
+.lb-tally div{background:var(--soft);border-radius:12px;padding:10px 16px;font-weight:700;color:var(--navy)}
+.lb-tally div.me{background:var(--sky);outline:2px solid var(--navy)}
+.lb-tally b{font-size:1.4rem}
+.lb-alien{background:#0f1b33;color:#e8eefc;border-radius:14px;padding:20px 24px;margin:18px 0;font-family:ui-monospace,Menlo,Consolas,monospace}
+.lb-alien h2{color:#8fd3ff;font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.04em}
+.lb-alien p{margin:0 0 10px}
+.lb-steps li{padding:3px 0}
+.lb-filter{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
+.lb-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:16px}
+.lb-spec{border:2px solid var(--line);border-radius:14px;padding:14px 16px;background:#fff;display:flex;flex-direction:column;gap:6px}
+.lb-spec.has{border-color:var(--navy)}
+.lb-spec.bug{border-color:#c0392b}
+.lb-spec.pass{border-color:#2e9d5b}
+.lb-num{font-weight:800;color:var(--slate);font-size:.9rem!important}
+.lb-spec h3{margin:0}
+.lb-bucket{display:inline-block;font-size:.8rem!important;font-weight:700;background:#FFF1B3;color:#5b4a00;border-radius:999px;padding:1px 10px;margin-left:6px;vertical-align:2px;cursor:pointer;border:0;font-family:var(--font)}
+.lb-what{margin:0;color:var(--ink)}
+.lb-ver{border-top:1px solid var(--line);padding-top:8px;margin-top:4px}
+.lb-ver p{margin:0}
+.lb-ver .ex{color:var(--muted);font-style:italic}
+.lb-vtag{font-weight:800;color:var(--navy);margin-right:6px}
+.lb-report{border-radius:10px;padding:8px 12px;margin-top:6px}
+.lb-report.pass{background:#e3f4ea;color:#1d6b3f}
+.lb-report.bug{background:#fde8e6;color:#7d241b}
+.lb-report b{display:block}
+.lb-form{display:flex;flex-direction:column;gap:8px;margin-top:6px}
+.lb-form[hidden]{display:none}
+.lb-form label{font-weight:700;color:var(--navy);font-size:.95rem!important}
+.lb-form textarea{font-family:var(--font);font-size:1rem;border:2px solid var(--line);border-radius:10px;padding:8px 10px;min-height:64px;resize:vertical;width:100%;box-sizing:border-box}
+.lb-form textarea:focus{border-color:var(--navy);outline:none}
+.lb-spec .btn{align-self:flex-start;padding:8px 16px}
+.lb-pending{color:#8a5a00;font-weight:700}
+.lb-guide details{border-top:1px solid var(--line);padding:10px 0}
+.lb-guide h4{margin:10px 0 4px;color:var(--navy)}
+.lb-guide p{margin:0 0 8px}
+.lb-terms{font-weight:700;color:var(--slate)}
+.lb-fixers li{padding:4px 0}
+.lb-board{width:100%;border-collapse:collapse;margin:10px 0 20px}
+.lb-board th,.lb-board td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+.lb-board td.n,.lb-board th.n{text-align:right;font-variant-numeric:tabular-nums}
+
+.lb-gal{border:2px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 14px;background:#fff}
+.lb-gal h3{margin:0 0 6px}
+.lb-gal .row{border-top:1px solid var(--line);padding:8px 0}
+.lb-gal .who{font-weight:800;color:var(--navy);margin-right:6px}
+.lb-task{border:2px solid var(--line);border-radius:14px;padding:14px 16px;margin:0 0 12px;background:#fff}
+.lb-task h3{margin:0 0 6px}
+.lb-notebook li{padding:6px 0;border-bottom:1px solid var(--line)}
+@media (max-width:700px){.lb-list{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -981,13 +1044,246 @@ async function warmups(){
   };
 }
 
+/* ===== Fix the English Language: the Lab (#/lab) =====
+   Sheet tabs: Lab Specimens, Lab Field Guide, Lab Patches (form answers + Cousin Claude's columns), Lab Trial.
+   Wednesday Settings: Lab names, Lab stage, Lab announcement, Lab image, Lab form. */
+const LB_LAB_KEY="lp23-lab-name", LB_TRIAL_KEY="lp23-lab-trial", LB_PEND_KEY="lp23-lab-pending", LB_DRAFT_KEY="lp23-lab-drafts";
+let lbPoll=null, lbS=null;
+function stopLab(){ clearInterval(lbPoll); lbPoll=null; lbS=null; }
+function lbGet(k,d){ try{ const v=JSON.parse(localStorage.getItem(k)); return v==null?d:v; }catch(e){ return d; } }
+function lbPut(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+const lbKind=r=>String(r["Kind"]||"").trim().toLowerCase();
+const lbNum=r=>String(r["Specimen"]||"").trim();
+function lbVerdict(r){ const v=String(r["Cousin Claude"]||"").trim().toLowerCase(); if(!v) return ""; return /^(pass|correct|yes|right)/.test(v)?"pass":"bug"; }
+const LB_TESTS=[["Collision","the patch creates a new mix-up, or clashes with a word that already exists"],["Accent bug","it only works if you speak with one particular accent"],["Unlearnable","the rule is too hard to remember or to use"],["Still ambiguous","the confusion it was meant to fix is still there"],["Dead pun","a joke or bit of wordplay stops working (that counts as a cost!)"],["Breaks something else","fixing this word breaks a different word or rule"]];
+const LB_FIXERS=[
+ ["Volapük","1879","Johann Martin Schleyer, a German priest, invented one of the first made-up languages to win a real following. It faded within a few decades.","https://en.wikipedia.org/wiki/Volap%C3%BCk"],
+ ["Esperanto","1887","L. L. Zamenhof hoped a shared, easy language would help people understand each other. Spelling matches sound, there are no irregular verbs, and a word's ending tells you its job. People around the world still speak it today.","https://en.wikipedia.org/wiki/Esperanto"],
+ ["Noah Webster","early 1800s","His American dictionaries gave the United States spellings like color (not colour) and center (not centre). Some of his other changes never caught on.","https://en.wikipedia.org/wiki/Noah_Webster"],
+ ["The Simplified Spelling Board","1906","Published a list of 300 simpler spellings, like thru and tho. President Theodore Roosevelt ordered the Government Printing Office to use them; Congress pushed back, and the order was dropped within months.","https://en.wikipedia.org/wiki/Simplified_Spelling_Board"],
+ ["Hangul","1440s","King Sejong of Korea had a brand-new alphabet designed so ordinary people could learn to read quickly. Koreans still use it.","https://en.wikipedia.org/wiki/Hangul"],
+ ["The Turkish alphabet","1928","Turkey switched from Arabic script to a new Latin alphabet in a matter of months, with letters chosen to fit Turkish sounds.","https://en.wikipedia.org/wiki/Turkish_alphabet"],
+ ["Basic English","1930","C. K. Ogden tried to shrink English to 850 core words that could say almost anything.","https://en.wikipedia.org/wiki/Basic_English"],
+ ["The Shavian alphabet","1960s","The playwright George Bernard Shaw left money in his will for a new English alphabet with one letter per sound. Kingsley Read designed it.","https://en.wikipedia.org/wiki/Shavian_alphabet"],
+ ["Lojban","1987","A language built so that every sentence can be read in exactly one way: no ambiguity allowed.","https://en.wikipedia.org/wiki/Lojban"],
+ ["Toki Pona","2001","Sonja Lang went the other way: about 120 to 140 words, and you combine them to say everything else.","https://en.wikipedia.org/wiki/Toki_Pona"]];
+
+async function lbStatic(){
+  const [g,sp]=await Promise.all(["Lab Field Guide","Lab Specimens"].map(n=>freshTab(n).catch(()=>[])));
+  return {guide:g.filter(b=>b["Bucket"]&&shown(b)),
+    specs:sp.filter(s=>s["Specimen"]&&String(s["#"]||"").trim()&&shown(s)).map(s=>({n:String(s["#"]).trim(),b:(s["Bucket"]||"").trim(),t:s["Specimen"],w:s["What's wrong"]||""}))};
+}
+async function lbLive(){
+  const [s,rows,trial]=await Promise.all(["Wednesday Settings","Lab Patches","Lab Trial"].map(n=>freshTab(n).catch(()=>null)));
+  if(!s) throw new Error("settings");
+  const set={}; s.forEach(r=>{ const k=r["Setting (don't change)"]; if(k) set[k]=(r["Value"]||"").trim(); });
+  const labs=(set["Lab names"]||"").split(",").map(x=>x.trim()).filter(Boolean);
+  const st=(set["Lab stage"]||"Briefing").toLowerCase();
+  const stage=st.startsWith("lab")?"lab":st.startsWith("trial")?"trial":st.startsWith("res")?"results":"briefing";
+  return {set,labs,stage,rows:(rows||[]).filter(r=>(r["Lab"]||"").trim()&&r["Kind"]).map(r=>({...r,Lab:r["Lab"].trim()})),
+    trial:(trial||[]).filter(r=>(r["Lab"]||"").trim()&&(r["Task (shown to pupils)"]||"").trim()).map(r=>({lab:r["Lab"].trim(),n:String(r["#"]||"").trim(),t:r["Task (shown to pupils)"]}))};
+}
+/* One lab's patches: Map specimen number -> rows in the order they were sent. */
+function lbVers(lab){ const m=new Map(); lbS.live.rows.forEach(r=>{ if(r.Lab!==lab||lbKind(r)!=="patch") return; const n=lbNum(r); if(!m.has(n)) m.set(n,[]); m.get(n).push(r); }); return m; }
+function lbFinds(lab){ return lbS.live.rows.filter(r=>r.Lab===lab&&lbKind(r).startsWith("new")); }
+function lbAnswers(lab){ const m=new Map(); lbS.live.rows.forEach(r=>{ if(r.Lab===lab&&lbKind(r).startsWith("trial")) m.set(lbNum(r),r); }); return m; }
+function lbPending(){ const seen=new Set(lbS.live.rows.map(r=>(r["Ref"]||"").trim())); let p=lbGet(LB_PEND_KEY,[]); const keep=p.filter(x=>!seen.has(x.ref)&&Date.now()-x.t<15*60000); if(keep.length!==p.length) lbPut(LB_PEND_KEY,keep); return keep; }
+function lbSend(v){
+  const base=lbS.live.set["Lab form"]; if(!base) return false;
+  const ref="r"+Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+  const u=formLink(base,{LAB:v.lab,KIND:v.kind,SPEC:v.spec,PATCH:v.patch,EXAMPLE:v.example||"",REF:ref}).replace("/viewform?usp=pp_url&","/formResponse?")+"&submit=Submit";
+  fetch(u,{mode:"no-cors"}).catch(()=>{});
+  const p=lbGet(LB_PEND_KEY,[]); p.push({...v,ref,t:Date.now()}); lbPut(LB_PEND_KEY,p); return true;
+}
+function lbDraft(k,v){ const d=lbGet(LB_DRAFT_KEY,{}); if(v===undefined) return d[k]||""; if(v) d[k]=v; else delete d[k]; lbPut(LB_DRAFT_KEY,d); return v; }
+
+/* ---- pieces ---- */
+function lbBucketTag(b){ return b?`<button class="lb-bucket" data-bucket="${esc(b)}" title="Open the field guide">${esc(b)}</button>`:""; }
+function lbGuideHTML(open){
+  const g=lbS.stat.guide; if(!g.length) return "";
+  return `<details class="lb-guide" id="lb-guide"${open?" open":""}><summary>Field guide: the ${g.length} kinds of English problems</summary><div class="inside">${g.map(b=>`<details data-guide="${esc(b["Bucket"])}"><summary>${esc(b["Bucket"])}</summary><div class="inside">
+    ${b["Big words"]?`<p class="lb-terms">Big words: ${esc(b["Big words"])}</p>`:""}<p>${esc(b["What's going on"]||"")}</p>${b["How other languages do it"]?`<h4>How other languages do it</h4><p>${esc(b["How other languages do it"])}</p>`:""}</div></details>`).join("")}</div></details>`;
+}
+function lbFixersHTML(open){ return `<details${open?" open":""}><summary>People who already tried to fix language</summary><div class="inside"><ul class="lb-fixers">${LB_FIXERS.map(f=>`<li><b><a href="${f[3]}" target="_blank" rel="noopener">${esc(f[0])}</a></b> (${esc(f[1])}). ${esc(f[2])}</li>`).join("")}</ul></div></details>`; }
+function lbTestsHTML(open){ return `<details${open?" open":""}><summary>What Cousin Claude tests for</summary><div class="inside"><p>Every patch gets a lab report: <b>PASS</b>, or <b>BUG FOUND</b> with a sentence that breaks it. The bugs:</p><ul class="x-rules">${LB_TESTS.map(t=>`<li><b>${esc(t[0])}:</b> ${esc(t[1])}</li>`).join("")}</ul></div></details>`; }
+function lbAlienHTML(){ return `<section class="lb-alien"><h2>INCOMING TRANSMISSION</h2>
+  <p>From: The Galactic Council of Languages<br>To: The Language Labs of Planet Earth</p>
+  <p>Our scouts have been studying your English. We have questions. Why does a bee fly, while only one insect is named "fly"? Why do to, two and too sound exactly the same? Why is September, the "seventh" month, number nine? Our translators have overheated.</p>
+  <p>Your mission: <b>fix English</b>. Every fix you send is a <b>patch</b>. Our tester, Cousin Claude, will try to break each one. Patches that survive go into the official record.</p>
+  <p>There are more problems than any lab can fix. That's the point. Good luck, Earthlings.</p></section>`; }
+function lbStepsHTML(open){ return `<details${open?" open":""}><summary>How the lab works</summary><div class="inside"><ol class="lb-steps">
+  <li>Pick a specimen (a broken bit of English). They run roughly from easiest (#1) to hardest, but start anywhere.</li>
+  <li>Write a <b>patch</b>: your new rule, plus a sentence that uses it.</li>
+  <li>Send it. Patch as many specimens as you can, and patch the same one again whenever you have a better idea.</li>
+  <li>When your lab is ready, tell your host. Cousin Claude tests your patches and writes a lab report on each one. Chat while you wait!</li>
+  <li>When the banner says your results are ready, read your reports, go back to the drawing board, and send the next version.</li>
+  <li>Found an English problem that isn't on the list? Send it as a new specimen, with your patch.</li></ol>
+  <p class="small">The scoreboard shows how many specimens each lab has patched. Which patches passed stays secret until the end, so nobody can copy a winner.</p></div></details>`; }
+function lbWhoHTML(){
+  const {labs}=lbS.live, me=lbS.lab;
+  if(!labs.length) return `<p class="small">The labs haven't been set up yet.</p>`;
+  if(me&&labs.includes(me)&&!lbS.switching) return `<div class="lb-who">You're in <span class="chip">${esc(me)}</span><button class="btn btn-line" id="lb-switch" style="padding:6px 14px">Switch lab</button></div>`;
+  return `<p style="margin:14px 0 0"><b>Which lab are you in?</b></p><div class="lb-picker">${labs.map(l=>`<button data-lab="${esc(l)}" aria-pressed="${l===me}">${esc(l)}</button>`).join("")}</div>`;
+}
+function lbBannerHTML(){ const a=lbS.live.set["Lab announcement"]||""; if(!a) return ""; const mine=lbS.lab&&a.toLowerCase().includes(lbS.lab.toLowerCase());
+  return `<div class="lb-banner${mine?" mine":""}" role="status">📣 ${esc(a)}</div>`; }
+function lbTallyHTML(){ const {labs}=lbS.live; return labs.map(l=>{ const n=lbVers(l).size+lbFinds(l).length; return `<div class="${l===lbS.lab?"me":""}">${esc(l)} — <b>${n}</b> patched</div>`; }).join(""); }
+
+/* A specimen card's history: every version this lab sent, with its lab report. */
+function lbHistHTML(key,vers,pend){
+  const rep=r=>{ const v=lbVerdict(r); if(!v) return `<p class="small">Waiting for testing</p>`;
+    return `<div class="lb-report ${v}"><b>${v==="pass"?"✓ PASS":"✗ BUG FOUND"+(r["Bug type"]?": "+esc(r["Bug type"]):"")}</b>${esc(r["Lab report"]||"")}</div>`; };
+  let h=vers.map((r,i)=>`<div class="lb-ver"><p><span class="lb-vtag">v${i+1}</span>${esc(r["Patch"]||"")}</p>${r["Example"]?`<p class="ex">${esc(r["Example"])}</p>`:""}${rep(r)}</div>`).join("");
+  h+=pend.map(p=>`<div class="lb-ver"><p><span class="lb-vtag">v${vers.length+1}</span>${esc(p.patch)}</p>${p.example?`<p class="ex">${esc(p.example)}</p>`:""}<p class="lb-pending">${Date.now()-p.t<60000?"Sending…":"Still on its way. If it doesn't show up soon, send it again."}</p></div>`).join("");
+  return h;
+}
+function lbCardState(n){ const vers=lbVers(lbS.lab).get(n)||[]; const pend=lbPending().filter(p=>p.lab===lbS.lab&&p.kind==="Patch"&&p.spec===n);
+  const last=vers[vers.length-1]; const v=last?lbVerdict(last):""; return {vers,pend,cls:v||(vers.length||pend.length?"has":""),count:vers.length+pend.length}; }
+function lbFormHTML(key,spec,label){ return `<form class="lb-form" data-form="${esc(key)}" data-spec="${esc(spec)}" hidden>
+  <label>Your patch: the new rule<textarea name="patch" maxlength="700" placeholder="For example: from now on, ...">${esc(lbDraft(lbS.lab+"|"+key+"|p"))}</textarea></label>
+  <label>Use it in a sentence<textarea name="example" maxlength="400">${esc(lbDraft(lbS.lab+"|"+key+"|e"))}</textarea></label>
+  <div class="btn-row"><button class="btn btn-main" type="submit">${esc(label)}</button><button class="btn btn-line" type="button" data-cancel>Cancel</button></div></form>`; }
+function lbSpecCard(s){ const c=lbCardState(s.n);
+  return `<article class="lb-spec ${c.cls}" id="lb-c-${esc(s.n)}" data-n="${esc(s.n)}"><p class="lb-num">#${esc(s.n)}${lbBucketTag(s.b)}</p><h3>${esc(s.t)}</h3><p class="lb-what">${esc(s.w)}</p>
+    <div class="lb-hist">${lbHistHTML(s.n,c.vers,c.pend)}</div>
+    <button class="btn btn-main" data-open="${esc(s.n)}">${c.count?`Send version ${c.count+1}`:"Patch it"}</button>${lbFormHTML(s.n,s.n,"Send patch")}</article>`; }
+function lbFindsHTML(){ const fs=lbFinds(lbS.lab), pend=lbPending().filter(p=>p.lab===lbS.lab&&p.kind==="New specimen");
+  return fs.map(r=>{ const v=lbVerdict(r); return `<div class="lb-ver"><p><b>${esc(r["Specimen"])}</b></p><p>${esc(r["Patch"]||"")}</p>${r["Example"]?`<p class="ex">${esc(r["Example"])}</p>`:""}${v?`<div class="lb-report ${v}"><b>${v==="pass"?"✓ PASS":"✗ BUG FOUND"+(r["Bug type"]?": "+esc(r["Bug type"]):"")}</b>${esc(r["Lab report"]||"")}</div>`:`<p class="small">Waiting for testing</p>`}</div>`; }).join("")
+   +pend.map(p=>`<div class="lb-ver"><p><b>${esc(p.spec)}</b></p><p>${esc(p.patch)}</p><p class="lb-pending">Sending…</p></div>`).join(""); }
+function lbFilterOK(n){ const f=lbS.filter; if(f==="all") return true; const c=lbCardState(n); if(f==="todo") return !c.count; if(f==="bugs") return c.cls==="bug"; if(f==="pass") return c.cls==="pass"; return true; }
+
+/* ---- stage bodies ---- */
+function lbLabBody(){
+  if(!lbS.lab||!lbS.live.labs.includes(lbS.lab)) return `<p>Pick your lab above to start patching.</p>${lbStepsHTML(true)}${lbGuideHTML(false)}`;
+  const f=[["all","All specimens"],["todo","Not patched yet"],["bugs","Bugs to fix"],["pass","Passed"]];
+  return `${lbStepsHTML(false)}${lbTestsHTML(false)}${lbGuideHTML(false)}${lbFixersHTML(false)}
+   <h2 class="sec" style="margin:20px 0 4px">Scoreboard</h2><div class="lb-tally" id="lb-tally">${lbTallyHTML()}</div>
+   <h2 class="sec" style="margin:20px 0 4px">Specimens</h2><div class="lb-filter">${f.map(x=>`<button data-filter="${x[0]}" aria-pressed="${lbS.filter===x[0]}">${x[1]}</button>`).join("")}</div>
+   <div class="lb-list" id="lb-list">${lbS.stat.specs.map(lbSpecCard).join("")}</div>
+   <article class="lb-spec" id="lb-new" style="margin-top:18px"><p class="lb-num">New specimen</p><h3>Discovered an English problem that isn't on the list?</h3><p class="lb-what">Describe the problem, then patch it.</p>
+    <div class="lb-hist" id="lb-finds">${lbFindsHTML()}</div><button class="btn btn-main" data-open="new">Report a new specimen</button>
+    <form class="lb-form" data-form="new" hidden><label>The problem<textarea name="spec" maxlength="300">${esc(lbDraft(lbS.lab+"|new|s"))}</textarea></label>
+    <label>Your patch: the new rule<textarea name="patch" maxlength="700">${esc(lbDraft(lbS.lab+"|new|p"))}</textarea></label>
+    <label>Use it in a sentence<textarea name="example" maxlength="400">${esc(lbDraft(lbS.lab+"|new|e"))}</textarea></label>
+    <div class="btn-row"><button class="btn btn-main" type="submit">Send new specimen</button><button class="btn btn-line" type="button" data-cancel>Cancel</button></div></form></article>`;
+}
+function lbBriefingBody(){
+  return `${lbAlienHTML()}${lbStepsHTML(true)}${lbTestsHTML(false)}${lbGuideHTML(true)}
+   <details><summary>The specimens (${lbS.stat.specs.length})</summary><div class="inside"><ol class="lb-steps">${lbS.stat.specs.map(s=>`<li value="${esc(s.n)}"><b>${esc(s.t)}</b> ${lbBucketTag(s.b)}<br><span class="small">${esc(s.w)}</span></li>`).join("")}</ol></div></details>
+   ${lbFixersHTML(false)}`;
+}
+function lbLatest(lab){ const out=new Map(); lbVers(lab).forEach((v,n)=>out.set(n,{r:v[v.length-1],count:v.length})); return out; }
+function lbTrialBody(){
+  const {labs}=lbS.live, tl=lbS.trialLab;
+  let h=`<p style="margin:14px 0 0"><b>Whose English are you learning?</b> (Pupils: pick the lab that's teaching you.)</p><div class="lb-picker">${labs.map(l=>`<button data-trial="${esc(l)}" aria-pressed="${l===tl}">${esc(l)}</button>`).join("")}</div>`;
+  if(!tl||!labs.includes(tl)) return h;
+  const latest=lbLatest(tl), specs=lbS.stat.specs.filter(s=>latest.has(s.n));
+  const tasks=lbS.live.trial.filter(t=>t.lab===tl), ans=lbAnswers(tl);
+  h+=`<h2 class="sec" style="margin:20px 0 6px">The test</h2>`;
+  h+=tasks.length?tasks.map(t=>{ const a=ans.get(t.n); const key="trial|"+tl+"|"+t.n;
+      return `<article class="lb-task" data-task="${esc(t.n)}"><h3>Task ${esc(t.n)}</h3><p>${esc(t.t)}</p>
+       <div class="lb-tstat">${lbTaskStat(tl,t.n)}</div>
+       <form class="lb-form" data-form="${esc(key)}" data-trial-task="${esc(t.n)}"><label>Your answer, in ${esc(tl)}'s English<textarea name="patch" maxlength="500">${esc(lbDraft(key)||(a?"":""))}</textarea></label>
+       <div class="btn-row"><button class="btn btn-main" type="submit">Send answer</button></div></form></article>`; }).join("")
+    :`<p class="msg">Cousin Claude is writing your test. Meanwhile, learn ${esc(tl)}'s patches below!</p>`;
+  h+=`<h2 class="sec" style="margin:20px 0 6px">${esc(tl)}'s lab notebook</h2>`;
+  h+=specs.length?`<ul class="lb-notebook" style="list-style:none;padding:0">${specs.map(s=>{ const x=latest.get(s.n).r; return `<li><b>#${esc(s.n)} ${esc(s.t)}</b><br>${esc(x["Patch"]||"")}${x["Example"]?`<br><i class="small">${esc(x["Example"])}</i>`:""}</li>`; }).join("")}${lbFinds(tl).map(r=>`<li><b>New: ${esc(r["Specimen"])}</b><br>${esc(r["Patch"]||"")}</li>`).join("")}</ul>`:`<p>No patches yet.</p>`;
+  return h;
+}
+function lbTaskStat(tl,n){ const a=lbAnswers(tl).get(n); const p=lbPending().filter(x=>x.kind==="Trial answer"&&x.lab===tl&&x.spec===n);
+  if(p.length) return `<p class="lb-pending">Sending: ${esc(p[p.length-1].patch)}</p>`;
+  if(a){ const v=lbVerdict(a); return `<p class="small">Answer received: <b>${esc(a["Patch"]||"")}</b>${v?` <span class="v ${v==="pass"?"v-ok":"v-bad"}">${v==="pass"?"Correct":"Not quite"}</span>`:""}<br>You can change it and send again.</p>`; }
+  return ""; }
+function lbScores(){ return lbS.live.labs.map(l=>{ let pass=0; lbLatest(l).forEach(x=>{ if(lbVerdict(x.r)==="pass") pass++; }); lbFinds(l).forEach(r=>{ if(lbVerdict(r)==="pass") pass++; });
+  let trial=0; lbAnswers(l).forEach(r=>{ if(lbVerdict(r)==="pass") trial++; }); return {l,pass,trial,total:pass+trial,patched:lbVers(l).size+lbFinds(l).length}; }).sort((a,b)=>b.total-a.total||b.pass-a.pass); }
+function lbResultsBody(){
+  const sc=lbScores(), anyTrial=lbS.live.rows.some(r=>lbKind(r).startsWith("trial"));
+  let h=`<h2 class="sec" style="margin:20px 0 6px">Final scoreboard</h2><table class="lb-board"><thead><tr><th>Lab</th><th class="n">Patched</th><th class="n">Passed</th>${anyTrial?`<th class="n">Trial points</th>`:""}<th class="n">Total</th></tr></thead><tbody>
+   ${sc.map(s=>`<tr><td>${esc(s.l)}</td><td class="n">${s.patched}</td><td class="n">${s.pass}</td>${anyTrial?`<td class="n">${s.trial}</td>`:""}<td class="n"><b>${s.total}</b></td></tr>`).join("")}</tbody></table>
+   <p class="small">Total = patches whose final version passed${anyTrial?", plus trial tasks the pupils got right":""}.</p>`;
+  const labs=lbS.live.labs, latest=new Map(labs.map(l=>[l,lbLatest(l)]));
+  const specs=lbS.stat.specs.filter(s=>labs.some(l=>latest.get(l).has(s.n)));
+  h+=`<h2 class="sec" style="margin:24px 0 6px">Every lab's patches, side by side</h2><p class="small">${specs.length} of ${lbS.stat.specs.length} specimens got at least one patch.</p>`;
+  h+=specs.map(s=>`<article class="lb-gal"><p class="lb-num">#${esc(s.n)}${lbBucketTag(s.b)}</p><h3>${esc(s.t)}</h3>${labs.filter(l=>latest.get(l).has(s.n)).map(l=>{ const x=latest.get(l).get(s.n), v=lbVerdict(x.r);
+     return `<div class="row"><span class="who">${esc(l)}</span>${v?`<span class="v ${v==="pass"?"v-ok":"v-bad"}">${v==="pass"?"PASS":"BUG"+(x.r["Bug type"]?": "+esc(x.r["Bug type"]):"")}</span>`:`<span class="v v-zero">not tested</span>`}${x.count>1?`<span class="small">after ${x.count} versions</span>`:""}
+       <p style="margin:4px 0 0">${esc(x.r["Patch"]||"")}</p>${x.r["Example"]?`<p class="small" style="margin:0"><i>${esc(x.r["Example"])}</i></p>`:""}${v==="bug"&&x.r["Lab report"]?`<p class="small" style="margin:2px 0 0;color:#7d241b">${esc(x.r["Lab report"])}</p>`:""}</div>`; }).join("")}</article>`).join("");
+  const finds=lbS.live.rows.filter(r=>lbKind(r).startsWith("new"));
+  if(finds.length) h+=`<h2 class="sec" style="margin:24px 0 6px">New specimens the labs discovered</h2>`+finds.map(r=>{ const v=lbVerdict(r); return `<article class="lb-gal"><h3>${esc(r["Specimen"])}</h3><div class="row"><span class="who">${esc(r.Lab)}</span>${v?`<span class="v ${v==="pass"?"v-ok":"v-bad"}">${v==="pass"?"PASS":"BUG"}</span>`:""}<p style="margin:4px 0 0">${esc(r["Patch"]||"")}</p></div></article>`; }).join("");
+  return h+lbGuideHTML(false)+lbFixersHTML(true);
+}
+
+/* ---- drawing ---- */
+const LB_STAGE_NAME={briefing:"Mission briefing",lab:"The lab is open",trial:"Clinical trial",results:"Results"};
+function lbFull(){
+  const L=lbS.live, img=L.set["Lab image"]||"english.jpg";
+  const body=L.stage==="lab"?lbLabBody():L.stage==="trial"?lbTrialBody():L.stage==="results"?lbResultsBody():lbBriefingBody();
+  app.innerHTML=`<div class="wrap page lb-wide" id="lb-root"><section class="panel"><div class="lb-pic"><img src="${esc(imgSrc(img))}" alt="Fix the English Language"></div>
+    <div class="x-head" style="margin-top:14px"><div><h1 style="margin:0">Fix the English Language</h1><p class="x-status" style="margin:4px 0 0">${LB_STAGE_NAME[L.stage]}</p></div></div>
+    <div id="lb-banner">${lbBannerHTML()}</div>${L.stage==="trial"?"":lbWhoHTML()}<div id="lb-body">${body}</div></section><a href="#/">Back to this week</a></div>`;
+  lbS.sig=lbSig(); lbApplyFilter(); lbBind();
+}
+/* What the current view depends on; when it changes for a stage without typing boxes, redraw everything. */
+function lbSig(){ const L=lbS.live; return [L.stage,L.labs.join(","),lbS.lab,lbS.switching,lbS.trialLab,L.stage==="results"?JSON.stringify(L.rows):"",L.stage==="briefing"?"":"",L.stage==="trial"?L.trial.map(t=>t.lab+t.n+t.t).join("|"):""].join("§"); }
+function lbApplyFilter(){ document.querySelectorAll("#lb-list .lb-spec").forEach(c=>{ c.hidden=!lbFilterOK(c.dataset.n); }); }
+function lbUpdate(){
+  if(!document.getElementById("lb-root")) return;
+  if(lbSig()!==lbS.sig){ const typing=document.activeElement&&document.activeElement.tagName==="TEXTAREA"; if(!typing||lbS.live.stage!==lbS.lastStage){ lbS.lastStage=lbS.live.stage; lbFull(); return; } }
+  const b=document.getElementById("lb-banner"); if(b){ const h=lbBannerHTML(); if(b.innerHTML!==h) b.innerHTML=h; }
+  if(lbS.live.stage==="lab"){
+    const t=document.getElementById("lb-tally"); if(t) t.innerHTML=lbTallyHTML();
+    document.querySelectorAll("#lb-list .lb-spec").forEach(card=>{ const n=card.dataset.n, c=lbCardState(n);
+      const h=lbHistHTML(n,c.vers,c.pend), box=card.querySelector(".lb-hist"); if(box.innerHTML!==h) box.innerHTML=h;
+      card.className="lb-spec "+c.cls; const btn=card.querySelector("[data-open]"); if(btn) btn.textContent=c.count?`Send version ${c.count+1}`:"Patch it"; });
+    const f=document.getElementById("lb-finds"); if(f){ const h=lbFindsHTML(); if(f.innerHTML!==h) f.innerHTML=h; }
+    lbApplyFilter();
+  }
+  if(lbS.live.stage==="trial") document.querySelectorAll(".lb-task").forEach(t=>{ const s=t.querySelector(".lb-tstat"), h=lbTaskStat(lbS.trialLab,t.dataset.task); if(s.innerHTML!==h) s.innerHTML=h; });
+}
+function lbBind(){
+  const root=document.getElementById("lb-root"); if(!root) return;
+  root.addEventListener("click",e=>{
+    const t=e.target.closest("button"); if(!t) return;
+    if(t.dataset.lab!==undefined){ lbS.lab=t.dataset.lab; lbPut(LB_LAB_KEY,lbS.lab); lbS.switching=false; lbFull(); return; }
+    if(t.id==="lb-switch"){ lbS.switching=true; lbFull(); return; }
+    if(t.dataset.trial!==undefined){ lbS.trialLab=t.dataset.trial; lbPut(LB_TRIAL_KEY,lbS.trialLab); lbFull(); return; }
+    if(t.dataset.filter){ lbS.filter=t.dataset.filter; root.querySelectorAll("[data-filter]").forEach(b=>b.setAttribute("aria-pressed",b===t)); lbApplyFilter(); return; }
+    if(t.dataset.bucket){ const g=document.getElementById("lb-guide"); if(!g) return; g.open=true; const d=g.querySelector(`[data-guide="${CSS.escape(t.dataset.bucket)}"]`); if(d){ d.open=true; d.scrollIntoView({behavior:"smooth",block:"start"}); } return; }
+    if(t.dataset.open){ const card=t.closest(".lb-spec"), f=card.querySelector(".lb-form"); f.hidden=false; t.hidden=true; const ta=f.querySelector("textarea"); if(ta) ta.focus(); return; }
+    if(t.hasAttribute("data-cancel")){ const f=t.closest(".lb-form"); f.hidden=true; const o=f.parentElement.querySelector("[data-open]"); if(o) o.hidden=false; return; }
+  });
+  root.addEventListener("input",e=>{ const ta=e.target; if(ta.tagName!=="TEXTAREA") return; const f=ta.closest(".lb-form"); const k=f.dataset.form;
+    const suffix={patch:"p",example:"e",spec:"s"}[ta.name]; lbDraft(f.dataset.trialTask?k:lbS.lab+"|"+k+"|"+suffix, ta.value); });
+  root.addEventListener("submit",e=>{ e.preventDefault(); const f=e.target, k=f.dataset.form, val=n=>{ const x=f.querySelector(`[name="${n}"]`); return x?x.value.trim():""; };
+    const patch=val("patch"); if(!patch){ const ta=f.querySelector('[name="patch"]'); ta.focus(); return; }
+    let ok;
+    if(f.dataset.trialTask){ ok=lbSend({lab:lbS.trialLab,kind:"Trial answer",spec:f.dataset.trialTask,patch,example:""}); if(ok) lbDraft(k,""); }
+    else if(k==="new"){ const sp=val("spec"); if(!sp){ f.querySelector('[name="spec"]').focus(); return; } ok=lbSend({lab:lbS.lab,kind:"New specimen",spec:sp,patch,example:val("example")}); if(ok) ["s","p","e"].forEach(x=>lbDraft(lbS.lab+"|new|"+x,"")); }
+    else { ok=lbSend({lab:lbS.lab,kind:"Patch",spec:f.dataset.spec,patch,example:val("example")}); if(ok) ["p","e"].forEach(x=>lbDraft(lbS.lab+"|"+k+"|"+x,"")); }
+    if(!ok){ alertBox(f,"The lab form isn't set up yet. Tell your host."); return; }
+    if(!f.dataset.trialTask){ f.querySelectorAll("textarea").forEach(x=>x.value=""); f.hidden=true; const o=f.parentElement.querySelector("[data-open]"); if(o) o.hidden=false; }
+    else f.querySelector("textarea").value="";
+    lbUpdate();
+  });
+}
+function alertBox(f,msg){ let p=f.querySelector(".lb-err"); if(!p){ p=document.createElement("p"); p.className="lb-err lb-pending"; f.appendChild(p); } p.textContent=msg; }
+async function lab(){
+  stopLab();
+  view(`<div class="wrap page"><section class="panel"><h1>Fix the English Language</h1><p>Loading the lab…</p></section></div>`);
+  const [stat,live]=await Promise.all([lbStatic(),lbLive()]);
+  lbS={stat,live,lab:lbGet(LB_LAB_KEY,""),trialLab:lbGet(LB_TRIAL_KEY,""),filter:"all",switching:false,lastStage:live.stage};
+  lbFull();
+  const tick=async()=>{ if(!document.getElementById("lb-root")){ stopLab(); return; } try{ const live=await lbLive(); if(!lbS) return; lbS.live=live; lbUpdate(); }catch(e){} };
+  lbPoll=setInterval(tick,12000);
+}
+
 /* ===== Routes ===== */
 async function route(){
   const h=location.hash.replace(/^#\/?/,""); const p=h.split("/");
-  stopBoard(); stopAtomic();
+  stopBoard(); stopAtomic(); stopLab();
   try{
     if(p[0]==="10x10") await board();
     else if(p[0]==="atomic") await atomic();
+    else if(p[0]==="lab") await lab();
     else if(p[0]==="quote") await quote(p[1],p[2]);
     else if(p[0]==="spin") await spin();
     else if(p[0]==="quotes") await list();
